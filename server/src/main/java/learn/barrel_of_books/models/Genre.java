@@ -1,21 +1,22 @@
 package learn.barrel_of_books.models;
 
-import java.math.BigDecimal;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
-    private int bookId;
-    private String title;
+public class Genre {
+    private int genreId;
+
+    @NotBlank(message = "Name is required and cannot be blank.")
+    private String name;
+
+    @NotBlank(message = "Description is required and cannot be blank.")
     private String description;
-    private String author;
-    private BigDecimal price;
-    private List<GenreBook> categories;
 }

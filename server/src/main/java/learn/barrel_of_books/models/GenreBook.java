@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class GenreBook {
+    private int genreBookId;
 }

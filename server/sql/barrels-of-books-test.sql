@@ -49,15 +49,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `barrels-of-books-test`.`category`
+-- Table `barrels-of-books-test`.`genre`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `barrels-of-books-test`.`category` ;
+DROP TABLE IF EXISTS `barrels-of-books-test`.`genre` ;
 
-CREATE TABLE IF NOT EXISTS `barrels-of-books-test`.`category` (
-  `category_id` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `barrels-of-books-test`.`genre` (
+  `genre_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(200) NULL,
-  PRIMARY KEY (`category_id`),
+  PRIMARY KEY (`genre_id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
 
@@ -104,21 +104,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `barrels-of-books-test`.`category_book`
+-- Table `barrels-of-books-test`.`genre_book`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `barrels-of-books-test`.`category_book` ;
+DROP TABLE IF EXISTS `barrels-of-books-test`.`genre_book` ;
 
-CREATE TABLE IF NOT EXISTS `barrels-of-books-test`.`category_book` (
-  `category_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `barrels-of-books-test`.`genre_book` (
+  `genre_id` INT NOT NULL,
   `book_id` INT NOT NULL,
-  PRIMARY KEY (`category_id`, `book_id`),
-  INDEX `fk_category_book_bookId_idx` (`book_id` ASC) VISIBLE,
-  CONSTRAINT `fk_category_book_categoryId`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `barrels-of-books-test`.`category` (`category_id`)
+  PRIMARY KEY (`genre_id`, `book_id`),
+  INDEX `fk_genre_book_bookId_idx` (`book_id` ASC) VISIBLE,
+  CONSTRAINT `fk_genre_book_genreId`
+    FOREIGN KEY (`genre_id`)
+    REFERENCES `barrels-of-books-test`.`genre` (`genre_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_category_book_bookId`
+  CONSTRAINT `fk_genre_book_bookId`
     FOREIGN KEY (`book_id`)
     REFERENCES `barrels-of-books-test`.`book` (`book_id`)
     ON DELETE NO ACTION
@@ -148,6 +148,25 @@ CREATE TABLE IF NOT EXISTS `barrels-of-books-test`.`store_book` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+delimiter //
+create procedure set_known_good_state()
+begin
+	
+delete from genre;
+alter table genre auto_increment = 1;
+
+insert into genre(genre_id, name, description) values
+(1, 'Fantasy', 'Fantasy description'),
+(2, 'Adventure', 'Adventure description'),
+(3, 'Romance', 'Romance description'),
+(4, 'Horror', 'Horror description')
+;
+    
+end //
+-- 4. Change the statement terminator back to the original.
+delimiter ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
