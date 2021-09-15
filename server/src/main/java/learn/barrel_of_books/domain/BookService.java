@@ -117,7 +117,7 @@ public class BookService {
             result.addMessage("Author is required",ResultType.INVALID);
         }
 
-        if(book.getCategories().size() <= 0) {
+        if(book.getCategories().size() <= 0 || book.getCategories().isEmpty()) {
             result.addMessage("Book must belong to at least 1 category",ResultType.INVALID);
         }
 

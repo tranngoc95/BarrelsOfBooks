@@ -89,19 +89,6 @@ class BookJdbcRepositoryTest {
     }
 
 
-    @Test
-    void ffff() {
-        Book book = makeBook();
-        assertEquals(0, book.getBookId());
-    }
-
-
-
-
-
-
-
-
 
 
     private Book makeBook() {
