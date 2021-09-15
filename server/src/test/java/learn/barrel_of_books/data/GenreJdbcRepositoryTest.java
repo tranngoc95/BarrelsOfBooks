@@ -39,6 +39,13 @@ class GenreJdbcRepositoryTest {
     }
 
     @Test
+    void shouldFindByName() {
+        Genre actual = repository.findByName("Fantasy");
+        assertNotNull(actual);
+        assertEquals(1, actual.getGenreId());
+    }
+
+    @Test
     void shouldAdd() {
         Genre input = new Genre(0, "History", "History description");
         Genre actual = repository.add(input);

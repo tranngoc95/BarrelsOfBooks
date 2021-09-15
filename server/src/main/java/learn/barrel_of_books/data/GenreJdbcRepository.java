@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -67,8 +68,9 @@ public class GenreJdbcRepository implements GenreRepository {
     }
 
     @Override
+    @Transactional
     public boolean deleteById(int genreId) {
-        final String sql = "delete from genre where genre_id = ?";
-        return jdbcTemplate.update(sql, genreId)>0;
+        jdbcTemplate.update("delete from genre_book where genre_id = ?", genreId);
+        return jdbcTemplate.update("delete from genre where genre_id = ?", genreId)>0;
     }
 }
