@@ -63,10 +63,10 @@ class BookServiceTest {
     }
 
     @Test
-    void shouldNotAddIfCategoriesAreEmpty() {
+    void shouldNotAddIfGenresAreEmpty() {
         Book book = makeBook();
         List<GenreBook> cats = new ArrayList<>();
-        book.setCategories(cats);
+        book.setGenres(cats);
         Result<Book> result = service.add(book);
         assertFalse(result.isSuccess());
     }
@@ -147,7 +147,7 @@ class BookServiceTest {
         cb.setBookId(1);
         cb.setGenre(c);
         cats.add(cb);
-        book.setCategories(cats);
+        book.setGenres(cats);
         book.setAuthor("jk rowling");
         book.setPrice(new BigDecimal("13.45"));
         book.setQuantity(12);

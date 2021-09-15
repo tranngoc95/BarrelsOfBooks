@@ -38,7 +38,7 @@ public class BookJdbcRepository implements BookRepository {
         Book book = template.query(sql,new BookMapper(), id).stream()
                             .findFirst().orElse(null);
         if(book != null) {
-            addCategories(book);
+            addGenres(book);
         }
         return book;
     }
@@ -53,7 +53,7 @@ public class BookJdbcRepository implements BookRepository {
                 .findFirst().orElse(null);
 
         if(book != null) {
-            addCategories(book);
+            addGenres(book);
         }
         return book;
     }
@@ -102,7 +102,7 @@ public class BookJdbcRepository implements BookRepository {
     }
 
 
-    private void addCategories(Book book) {
+    private void addGenres(Book book) {
 
     }
 }

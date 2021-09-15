@@ -18,5 +18,5 @@ public class Book {
     private String description;
     private String author;
     private BigDecimal price;
-    private List<GenreBook> categories;
+    private List<GenreBook> genres;
 }

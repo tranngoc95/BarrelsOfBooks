@@ -117,8 +117,8 @@ public class BookService {
             result.addMessage("Author is required",ResultType.INVALID);
         }
 
-        if(book.getCategories().size() <= 0 || book.getCategories().isEmpty()) {
-            result.addMessage("Book must belong to at least 1 category",ResultType.INVALID);
+        if(book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
+            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
         }
 
         if(book.getQuantity() <= 0) {
@@ -126,7 +126,7 @@ public class BookService {
         }
 
         if(book.getPrice().doubleValue() <= 0) {
-            result.addMessage("Price must be a postive number", ResultType.INVALID);
+            result.addMessage("Price must be a positive number", ResultType.INVALID);
         }
 
         return result;
