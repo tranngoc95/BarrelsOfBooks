@@ -4,12 +4,7 @@ import learn.barrel_of_books.data.GenreRepository;
 import learn.barrel_of_books.models.Genre;
 import org.springframework.stereotype.Service;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class GenreService {
@@ -66,23 +61,7 @@ public class GenreService {
     }
 
     private Result<Genre> validate(Genre genre){
-        Result<Genre> result = new Result<>();
-
-        if(genre==null){
-            result.addMessage("Genre cannot be null.", ResultType.INVALID);
-            return result;
-        }
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-
-        Set<ConstraintViolation<Genre>> violations = validator.validate(genre);
-
-        if (!violations.isEmpty()) {
-            for (ConstraintViolation<Genre> violation : violations) {
-                result.addMessage(violation.getMessage(), ResultType.INVALID);
-            }
-        }
+        Result<Genre> result = Validate.validate(genre);
 
         if(result.isSuccess()){
             Genre otherGenre = repository.findByName(genre.getName());

@@ -70,7 +70,7 @@ DROP TABLE IF EXISTS `barrel_of_books_test`.`transaction` ;
 
 CREATE TABLE IF NOT EXISTS `barrel_of_books_test`.`transaction` (
   `transaction_id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` VARCHAR(45) NOT NULL,
+  `user_id` VARCHAR(255) NOT NULL,
   `date` DATETIME NOT NULL,
   PRIMARY KEY (`transaction_id`))
 ENGINE = InnoDB;
