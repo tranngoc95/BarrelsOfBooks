@@ -3,13 +3,13 @@ classDiagram
 
 
 class Store {
-    -int storeId 
+    -int storeId
+    -String name 
     -String address
     -String city
     -String state
     -String postalCode
     -String phone
-   
 }
 
     
@@ -19,6 +19,7 @@ class Store {
       -String title
       -String description 
       -String author
+      -int quantity
       -BigDecimal price
     }
 

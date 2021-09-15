@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS `barrels_of_books`.`book` (
   `description` VARCHAR(200) NULL,
   `price` DECIMAL(6,2) NOT NULL,
   `author` VARCHAR(45) NOT NULL,
+  `quantity` INT NOT NULL,
   PRIMARY KEY (`book_id`),
   UNIQUE INDEX `bookId_UNIQUE` (`book_id` ASC) VISIBLE)
 ENGINE = InnoDB;
