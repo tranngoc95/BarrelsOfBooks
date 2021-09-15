@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `barrel_of_books`.`cart_item` (
   `book_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `transaction_id` INT NULL,
-  `is_purschased` TINYINT NOT NULL,
   PRIMARY KEY (`cart_item_id`),
   INDEX `fk_cart_book_bookId_idx` (`book_id` ASC) VISIBLE,
   INDEX `fk_cart_item_transactionId_idx` (`transaction_id` ASC) VISIBLE,
