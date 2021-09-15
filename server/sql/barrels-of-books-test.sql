@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `barrel_of_books_test`.`cart_item` (
   `book_id` INT NOT NULL,
   `quantity` INT NOT NULL,
   `transaction_id` INT NULL,
-  `is_purschased` TINYINT NOT NULL,
   PRIMARY KEY (`cart_item_id`),
   INDEX `fk_cart_book_bookId_idx` (`book_id` ASC) VISIBLE,
   INDEX `fk_cart_item_transactionId_idx` (`transaction_id` ASC) VISIBLE,
@@ -154,16 +153,57 @@ ENGINE = InnoDB;
 delimiter //
 create procedure set_known_good_state()
 begin
-	
+
+delete from genre_book;
 delete from genre;
 alter table genre auto_increment = 1;
+delete from store_book;
+delete from store;
+alter table store auto_increment = 1;
+delete from book;
+alter table book auto_increment = 1;
+delete from cart_item;
+alter table cart_item auto_increment = 1;
+delete from transaction;
+alter table transaction auto_increment = 1;
 
 insert into genre(genre_id, name, description) values
 (1, 'Fantasy', 'Fantasy description'),
 (2, 'Adventure', 'Adventure description'),
 (3, 'Romance', 'Romance description'),
 (4, 'Horror', 'Horror description');
-    
+
+insert into book(book_id, title, description, price, author, quantity) values
+  (1, 'hp', 'magic', 13.45, 'jk rowling', 45),
+  (2, 'red robin', 'yum', 14.55, 'bear', 9),
+  (3, 'got', 'fiction', 13.45, 'george rr martin', 45);
+  
+insert into genre_book(genre_id, book_id) values
+  (1,1),
+  (1,3),
+  (2,2);
+  
+  insert into store(store_id, address, city, state, postal_code, phone_number) values 
+  (1, 'address 1', 'Greenfield', 'WI', '12345', '12345678'),
+  (2, 'address 2', 'Bloomington', 'MN', '43121', '12435678'),
+  (3, 'address 3', 'Greendale', 'WI', '53121', '12435978')
+  ;
+  
+  insert into store_book(store_id, book_id, quantity) values 
+  (1,1,33),
+  (2,3,60),
+  (3,2,50);
+  
+  insert into transaction(transaction_id, user_id, date) values
+  (1,1,'2020-09-09'),
+  (2,3,'2020-11-09'),
+  (3,1,'2020-03-22');
+  
+  insert into cart_item(cart_item_id, user_id, book_id, quantity, transaction_id) values 
+  (1,1,1,2,0),
+  (2,1,1,1,1),
+  (3,3,2,1,3);
+
 end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;

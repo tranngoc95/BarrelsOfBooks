@@ -96,7 +96,7 @@ public class BookJdbcRepository implements BookRepository {
     @Override
     public boolean delete(int bookId) {
         template.update("delete from cart_item where book_id = ?;", bookId);
-        template.update("delete from category_book where book_id = ?;", bookId);
+        template.update("delete from genre_book where book_id = ?;", bookId);
         template.update("delete from store_book where book_id = ?;",bookId);
         return template.update("delete from book where book_id = ?;", bookId) > 0;
     }

@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class CartItem {
     private int cartItemId;
-    private int transactionId;
+    private int transactionId=0;
 
     @Min(value = 1, message = "userId is required.")
     private int userId;
@@ -24,7 +24,5 @@ public class CartItem {
 
     @Min(value = 1, message = "Quantity must be above 0.")
     private int quantity;
-
-    private boolean isPurchased=false;
 
 }
