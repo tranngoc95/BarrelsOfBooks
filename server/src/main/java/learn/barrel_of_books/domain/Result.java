@@ -33,5 +33,4 @@ public class Result<T> {
         messages.add(message);
         this.type = type;
     }
-
 }
