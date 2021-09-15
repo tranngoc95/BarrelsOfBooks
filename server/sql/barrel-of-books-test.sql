@@ -154,6 +154,8 @@ delimiter //
 create procedure set_known_good_state()
 begin
 
+delete from cart_item;
+alter table cart_item auto_increment = 1;
 delete from genre_book;
 delete from genre;
 alter table genre auto_increment = 1;
@@ -162,10 +164,10 @@ delete from store;
 alter table store auto_increment = 1;
 delete from book;
 alter table book auto_increment = 1;
-delete from cart_item;
-alter table cart_item auto_increment = 1;
-delete from transaction;
-alter table transaction auto_increment = 1;
+delete from `transaction`;
+alter table `transaction` auto_increment = 1;
+
+
 
 insert into genre(genre_id, name, description) values
 (1, 'Fantasy', 'Fantasy description'),
@@ -200,7 +202,7 @@ insert into genre_book(genre_id, book_id) values
   (3,1,'2020-03-22');
   
   insert into cart_item(cart_item_id, user_id, book_id, quantity, transaction_id) values 
-  (1,1,1,2,0),
+  (1,1,1,2,null),
   (2,1,1,1,1),
   (3,3,2,1,3);
 

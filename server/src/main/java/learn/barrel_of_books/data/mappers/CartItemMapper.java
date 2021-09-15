@@ -14,7 +14,6 @@ public class CartItemMapper implements RowMapper<CartItem> {
         cartItem.setTransactionId(resultSet.getInt("transaction_id"));
         cartItem.setUserId(resultSet.getInt("user_id"));
         cartItem.setQuantity(resultSet.getInt("quantity"));
-        cartItem.setPurchased(resultSet.getBoolean("isPurchased"));
 
 //        BookMapper bookMapper = new BookMapper();
 //        cartItem.setBook(bookMapper.mapRow(resultSet,i));
