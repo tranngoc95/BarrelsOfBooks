@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Book {
     private int bookId;
+    private int quantity;
     private String title;
     private String description;
     private String author;
