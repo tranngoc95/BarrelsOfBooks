@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Store {
     private int storeId;
-    private String name;
     private String address;
     private String city;
     private String state;

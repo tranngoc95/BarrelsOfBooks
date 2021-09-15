@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-
-
 class BookServiceTest {
     @Autowired
     BookService service;
@@ -91,6 +89,8 @@ class BookServiceTest {
     void shouldNotAddIfIdIsSet() {
         Book book = makeBook();
         book.setBookId(5);
+        when(repository.findAll()).thenReturn(getBookList());
+        when(repository.add(book)).thenReturn(book);
         Result<Book> result = service.add(book);
         assertFalse(result.isSuccess());
     }
@@ -118,6 +118,8 @@ class BookServiceTest {
     @Test
     void shouldNotUpdateIfBookIdIs0() {
         Book book = makeBook();
+        when(repository.findAll()).thenReturn(getBookList());
+        when(repository.update(book)).thenReturn(true);
         Result<Book> result = service.update(book);
         assertFalse(result.isSuccess());
     }
@@ -128,11 +130,22 @@ class BookServiceTest {
         Book book = makeBook();
         book.setBookId(2);
         book.setTitle("harry potter");
+        when(repository.update(book)).thenReturn(true);
         Result<Book> result = service.update(book);
         assertFalse(result.isSuccess());
     }
 
-
+    @Test
+    void shouldUpdateIfAuthorAndTitleIsNotChanged() {
+        when(repository.findAll()).thenReturn(getBookList());
+        Book book = makeBook();
+        book.setBookId(1);
+        book.setTitle("harry potter");
+        book.setQuantity(100);
+        when(repository.update(book)).thenReturn(true);
+        Result<Book> result = service.update(book);
+        assertTrue(result.isSuccess());
+    }
 
 
 
