@@ -168,6 +168,10 @@ end //
 -- 4. Change the statement terminator back to the original.
 delimiter ;
 
+SET SQL_SAFE_UPDATES = 0;
+call set_basic_data();
+SET SQL_SAFE_UPDATES = 1;
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
