@@ -1,7 +1,7 @@
 package learn.barrel_of_books.data;
 
-import learn.barrel_of_books.models.Store;
-import learn.barrel_of_books.models.StoreBook;
+import learn.barrel_of_books.models.Genre;
+import learn.barrel_of_books.models.GenreBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class StoreBookJdbcRepositoryTest {
+class GenreBookJdbcRepositoryTest {
 
     @Autowired
-    StoreBookJdbcRepository repository;
+    GenreBookJdbcRepository repository;
 
     @Autowired
     KnownGoodState knownGoodState;
@@ -28,39 +28,28 @@ class StoreBookJdbcRepositoryTest {
 
     @Test
     void shouldFindByBookId() {
-        List<StoreBook> list = repository.findByBookId(1);
+        List<GenreBook> list = repository.findByBookId(1);
         assertTrue(list.size() >= 1);
     }
 
     @Test
-    void shouldNotFindIfBookIdDoesNotExist() {
-        List<StoreBook> list = repository.findByBookId(11);
+    void shouldNotFindByMissingBookId() {
+        List<GenreBook> list = repository.findByBookId(11);
         assertNull(list);
     }
 
-
     @Test
     void shouldAdd() {
-        Store store = new Store(1, "address 1", "Greenfield", "WI", "12345", "12345678");
-        StoreBook sb = new StoreBook(2, store,12);
-        boolean success = repository.add(sb);
-        assertTrue(success);
-    }
-
-
-    @Test
-    void shouldUpdate() {
-        Store store = new Store(1, "address 1", "Greenfield", "WI", "12345", "12345678");
-        StoreBook sb = new StoreBook(1, store,12);
-        boolean success = repository.update(sb);
+        Genre genre = new Genre(3, "Romance", "Romance description");
+        GenreBook gb = new GenreBook(genre,2);
+        boolean success = repository.add(gb);
         assertTrue(success);
     }
 
     @Test
     void shouldDelete() {
-        boolean success = repository.delete(1,1);
+        boolean success = repository.delete(3,1);
         assertTrue(success);
-        assertNull(repository.findByBookId(1));
     }
 
     @Test
@@ -68,5 +57,4 @@ class StoreBookJdbcRepositoryTest {
         boolean success = repository.delete(4,4);
         assertFalse(success);
     }
-
 }
