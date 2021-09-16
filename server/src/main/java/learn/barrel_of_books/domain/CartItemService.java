@@ -31,14 +31,12 @@ public class CartItemService {
                     cartItem.getBook().getBookId());
 
             if (available != null) {
-                System.out.println("first");
                 int quantity = cartItem.getQuantity() + available.getQuantity();
                 available.setQuantity(quantity);
                 if(!repository.update(available)){
                     String msg = String.format("cartItemId: %s, not found", cartItem.getCartItemId());
                     result.addMessage(msg, ResultType.NOT_FOUND);
                 }
-                System.out.println("second");
                 result.setPayload(available);
             } else {
                 if (cartItem.getCartItemId() != 0) {
@@ -69,7 +67,7 @@ public class CartItemService {
                 result.addMessage("cartItemId must be set for `update` operation", ResultType.INVALID);
             }
 
-            if(result.isSuccess() && !repository.update(available)){
+            if(result.isSuccess() && !repository.update(cartItem)){
                 String msg = String.format("cartItemId: %s, not found", cartItem.getCartItemId());
                 result.addMessage(msg, ResultType.NOT_FOUND);
             }
@@ -81,4 +79,12 @@ public class CartItemService {
     public boolean deleteById(int cartItemId){
         return repository.deleteById(cartItemId);
     }
+
+//    private Result<CartItem> validate(CartItem cartItem){
+//        Result<CartItem> result = Validate.validate(cartItem);
+//
+//        if(result.isSuccess()){
+//            if(cartItem.getUserId()!=)
+//        }
+//    }
 }
