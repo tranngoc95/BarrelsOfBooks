@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,7 +20,7 @@ import java.util.List;
 public class Transaction {
     private int transactionId;
 
-    @NotNull(message = "List of books cannot be null.")
+    @NotEmpty(message = "List of books cannot be null.")
     private List<CartItem> books;
 
     @NotNull(message = "Date cannot be null.")
@@ -31,6 +32,8 @@ public class Transaction {
     private BigDecimal total = BigDecimal.ZERO;
 
     private boolean employeeDiscount = false;
+
+    private TransactionStatus status = TransactionStatus.ORDERED;
 
     public void updateTotal(){
         for(CartItem each : books){

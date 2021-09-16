@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `barrel_of_books`.`transaction` (
   `date` DATETIME NOT NULL,
   `total` DECIMAL(6,2) NOT NULL,
   `employee_discount` TINYINT NOT NULL,
-  `isShipped` TINYINT NOT NULL,
+  `status` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`transaction_id`))
 ENGINE = InnoDB;
 
@@ -197,10 +197,10 @@ insert into genre_book(genre_id, book_id) values
   (2,3,60),
   (3,2,50);
   
-  insert into transaction(transaction_id, user_id, date, total, employee_discount) values
-  (1,1,'2020-09-09', 9.42, true, false),
-  (2,3,'2020-11-09', 14.55, false, false),
-  (3,1,'2020-03-22', 9.42, true, true);
+  insert into transaction(transaction_id, user_id, date, total, employee_discount, status) values
+  (1,1,'2020-09-09', 9.42, true, 'ORDERED'),
+  (2,3,'2020-11-09', 14.55, false, 'SHIPPED'),
+  (3,1,'2020-03-22', 9.42, true, 'DELIVERED');
   
   insert into cart_item(cart_item_id, user_id, book_id, quantity, transaction_id) values 
   (1,1,1,2,null),

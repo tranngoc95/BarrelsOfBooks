@@ -21,6 +21,10 @@ public class Book {
     private BigDecimal price;
     private List<GenreBook> genres;
 
+    public void addQuantity(int amount){
+            quantity += amount;
+    }
+
     public void subtractQuantity(int amount){
         if(amount<=quantity) {
             quantity -= amount;

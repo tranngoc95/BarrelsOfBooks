@@ -25,14 +25,14 @@ public class TransactionJdbcRepository implements TransactionRepository {
 
     @Override
     public List<Transaction> findByUserId(String userId) {
-        final String sql = "select transaction_id, user_id, date, total, employee_discount " +
+        final String sql = "select transaction_id, user_id, date, total, employee_discount, status " +
                 "from transaction where user_id = ?";
         return jdbcTemplate.query(sql, new TransactionMapper(), userId);
     }
 
     @Override
     public Transaction findByTransactionId(int transactionId){
-        final String sql = "select transaction_id, user_id, date, total, employee_discount " +
+        final String sql = "select transaction_id, user_id, date, total, employee_discount, status " +
                 "from transaction where transaction_id = ?";
         Transaction result = jdbcTemplate.query(sql, new TransactionMapper(),
                 transactionId).stream().findFirst().orElse(null);
@@ -46,15 +46,16 @@ public class TransactionJdbcRepository implements TransactionRepository {
 
     @Override
     public Transaction add(Transaction transaction){
-        final String sql = "insert into transaction (user_id, date, total, employee_discount) values (?,?,?,?)";
+        final String sql = "insert into transaction (user_id, date, total, employee_discount, status) values (?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowAffected = jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, transaction.getUserId());
             ps.setDate(2, Date.valueOf(transaction.getDate()));
-            ps.setInt(3, transaction.getTotal().intValue());
+            ps.setBigDecimal(3, transaction.getTotal());
             ps.setBoolean(4, transaction.isEmployeeDiscount());
+            ps.setString(5,transaction.getStatus().toString());
             return ps;
         }, keyHolder);
 
@@ -70,10 +71,11 @@ public class TransactionJdbcRepository implements TransactionRepository {
     @Override
     public boolean update(Transaction transaction) {
         final String sql = "update transaction set user_id = ?, date = ?, " +
-                "total = ?, employee_discount = ? where transaction_id = ?";
+                "total = ?, employee_discount = ?, status = ? where transaction_id = ?";
 
         return jdbcTemplate.update(sql, transaction.getUserId(), transaction.getDate(),
-                transaction.getTotal(), transaction.isEmployeeDiscount(), transaction.getTransactionId()) > 0;
+                transaction.getTotal(), transaction.isEmployeeDiscount(),
+                transaction.getStatus().toString(), transaction.getTransactionId()) > 0;
     }
 
     @Override

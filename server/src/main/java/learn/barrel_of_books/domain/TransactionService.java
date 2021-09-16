@@ -3,12 +3,12 @@ package learn.barrel_of_books.domain;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
-import learn.barrel_of_books.models.Book;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -42,16 +42,25 @@ public class TransactionService {
                 return result;
             }
 
+            for(CartItem each: transaction.getBooks()) {
+                if(each.getQuantity() > each.getBook().getQuantity()) {
+                    result.addMessage("cartItem quantity can't be higher than book inventory quantity.",
+                            ResultType.INVALID);
+                    return result;
+                }
+
+                CartItem other = cartItemRepository.findByCartItemId(each.getCartItemId());
+                if (!each.equals(other)) {
+                    result.addMessage("cartItem doesn't match inventory.", ResultType.INVALID);
+                    return result;
+                }
+            }
+
             transaction.updateTotal();
             transaction = repository.add(transaction);
 
             for(int i=0; i<transaction.getBooks().size(); i++){
                 CartItem each = transaction.getBooks().get(i);
-                if(!each.equals(cartItemRepository.findByCartItemId(each.getCartItemId()))){
-                    result.addMessage("cartItem doesn't match inventory.", ResultType.INVALID);
-                    return result;
-                }
-
                 each.setTransactionId(transaction.getTransactionId());
                 cartItemRepository.update(each);
                 each.getBook().subtractQuantity(each.getQuantity());
@@ -59,24 +68,33 @@ public class TransactionService {
             }
             result.setPayload(transaction);
         }
-        return null;
+
+        return result;
     }
 
-//    public Result<Transaction> update(Transaction transaction) {
-//        Result<Transaction> result = validate(transaction);
-//
-//        if(result.isSuccess()){
-//            if(transaction.getTransactionId()<=0){
-//                result.addMessage("transactionId must be set for `update` operation", ResultType.INVALID);
-//            }
-//
-//            if(result.isSuccess() && !repository.update(transaction)){
-//                String msg = String.format("transactionId: %s, not found", transaction.getTransactionId());
-//                result.addMessage(msg, ResultType.NOT_FOUND);
-//            }
-//        }
-//        return result;
-//    }
+    public Result<Transaction> update(Transaction transaction) {
+        Result<Transaction> result = validate(transaction);
+
+        if(result.isSuccess()){
+            if(transaction.getTransactionId()<=0){
+                result.addMessage("transactionId must be set for `update` operation", ResultType.INVALID);
+                return result;
+            }
+
+            Transaction oldTransaction = repository.findByTransactionId(transaction.getTransactionId());
+            if(oldTransaction == null) {
+                String msg = String.format("transactionId: %s, not found", transaction.getTransactionId());
+                result.addMessage(msg, ResultType.NOT_FOUND);
+            } else if(!transaction.getBooks().equals(oldTransaction.getBooks())){
+                result.addMessage("Transaction books cannot be updated.", ResultType.INVALID);
+            }
+
+            if(result.isSuccess()) {
+                repository.update(transaction);
+            }
+        }
+        return result;
+    }
 
     public boolean deleteById(int transactionId){
         return repository.deleteById(transactionId);
@@ -92,8 +110,8 @@ public class TransactionService {
                     break;
                 }
 
-                if(each.getQuantity() > each.getBook().getQuantity()) {
-                    result.addMessage("cartItem quantity can't be higher than book inventory quantity.",
+                if(transaction.getDate().isAfter(LocalDate.now())) {
+                    result.addMessage("Transaction date can't be in future.",
                             ResultType.INVALID);
                 }
             }

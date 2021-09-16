@@ -40,11 +40,11 @@ public class CartItemController {
 
     @PutMapping("/{cartItemId}")
     public ResponseEntity<Object> update(@RequestBody @Valid CartItem cartItem, BindingResult result, @PathVariable int cartItemId){
-        if(result.hasErrors()){
+        if(result.hasErrors() || cartItem==null){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
 
-        if(cartItem==null || cartItemId!=cartItem.getCartItemId()){
+        if(cartItemId!=cartItem.getCartItemId()){
             return new ResponseEntity <>(HttpStatus.CONFLICT);
         }
 
@@ -56,10 +56,11 @@ public class CartItemController {
     }
 
     @DeleteMapping("/{cartItemId}")
-    public ResponseEntity<CartItem> deleteById(@PathVariable int cartItemId) {
-        if (service.deleteById(cartItemId)){
+    public ResponseEntity<Object> deleteById(@PathVariable int cartItemId) {
+        Result<CartItem> serviceResult = service.deleteById(cartItemId);
+        if(serviceResult.isSuccess()) {
             return new ResponseEntity <>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(HttpStatus.NOT_FOUND);
+        return ErrorResponse.build(serviceResult);
     }
 }

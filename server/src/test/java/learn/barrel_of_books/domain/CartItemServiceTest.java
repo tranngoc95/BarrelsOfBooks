@@ -1,5 +1,6 @@
 package learn.barrel_of_books.domain;
 
+import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
@@ -24,6 +25,9 @@ class CartItemServiceTest {
 
     @MockBean
     TransactionRepository transactionRepository;
+
+    @MockBean
+    BookRepository bookRepository;
 
     @Autowired
     CartItemService service;
@@ -256,11 +260,14 @@ class CartItemServiceTest {
     @Test
     void shouldDelete() {
         Mockito.when(repository.deleteById(4)).thenReturn(true);
-        assertTrue(service.deleteById(4));
+        Result<CartItem> actual = service.deleteById(4);
+        assertEquals(ResultType.SUCCESS, actual.getType());
     }
 
     @Test
     void shouldNotDeleteMissing() {
-        assertFalse(service.deleteById(10));
+        Result<CartItem> actual = service.deleteById(10);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("not found"));
     }
 }
