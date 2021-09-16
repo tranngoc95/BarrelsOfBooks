@@ -37,7 +37,7 @@ public class BookController {
 
     }
 
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public ResponseEntity<Book> findByTitle(@PathVariable String title) {
         Book book = service.findByTitle(title);
 
