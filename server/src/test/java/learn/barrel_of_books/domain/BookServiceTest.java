@@ -60,14 +60,14 @@ class BookServiceTest {
         assertFalse(result.isSuccess());
     }
 
-    @Test
-    void shouldNotAddIfGenresAreEmpty() {
-        Book book = makeBook();
-        List<GenreBook> cats = new ArrayList<>();
-        book.setGenres(cats);
-        Result<Book> result = service.add(book);
-        assertFalse(result.isSuccess());
-    }
+//    @Test
+//    void shouldNotAddIfGenresAreEmpty() {
+//        Book book = makeBook();
+//        List<GenreBook> cats = new ArrayList<>();
+//        book.setGenres(cats);
+//        Result<Book> result = service.add(book);
+//        assertFalse(result.isSuccess());
+//    }
 
     @Test
     void shouldNotAddIfQuantityIs0() {

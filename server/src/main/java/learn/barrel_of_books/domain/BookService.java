@@ -117,9 +117,9 @@ public class BookService {
             result.addMessage("Author is required",ResultType.INVALID);
         }
 
-        if(book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
-            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
-        }
+//        if(book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
+//            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
+//        }
 
         if(book.getQuantity() <= 0) {
             result.addMessage("Quantity must be greater than 0", ResultType.INVALID);
