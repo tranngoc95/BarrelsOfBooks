@@ -72,6 +72,8 @@ CREATE TABLE IF NOT EXISTS `barrel_of_books_test`.`transaction` (
   `transaction_id` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(255) NOT NULL,
   `date` DATETIME NOT NULL,
+  `total` DECIMAL(6,2) NOT NULL,
+  `employee_discount` TINYINT NOT NULL,
   PRIMARY KEY (`transaction_id`))
 ENGINE = InnoDB;
 
@@ -196,15 +198,16 @@ insert into genre_book(genre_id, book_id) values
   (2,3,60),
   (3,2,50);
   
-  insert into transaction(transaction_id, user_id, date) values
-  (1,1,'2020-09-09'),
-  (2,3,'2020-11-09'),
-  (3,1,'2020-03-22');
+  insert into transaction(transaction_id, user_id, date, total, employee_discount) values
+  (1,1,'2020-09-09', '9.42', true),
+  (2,3,'2020-11-09', 14.55, false),
+  (3,1,'2020-03-22', 9.42, true);
   
   insert into cart_item(cart_item_id, user_id, book_id, quantity, transaction_id) values 
   (1,1,1,2,null),
   (2,1,1,1,1),
-  (3,3,2,1,3);
+  (3,3,2,1,2),
+  (4,1,3,1,3);
 
 end //
 -- 4. Change the statement terminator back to the original.

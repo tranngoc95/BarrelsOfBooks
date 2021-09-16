@@ -25,5 +25,4 @@ public class CartItem {
 
     @Min(value = 1, message = "Quantity must be above 0.")
     private int quantity;
-
 }

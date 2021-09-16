@@ -1,18 +1,19 @@
 package learn.barrel_of_books.domain;
 
 import learn.barrel_of_books.data.CartItemRepository;
-import learn.barrel_of_books.models.Book;
+import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
+import learn.barrel_of_books.models.Transaction;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static learn.barrel_of_books.data.TestData.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
@@ -21,6 +22,9 @@ class CartItemServiceTest {
     @MockBean
     CartItemRepository repository;
 
+    @MockBean
+    TransactionRepository transactionRepository;
+
     @Autowired
     CartItemService service;
 
@@ -28,7 +32,7 @@ class CartItemServiceTest {
     @Test
     void shouldFindByTransactionId() {
         List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExisting());
+        expected.add(makeExistingCartItem());
         expected.add(new CartItem(1, 1, "1", makeBook(), 2));
 
         Mockito.when(repository.findByTransactionId(1)).thenReturn(expected);
@@ -39,7 +43,7 @@ class CartItemServiceTest {
     @Test
     void shouldFindActiveByUserId() {
         List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExisting());
+        expected.add(makeExistingCartItem());
         expected.add(new CartItem(1, 1, "1", makeBook(), 2));
 
         Mockito.when(repository.findActiveByUserId("1")).thenReturn(expected);
@@ -50,8 +54,8 @@ class CartItemServiceTest {
     // CREATE
     @Test
     void shouldAddNew() {
-        CartItem input = makeNew();
-        CartItem expected = makeNew();
+        CartItem input = makeNewCartItem();
+        CartItem expected = makeNewCartItem();
         expected.setCartItemId(4);
 
         Mockito.when(repository.add(input)).thenReturn(expected);
@@ -63,8 +67,8 @@ class CartItemServiceTest {
 
     @Test
     void shouldAddUpdate() {
-        CartItem input = makeNew();
-        CartItem expected = makeNew();
+        CartItem input = makeNewCartItem();
+        CartItem expected = makeNewCartItem();
         expected.setCartItemId(3);
         expected.setTransactionId(3);
 
@@ -81,7 +85,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotAddPresetID() {
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
         input.setCartItemId(7);
 
         Result<CartItem> actual = service.add(input);
@@ -98,7 +102,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotAddEmptyUserId() {
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
         input.setUserId("");
 
         Result<CartItem> actual = service.add(input);
@@ -114,7 +118,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotAddNullBook() {
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
         input.setBook(null);
 
         Result<CartItem> actual = service.add(input);
@@ -124,8 +128,32 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotAddZeroQuantity() {
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
         input.setQuantity(0);
+
+        Result<CartItem> actual = service.add(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("quantity"));
+    }
+
+    @Test
+    void shouldNotAddConflictUserId() {
+        CartItem input = makeNewCartItem();
+        input.setTransactionId(6);
+        Transaction transaction = makeExistingTransaction();
+        transaction.setTransactionId(6);
+
+        Mockito.when(transactionRepository.findByTransactionId(6)).thenReturn(transaction);
+
+        Result<CartItem> actual = service.add(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("userid"));
+    }
+
+    @Test
+    void shouldNotAddOverAvailableQuantity() {
+        CartItem input = makeNewCartItem();
+        input.setQuantity(50);
 
         Result<CartItem> actual = service.add(input);
         assertEquals(ResultType.INVALID, actual.getType());
@@ -135,7 +163,7 @@ class CartItemServiceTest {
     // UPDATE
     @Test
     void shouldUpdate() {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
 
         Mockito.when(repository.update(input)).thenReturn(true);
 
@@ -145,7 +173,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateNoId() {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
         input.setCartItemId(0);
 
         Result<CartItem> actual = service.update(input);
@@ -162,7 +190,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateEmptyUserId() {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
         input.setUserId(" ");
 
         Result<CartItem> actual = service.update(input);
@@ -178,8 +206,8 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateDuplicateUserIdAndBook() {
-        CartItem input = makeExisting();
-        CartItem found = makeExisting();
+        CartItem input = makeExistingCartItem();
+        CartItem found = makeExistingCartItem();
         found.setCartItemId(5);
 
         Mockito.when(repository.findActiveByUserIdAndBookId(
@@ -192,12 +220,36 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateMissing() {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
         input.setCartItemId(10);
 
         Result<CartItem> actual = service.update(input);
         assertEquals(ResultType.NOT_FOUND, actual.getType());
         assertTrue(actual.getMessages().get(0).toLowerCase().contains("not found"));
+    }
+
+    @Test
+    void shouldNotUpdateConflictUserId() {
+        CartItem input = makeExistingCartItem();
+        input.setUserId("4");
+        Transaction transaction = makeExistingTransaction();
+
+        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(transaction);
+
+        Result<CartItem> actual = service.add(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("userid"));
+    }
+
+    @Test
+    void shouldNotUpdateOverAvailableQuantity() {
+        CartItem input = makeExistingCartItem();
+        input.setQuantity(50);
+        input.setTransactionId(0);
+
+        Result<CartItem> actual = service.update(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("quantity"));
     }
 
     // DELETE
@@ -210,21 +262,5 @@ class CartItemServiceTest {
     @Test
     void shouldNotDeleteMissing() {
         assertFalse(service.deleteById(10));
-    }
-
-    // helper methods
-    private Book makeBook() {
-        return new Book(1, 45, "hp", "magic",
-                "jk rowling", new BigDecimal("13.45"), null);
-    }
-
-    private CartItem makeExisting(){
-        Book book = makeBook();
-        return new CartItem(2, 1, "1", book, 1);
-    }
-
-    private CartItem makeNew(){
-        Book book = makeBook();
-        return new CartItem(0, 0, "5", book, 1);
     }
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.CartItemRepository;
-import learn.barrel_of_books.models.Book;
 import learn.barrel_of_books.models.CartItem;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,10 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static learn.barrel_of_books.data.TestData.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,7 +35,7 @@ class CartItemControllerTest {
     @Test
     void shouldFindActiveByUserId() throws Exception {
         List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExisting());
+        expected.add(makeExistingCartItem());
         expected.add(new CartItem(1, 1, "1", makeBook(), 2));
 
         Mockito.when(repository.findActiveByUserId("1")).thenReturn(expected);
@@ -52,8 +51,8 @@ class CartItemControllerTest {
     // CREATE
     @Test
     void shouldAdd() throws Exception {
-        CartItem input = makeNew();
-        CartItem expected = makeNew();
+        CartItem input = makeNewCartItem();
+        CartItem expected = makeNewCartItem();
         expected.setCartItemId(5);
 
         Mockito.when(repository.add(input)).thenReturn(expected);
@@ -73,7 +72,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotAddEmptyUserId() throws Exception{
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
         input.setUserId(" ");
 
         String inputJson = generateJson(input);
@@ -88,7 +87,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotAddPresetId() throws Exception{
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
 
         String inputJson = generateJson(input);
 
@@ -103,7 +102,7 @@ class CartItemControllerTest {
     //UPDATE
     @Test
     void shouldUpdate() throws Exception {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
 
         Mockito.when(repository.update(input)).thenReturn(true);
 
@@ -118,7 +117,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotUpdateConflict() throws Exception {
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
 
         String inputJson = generateJson(input);
 
@@ -131,7 +130,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotUpdateEmptyUserId() throws Exception{
-        CartItem input = makeExisting();
+        CartItem input = makeExistingCartItem();
         input.setUserId(" ");
 
         String inputJson = generateJson(input);
@@ -146,7 +145,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotUpdateNoId() throws Exception{
-        CartItem input = makeNew();
+        CartItem input = makeNewCartItem();
 
         String inputJson = generateJson(input);
 
@@ -178,21 +177,6 @@ class CartItemControllerTest {
     private String generateJson(Object o) throws JsonProcessingException {
         ObjectMapper jsonMapper = new JsonMapper();
         return jsonMapper.writeValueAsString(o);
-    }
-
-    private Book makeBook() {
-        return new Book(1, 45, "hp", "magic",
-                "jk rowling", new BigDecimal("13.45"), null);
-    }
-
-    private CartItem makeExisting(){
-        Book book = makeBook();
-        return new CartItem(2, 1, "1", book, 1);
-    }
-
-    private CartItem makeNew(){
-        Book book = makeBook();
-        return new CartItem(0, 0, "5", book, 1);
     }
 
 }

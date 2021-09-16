@@ -1,22 +1,22 @@
 package learn.barrel_of_books.data;
 
-import learn.barrel_of_books.models.CartItem;
+import learn.barrel_of_books.models.Transaction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import static learn.barrel_of_books.data.TestData.makeExistingCartItem;
-import static learn.barrel_of_books.data.TestData.makeNewCartItem;
+import static learn.barrel_of_books.data.TestData.makeExistingTransaction;
+import static learn.barrel_of_books.data.TestData.makeNewTransaction;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-class CartItemJdbcRepositoryTest {
-
+class TransactionJdbcRepositoryTest {
     @Autowired
-    CartItemRepository repository;
+    TransactionRepository repository;
 
     @Autowired
     KnownGoodState knownGoodState;
@@ -27,46 +27,37 @@ class CartItemJdbcRepositoryTest {
     }
 
     @Test
-    void shouldFindByTransactionId() {
-        List<CartItem> actual = repository.findByTransactionId(1);
+    void shouldFindByUserId() {
+        List<Transaction> actual = repository.findByUserId("1");
         assertNotNull(actual);
         assertTrue(actual.size()>=1);
     }
 
     @Test
-    void shouldFindActiveByUserId() {
-        List<CartItem> actual = repository.findActiveByUserId("1");
+    void shouldFindByTransactionId() {
+        Transaction actual = repository.findByTransactionId(1);
         assertNotNull(actual);
-        assertEquals(1, actual.size());
-        assertEquals("hp", actual.get(0).getBook().getTitle());
-    }
-
-    @Test
-    void shouldFindActiveByUserIdAndBookId() {
-        CartItem actual = repository.findActiveByUserIdAndBookId("1",1);
-        assertNotNull(actual);
-        assertEquals(1, actual.getCartItemId());
+        assertEquals("1", actual.getUserId());
     }
 
     @Test
     void shouldAdd() {
-        CartItem input = makeNewCartItem();
-        CartItem actual = repository.add(input);
+        Transaction actual = repository.add(makeNewTransaction());
         assertNotNull(actual);
-        assertEquals(4, actual.getCartItemId());
+        assertEquals(4, actual.getTransactionId());
     }
 
     @Test
     void shouldUpdate() {
-        CartItem input = makeExistingCartItem();
-        input.setQuantity(2);
+        Transaction input = makeExistingTransaction();
+        input.setDate(LocalDate.now());
         assertTrue(repository.update(input));
     }
 
     @Test
     void shouldNotUpdateMissing() {
-        CartItem input = makeExistingCartItem();
-        input.setCartItemId(10);
+        Transaction input = makeExistingTransaction();
+        input.setTransactionId(10);
         assertFalse(repository.update(input));
     }
 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.List;
 
 @Repository
@@ -36,6 +37,14 @@ public class CartItemJdbcRepository implements CartItemRepository {
     }
 
     @Override
+    public CartItem findByCartItemId(int cartItemId) {
+        final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
+                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
+                "left outer join book b on b.book_id = c.book_id where c.cart_item_id = ?";
+        return jdbcTemplate.query(sql, new CartItemMapper(), cartItemId).stream().findFirst().orElse(null);
+    }
+
+    @Override
     public CartItem findActiveByUserIdAndBookId(String userId, int bookId){
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
                 "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
@@ -47,7 +56,7 @@ public class CartItemJdbcRepository implements CartItemRepository {
 
     @Override
     public CartItem add(CartItem cartItem) {
-        final String sql = "insert into cart_item (user_id, book_id, quantity) values (?,?,?)";
+        final String sql = "insert into cart_item (user_id, book_id, quantity, transaction_id) values (?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowAffected = jdbcTemplate.update(connection -> {
@@ -55,6 +64,11 @@ public class CartItemJdbcRepository implements CartItemRepository {
             ps.setString(1, cartItem.getUserId());
             ps.setInt(2, cartItem.getBook().getBookId());
             ps.setInt(3, cartItem.getQuantity());
+            if(cartItem.getTransactionId()>0) {
+                ps.setInt(4, cartItem.getTransactionId());
+            } else {
+                ps.setNull(4, Types.INTEGER);
+            }
             return ps;
         }, keyHolder);
 
@@ -72,7 +86,8 @@ public class CartItemJdbcRepository implements CartItemRepository {
                 "quantity = ?, transaction_id = ? where cart_item_id = ?";
 
         return jdbcTemplate.update(sql, cartItem.getUserId(), cartItem.getBook().getBookId(),
-                cartItem.getQuantity(), cartItem.getTransactionId(), cartItem.getCartItemId()) > 0;
+                cartItem.getQuantity(), cartItem.getTransactionId() > 0 ? cartItem.getTransactionId() : null,
+                cartItem.getCartItemId()) > 0;
     }
 
     @Override

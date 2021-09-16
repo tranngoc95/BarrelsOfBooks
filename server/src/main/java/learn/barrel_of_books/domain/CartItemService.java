@@ -1,7 +1,9 @@
 package learn.barrel_of_books.domain;
 
 import learn.barrel_of_books.data.CartItemRepository;
+import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
+import learn.barrel_of_books.models.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.List;
 public class CartItemService {
 
     private final CartItemRepository repository;
+    private TransactionRepository transactionRepository;
 
-    public CartItemService(CartItemRepository repository) {
+    public CartItemService(CartItemRepository repository, TransactionRepository transactionRepository) {
         this.repository = repository;
+        this.transactionRepository = transactionRepository;
     }
 
     public List<CartItem> findByTransactionId(int transactionId){
@@ -24,7 +28,7 @@ public class CartItemService {
     }
 
     public Result<CartItem> add(CartItem cartItem){
-        Result<CartItem> result = Validate.validate(cartItem);
+        Result<CartItem> result = validate(cartItem);
 
         if(result.isSuccess()) {
             CartItem available = repository.findActiveByUserIdAndBookId(cartItem.getUserId(),
@@ -53,7 +57,7 @@ public class CartItemService {
     }
 
     public Result<CartItem> update(CartItem cartItem){
-        Result<CartItem> result = Validate.validate(cartItem);
+        Result<CartItem> result = validate(cartItem);
 
         if(result.isSuccess()) {
             CartItem available = repository.findActiveByUserIdAndBookId(cartItem.getUserId(),
@@ -80,11 +84,23 @@ public class CartItemService {
         return repository.deleteById(cartItemId);
     }
 
-//    private Result<CartItem> validate(CartItem cartItem){
-//        Result<CartItem> result = Validate.validate(cartItem);
-//
-//        if(result.isSuccess()){
-//            if(cartItem.getUserId()!=)
-//        }
-//    }
+    private Result<CartItem> validate(CartItem cartItem){
+        Result<CartItem> result = Validate.validate(cartItem);
+
+        if(result.isSuccess()){
+            if(cartItem.getTransactionId()!=0){
+                Transaction transaction = transactionRepository.findByTransactionId(cartItem.getTransactionId());
+                if(!cartItem.getUserId().equals(transaction.getUserId())) {
+                    result.addMessage("cart userId and transaction userId don't match.", ResultType.INVALID);
+                }
+            }
+
+            if(cartItem.getQuantity() > cartItem.getBook().getQuantity()) {
+                result.addMessage("cartItem quantity can't be higher than book inventory quantity.",
+                        ResultType.INVALID);
+            }
+        }
+
+        return result;
+    }
 }
