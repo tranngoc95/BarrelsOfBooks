@@ -21,6 +21,15 @@ public class Book {
     private BigDecimal price;
     private List<GenreBook> genres;
 
+    public Book(int bookId, int quantity, String title, String description, String author, BigDecimal price) {
+        this.bookId = bookId;
+        this.quantity = quantity;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.price = price;
+    }
+
     public void addQuantity(int amount){
             quantity += amount;
     }
@@ -30,5 +39,4 @@ public class Book {
             quantity -= amount;
         }
     }
-
 }
