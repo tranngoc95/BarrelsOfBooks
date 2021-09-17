@@ -186,7 +186,7 @@ insert into book(book_id, title, description, price, author, quantity) values
 insert into genre_book(genre_id, book_id) values
   (1,1),
   (1,3),
-  (2,2);
+  (2,2),
   
   insert into store(store_id, address, city, state, postal_code, phone_number) values 
   (1, 'address 1', 'Greenfield', 'WI', '12345', '12345678'),
