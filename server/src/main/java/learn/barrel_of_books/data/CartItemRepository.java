@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CartItemRepository {
-    List<CartItem> findByTransactionId(int transactionId);
 
     List<CartItem> findActiveByUserId(String userId);
 

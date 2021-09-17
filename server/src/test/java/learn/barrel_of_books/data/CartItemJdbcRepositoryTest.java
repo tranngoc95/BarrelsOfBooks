@@ -27,18 +27,18 @@ class CartItemJdbcRepositoryTest {
     }
 
     @Test
-    void shouldFindByTransactionId() {
-        List<CartItem> actual = repository.findByTransactionId(1);
-        assertNotNull(actual);
-        assertTrue(actual.size()>=1);
-    }
-
-    @Test
     void shouldFindActiveByUserId() {
         List<CartItem> actual = repository.findActiveByUserId("1");
         assertNotNull(actual);
         assertEquals(1, actual.size());
         assertEquals("hp", actual.get(0).getBook().getTitle());
+    }
+
+    @Test
+    void shouldFindByCartItemId() {
+        CartItem actual = repository.findByCartItemId(1);
+        assertNotNull(actual);
+        assertEquals(0, actual.getTransactionId());
     }
 
     @Test
@@ -53,7 +53,7 @@ class CartItemJdbcRepositoryTest {
         CartItem input = makeNewCartItem();
         CartItem actual = repository.add(input);
         assertNotNull(actual);
-        assertEquals(4, actual.getCartItemId());
+        assertTrue(actual.getCartItemId()>=4);
     }
 
     @Test

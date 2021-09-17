@@ -1,10 +1,10 @@
 package learn.barrel_of_books.domain;
 
-import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
+import learn.barrel_of_books.models.TransactionStatus;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static learn.barrel_of_books.data.TestData.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class CartItemServiceTest {
@@ -26,24 +27,10 @@ class CartItemServiceTest {
     @MockBean
     TransactionRepository transactionRepository;
 
-    @MockBean
-    BookRepository bookRepository;
-
     @Autowired
     CartItemService service;
 
     // READ
-    @Test
-    void shouldFindByTransactionId() {
-        List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExistingCartItem());
-        expected.add(new CartItem(1, 1, "1", makeBook(), 2));
-
-        Mockito.when(repository.findByTransactionId(1)).thenReturn(expected);
-
-        assertEquals(expected, service.findByTransactionId(1));
-    }
-
     @Test
     void shouldFindActiveByUserId() {
         List<CartItem> expected = new ArrayList<>();
@@ -167,7 +154,7 @@ class CartItemServiceTest {
     // UPDATE
     @Test
     void shouldUpdate() {
-        CartItem input = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
 
         Mockito.when(repository.update(input)).thenReturn(true);
 
@@ -177,8 +164,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateNoId() {
-        CartItem input = makeExistingCartItem();
-        input.setCartItemId(0);
+        CartItem input = makeNewCartItem();
 
         Result<CartItem> actual = service.update(input);
         assertEquals(ResultType.INVALID, actual.getType());
@@ -194,7 +180,7 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateEmptyUserId() {
-        CartItem input = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
         input.setUserId(" ");
 
         Result<CartItem> actual = service.update(input);
@@ -210,8 +196,8 @@ class CartItemServiceTest {
 
     @Test
     void shouldNotUpdateDuplicateUserIdAndBook() {
-        CartItem input = makeExistingCartItem();
-        CartItem found = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
+        CartItem found = makeUpdateCartItem();
         found.setCartItemId(5);
 
         Mockito.when(repository.findActiveByUserIdAndBookId(
@@ -223,9 +209,19 @@ class CartItemServiceTest {
     }
 
     @Test
-    void shouldNotUpdateMissing() {
+    void shouldNotUpdateOrderedCartItem() {
         CartItem input = makeExistingCartItem();
-        input.setCartItemId(10);
+
+        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
+
+        Result<CartItem> actual = service.update(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("ordered"));
+    }
+
+    @Test
+    void shouldNotUpdateMissing() {
+        CartItem input = makeUpdateCartItem();
 
         Result<CartItem> actual = service.update(input);
         assertEquals(ResultType.NOT_FOUND, actual.getType());
@@ -233,21 +229,8 @@ class CartItemServiceTest {
     }
 
     @Test
-    void shouldNotUpdateConflictUserId() {
-        CartItem input = makeExistingCartItem();
-        input.setUserId("4");
-        Transaction transaction = makeExistingTransaction();
-
-        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(transaction);
-
-        Result<CartItem> actual = service.add(input);
-        assertEquals(ResultType.INVALID, actual.getType());
-        assertTrue(actual.getMessages().get(0).toLowerCase().contains("userid"));
-    }
-
-    @Test
     void shouldNotUpdateOverAvailableQuantity() {
-        CartItem input = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
         input.setQuantity(50);
         input.setTransactionId(0);
 
@@ -258,16 +241,36 @@ class CartItemServiceTest {
 
     // DELETE
     @Test
-    void shouldDelete() {
-        Mockito.when(repository.deleteById(4)).thenReturn(true);
-        Result<CartItem> actual = service.deleteById(4);
+    void shouldDeleteInCart() {
+        Mockito.when(repository.findByCartItemId(3)).thenReturn(makeUpdateCartItem());
+        Result<CartItem> actual = service.deleteById(3);
         assertEquals(ResultType.SUCCESS, actual.getType());
+    }
+
+    @Test
+    void shouldDeleteOrdered() {
+        Mockito.when(repository.findByCartItemId(2)).thenReturn(makeExistingCartItem());
+        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
+        Result<CartItem> actual = service.deleteById(2);
+        assertEquals(ResultType.SUCCESS, actual.getType());
+    }
+
+    @Test
+    void shouldNotDeleteShipped(){
+        Mockito.when(repository.findByCartItemId(2)).thenReturn(makeExistingCartItem());
+        Transaction transaction = makeExistingTransaction();
+        transaction.setStatus(TransactionStatus.SHIPPED);
+        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(transaction);
+
+        Result<CartItem> actual = service.deleteById(2);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("shipped"));
     }
 
     @Test
     void shouldNotDeleteMissing() {
         Result<CartItem> actual = service.deleteById(10);
-        assertEquals(ResultType.INVALID, actual.getType());
+        assertEquals(ResultType.NOT_FOUND, actual.getType());
         assertTrue(actual.getMessages().get(0).toLowerCase().contains("not found"));
     }
 }

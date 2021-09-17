@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.CartItemRepository;
+import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CartItemControllerTest {
     @MockBean
     CartItemRepository repository;
+
+    @MockBean
+    TransactionRepository transactionRepository;
 
     @Autowired
     MockMvc mvc;
@@ -87,7 +91,7 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotAddPresetId() throws Exception{
-        CartItem input = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
 
         String inputJson = generateJson(input);
 
@@ -102,13 +106,12 @@ class CartItemControllerTest {
     //UPDATE
     @Test
     void shouldUpdate() throws Exception {
-        CartItem input = makeExistingCartItem();
+        CartItem input = makeUpdateCartItem();
 
         Mockito.when(repository.update(input)).thenReturn(true);
-
         String inputJson = generateJson(input);
 
-        var request = put("/api/cart-item/2")
+        var request = put("/api/cart-item/3")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -160,8 +163,9 @@ class CartItemControllerTest {
     //DELETE
     @Test
     void shouldDelete() throws Exception {
-        Mockito.when(repository.deleteById(1)).thenReturn(true);
-        mvc.perform(delete("/api/cart-item/1"))
+        Mockito.when(repository.findByCartItemId(3)).thenReturn(makeUpdateCartItem());
+        Mockito.when(repository.deleteById(3)).thenReturn(true);
+        mvc.perform(delete("/api/cart-item/3"))
                 .andExpect(status().isNoContent());
     }
 

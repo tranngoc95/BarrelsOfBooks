@@ -15,6 +15,8 @@ public class TestData {
                 "jk rowling", new BigDecimal("13.45"), null);
     }
 
+    public static CartItem makeUpdateCartItem() {return new CartItem(3, 0, "1", makeBook(), 1);}
+
     public static CartItem makeExistingCartItem(){
         return new CartItem(2, 1, "1", makeBook(), 1);
     }

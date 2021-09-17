@@ -21,14 +21,6 @@ public class CartItemJdbcRepository implements CartItemRepository {
     }
 
     @Override
-    public List<CartItem> findByTransactionId(int transactionId){
-        final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
-                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
-                "left outer join book b on b.book_id = c.book_id where c.transaction_id = ?";
-        return jdbcTemplate.query(sql, new CartItemMapper(), transactionId);
-    }
-
-    @Override
     public List<CartItem> findActiveByUserId(String userId) {
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
                 "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +

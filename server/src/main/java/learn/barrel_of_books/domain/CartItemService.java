@@ -26,10 +26,6 @@ public class CartItemService {
         this.bookRepository = bookRepository;
     }
 
-    public List<CartItem> findByTransactionId(int transactionId){
-        return repository.findByTransactionId(transactionId);
-    }
-
     public List<CartItem> findActiveByUserId(String userId){
         return repository.findActiveByUserId(userId);
     }
@@ -44,11 +40,9 @@ public class CartItemService {
             if (available != null) {
                 int quantity = cartItem.getQuantity() + available.getQuantity();
                 available.setQuantity(quantity);
-                if(!repository.update(available)){
-                    String msg = String.format("cartItemId: %s, not found", cartItem.getCartItemId());
-                    result.addMessage(msg, ResultType.NOT_FOUND);
-                }
+                repository.update(available);
                 result.setPayload(available);
+
             } else {
                 if (cartItem.getCartItemId() != 0) {
                     result.addMessage("cartItemId cannot be set for `add` operation", ResultType.INVALID);
@@ -107,7 +101,7 @@ public class CartItemService {
             Transaction transaction = transactionRepository.findByTransactionId(item.getTransactionId());
 
             if(transaction.getStatus()!=TransactionStatus.ORDERED){
-                result.addMessage("Shipped or delivered books cannot be canceled.", ResultType.NOT_FOUND);
+                result.addMessage("Shipped or delivered books cannot be canceled.", ResultType.INVALID);
                 return result;
             }
 
@@ -129,9 +123,9 @@ public class CartItemService {
         Result<CartItem> result = Validate.validate(cartItem);
 
         if(result.isSuccess()){
-            if(cartItem.getTransactionId()!=0){
+            if(cartItem.getTransactionId()>0) {
                 Transaction transaction = transactionRepository.findByTransactionId(cartItem.getTransactionId());
-                if(!cartItem.getUserId().equals(transaction.getUserId())) {
+                if (!cartItem.getUserId().equals(transaction.getUserId())) {
                     result.addMessage("cart userId and transaction userId don't match.", ResultType.INVALID);
                 }
             }
