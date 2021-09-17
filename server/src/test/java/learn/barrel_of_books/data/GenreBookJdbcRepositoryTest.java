@@ -40,8 +40,8 @@ class GenreBookJdbcRepositoryTest {
 
     @Test
     void shouldAdd() {
-        Genre genre = new Genre(3, "Romance", "Romance description");
-        GenreBook gb = new GenreBook(genre,2);
+        Genre genre = new Genre(4, "Romance", "Romance description");
+        GenreBook gb = new GenreBook(genre,3);
         boolean success = repository.add(gb);
         assertTrue(success);
     }
