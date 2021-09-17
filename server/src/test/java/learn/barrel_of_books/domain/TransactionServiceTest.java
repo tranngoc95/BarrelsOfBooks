@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +65,6 @@ class TransactionServiceTest {
         Mockito.when(repository.add(input)).thenReturn(expected);
 
         Result<Transaction> actual = service.add(input);
-        actual.getMessages().stream().forEach(System.out::println);
         assertEquals(ResultType.SUCCESS, actual.getType());
         assertEquals(expected, actual.getPayload());
     }
@@ -167,6 +167,16 @@ class TransactionServiceTest {
         Result<Transaction> actual = service.add(input);
         assertEquals(ResultType.INVALID, actual.getType());
         assertTrue(actual.getMessages().get(0).toLowerCase().contains("inventory"));
+    }
+
+    @Test
+    void shouldNotAddPresetTotal() {
+        Transaction input = makeNewTransaction();
+        input.setTotal(BigDecimal.ONE);
+
+        Result<Transaction> actual = service.add(input);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("total"));
     }
 
     // UPDATE

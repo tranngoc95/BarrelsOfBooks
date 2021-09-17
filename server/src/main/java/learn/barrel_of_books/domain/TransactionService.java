@@ -8,6 +8,7 @@ import learn.barrel_of_books.models.Transaction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,6 +41,10 @@ public class TransactionService {
             if (transaction.getTransactionId() != 0) {
                 result.addMessage("transactionId cannot be set for `add` operation", ResultType.INVALID);
                 return result;
+            }
+
+            if(!transaction.getTotal().equals(BigDecimal.ZERO)){
+                result.addMessage("Total cannot be preset for `add` operation", ResultType.INVALID);
             }
 
             for(CartItem each: transaction.getBooks()) {

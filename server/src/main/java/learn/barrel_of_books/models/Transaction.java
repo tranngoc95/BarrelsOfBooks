@@ -1,9 +1,15 @@
 package learn.barrel_of_books.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -23,6 +29,10 @@ public class Transaction {
     @NotEmpty(message = "List of books cannot be null.")
     private List<CartItem> books;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     @NotNull(message = "Date cannot be null.")
     private LocalDate date;
 
@@ -36,12 +46,13 @@ public class Transaction {
     private TransactionStatus status = TransactionStatus.ORDERED;
 
     public void updateTotal(){
+        BigDecimal theTotal = BigDecimal.ZERO;
         for(CartItem each : books){
-            total = total.add(each.getBook().getPrice().multiply(new BigDecimal(each.getQuantity())));
+            theTotal = theTotal.add(each.getBook().getPrice().multiply(new BigDecimal(each.getQuantity())));
         }
         if(employeeDiscount){
-            total = total.multiply(new BigDecimal("0.7"));
+            theTotal = theTotal.multiply(new BigDecimal("0.7"));
         }
-        total = total.setScale(2, RoundingMode.CEILING);
+        total = theTotal.setScale(2, RoundingMode.CEILING);
     }
 }

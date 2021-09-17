@@ -22,13 +22,17 @@ public class TransactionController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<Transaction> findByUserId(@PathVariable String userId){
+    public List<Transaction> findByUserId(@PathVariable String userId) {
         return service.findByUserId(userId);
     }
 
     @GetMapping("/{transactionId}")
-    public Transaction findByTransactionId(@PathVariable int transactionId){
-        return service.findByTransactionId(transactionId);
+    public ResponseEntity<Transaction> findByTransactionId(@PathVariable int transactionId){
+        Transaction transaction = service.findByTransactionId(transactionId);
+        if (transaction == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(transaction);
     }
 
     @PostMapping
