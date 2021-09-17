@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GenreBook {
-    private int genreBookId;
     private Genre genre;
     private int bookId;
 }
