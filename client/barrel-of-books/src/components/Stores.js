@@ -18,9 +18,12 @@ useEffect(getList,[]);
     return (
         <div>
         <h2 className="mt-5">List of Stores</h2>
-  
+        
         <table className="table">
           <thead>
+              <tr>
+              <Link to="/api/stores/add">Add New Store</Link>
+              </tr>
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Address</th>
@@ -40,7 +43,7 @@ useEffect(getList,[]);
                 <td>{s.state}</td>
                 <td>{s.postalCode}</td>
                 <td>{s.phone}</td>
-                <td><Link to={`/api/store/edit/${s.storeId}`}>Edit</Link></td>
+                <td><Link to={`/api/stores/edit/${s.storeId}`}>Edit</Link></td>
               </tr>
             ))}
           </tbody>

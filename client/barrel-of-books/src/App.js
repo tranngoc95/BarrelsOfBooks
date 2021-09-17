@@ -9,6 +9,7 @@ import './App.css';
 import Home from "./components/Home";
 import Stores from "./components/Stores";
 import EditStore from "./components/EditStore";
+import AddStore from "./components/AddStore";
 function App() {
   return (
     <Router>
@@ -20,8 +21,11 @@ function App() {
             <Route exact path="/api/stores">
               <Stores />
             </Route>
-            <Route>
+            <Route exact path ="/api/stores/edit/:id">
               <EditStore />
+            </Route>
+            <Route exact path = "/api/stores/add">
+              <AddStore />
             </Route>
           </Switch>
         </div>
