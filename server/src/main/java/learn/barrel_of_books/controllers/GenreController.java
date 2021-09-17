@@ -45,11 +45,11 @@ public class GenreController {
 
     @PutMapping("/{genreId}")
     public ResponseEntity<Object> update(@RequestBody @Valid Genre genre, BindingResult result, @PathVariable int genreId){
-        if(result.hasErrors()){
+        if(result.hasErrors() || genre==null){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
 
-        if(genre==null || genreId!=genre.getGenreId()){
+        if(genreId!=genre.getGenreId()){
             return new ResponseEntity <>(HttpStatus.CONFLICT);
         }
 

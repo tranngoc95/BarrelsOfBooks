@@ -12,11 +12,11 @@ public class CartItemMapper implements RowMapper<CartItem> {
         CartItem cartItem = new CartItem();
         cartItem.setCartItemId(resultSet.getInt("cart_item_id"));
         cartItem.setTransactionId(resultSet.getInt("transaction_id"));
-        cartItem.setUserId(resultSet.getInt("user_id"));
-        cartItem.setQuantity(resultSet.getInt("quantity"));
+        cartItem.setUserId(resultSet.getString("user_id"));
+        cartItem.setQuantity(resultSet.getInt("item_quantity"));
 
-//        BookMapper bookMapper = new BookMapper();
-//        cartItem.setBook(bookMapper.mapRow(resultSet,i));
+        BookMapper bookMapper = new BookMapper();
+        cartItem.setBook(bookMapper.mapRow(resultSet,i));
 
         return cartItem;
     }

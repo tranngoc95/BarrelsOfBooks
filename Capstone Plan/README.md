@@ -2,32 +2,32 @@
 
 ## Schedule
 ### Task 0: Setup
-- [ ] Create git repository
-- [ ] Push all wireframes, diagrams, schemas on git
-- [ ] Create mySQL Database
-  - [ ] Main Database
-  - [ ] Test Database
-  - [ ] A schema creation script
-- [ ] Create java project and push on git
-  - [ ] Maven dependencies
-  - [ ] Setup Spring Boot App
-- [ ] Create react project and push on git
+- [x] Create git repository
+- [x] Push all wireframes, diagrams, schemas on git
+- [x] Create mySQL Database
+  - [x] Main Database
+  - [x] Test Database
+  - [x] A schema creation script
+- [x] Create java project and push on git
+  - [x] Maven dependencies
+  - [x] Setup Spring Boot App
+- [x] Create react project and push on git
 
 ### Task 1a: Store Back-end
-- [ ] Store Model
-- [ ] StoreRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement StoreRepository
-   - [ ] Test StoreRepository
+- [x] Store Model
+- [x] StoreRepository
+   - [x] Extract interface
+   - [x] Create and Implement StoreRepository
+   - [x] Test StoreRepository
 - StoreService
-   - [ ] Create and Implement StoreService
-   - [ ] Test StoreService with Mockito
+   - [x] Create and Implement StoreService
+   - [x] Test StoreService with Mockito
 - StoreController
-   - [ ] Create and Implement StoreService
+   - [x] Create and Implement StoreController
    - [ ] Test StoreController with Mockito
 
 ### Task 1a: Store Front-end
-- Components: 
+- Components:
    - [ ] Store
    - [ ] AddStore
    - [ ] EditStore
@@ -42,7 +42,7 @@
    - [ ] Create and Implement BookService
    - [ ] Test BookService with Mockito
 - [ ] BookController
-   - [ ] Create and Implement BookService
+   - [ ] Create and Implement BookController
    - [ ] Test BookController with Mockito
 
 ### Task 2b: Book Front-end
@@ -51,24 +51,24 @@
    - [ ] AddBook
    - [ ] EditBook
 
-### Task 3a: Category Back-end
-- [ ] Category Model
-- [ ] CategoryRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement CategoryRepository
-   - [ ] Test CategoryRepository
-- [ ] BookService
-   - [ ] Create and Implement CategoryService
-   - [ ] Test CategoryService with Mockito
-- [ ] BookController
-   - [ ] Create and Implement CategoryService
-   - [ ] Test CategoryController with Mockito
+### Task 3a: Genre Back-end
+- [x] Genre Model
+- [x] GenreRepository
+   - [x] Extract interface
+   - [x] Create and Implement GenreRepository
+   - [x] Test GenreRepository
+- [x] GenreService
+   - [x] Create and Implement GenreService
+   - [x] Test GenreService with Mockito
+- [ ] GenreController
+   - [ ] Create and Implement GenreController
+   - [ ] Test GenreController with Mockito
 
-### Task 3b: Category Front-end
+### Task 3b: Genre Front-end
 - [ ] Components:
-   - [ ] Category
-   - [ ] AddCategory
-   - [ ] EditCategory
+   - [ ] Genre
+   - [ ] AddGenre
+   - [ ] EditGenre
 
 ### Task 4a: Transaction Back-end
 - [ ] Transaction  Model
@@ -80,7 +80,7 @@
    - [ ] Create and Implement TransactionService
    - [ ] Test TransactionService with Mockito
 - [ ] TransactionController
-   - [ ] Create and Implement BookService
+   - [ ] Create and Implement TransactionController
    - [ ] Test TransactionController with Mockito
 
 ### Task 4b: Transaction Front-end
@@ -88,33 +88,33 @@
    - [ ] Transaction
    - [ ] AddTransaction
    - [ ] EditTransaction
-   
+
 ### Task 5: StoreBook Back-end
 - [ ] StoreBook Model
 - [ ] StoreBookRepository
    - [ ] Extract interface
-   - [ ] Create and Implement BookRepository
+   - [ ] Create and Implement StoreBookRepository
    - [ ] Test StoreBookRepository
 
-### Task 6: CategoryBook Back-end
-- [ ] CategoryBook Model
-- [ ] CategoryBookRepository
+### Task 6: GenreBook Back-end
+- [ ] GenreBook Model
+- [ ] GenreBookRepository
    - [ ] Extract interface
-   - [ ] Create and Implement CategoryBookRepository
-   - [ ] Test CategoryBookRepository
+   - [ ] Create and Implement GenreBookRepository
+   - [ ] Test GenreBookRepository
 
 ### Task 7a: CartItem Back-end
-- [ ] CartItem Model
-- [ ] CartItemRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement CartItemRepository
-   - [ ] Test CartItemRepository
-- [ ] CartItemService
-   - [ ] Create and Implement CartItemService
-   - [ ] Test CartItemService with Mockito
-- [ ] CartItemController
-   - [ ] Create and Implement CartItemService
-   - [ ] Test CartItemController with Mockito
+- [x] CartItem Model
+- [x] CartItemRepository
+   - [x] Extract interface
+   - [x] Create and Implement CartItemRepository
+   - [x] Test CartItemRepository
+- [x] CartItemService
+   - [x] Create and Implement CartItemService
+   - [x] Test CartItemService with Mockito
+- [x] CartItemController
+   - [x] Create and Implement CartItemController
+   - [x] Test CartItemController with Mockito
 
 ### Task 7b: CartItem Front-end
 - [ ] Component: Cart
@@ -126,9 +126,14 @@
    - [ ] Not Found
    - [ ] Router Dom in App
    - [ ] Login
-   - [ ] Register
+   - [ ] Register - with a role checkbox
 - [ ] Changing all components to fit with users' role
 - [ ] Using Semantic CSS Framework to polish the UI
+
+### Task 9: Other Back-end
+- [ ] Global Exception Handler
+- [ ] User API
+- [ ] Populate more data for the App
 
 ### Task 9: Presentation
 - [ ] Create Presentation

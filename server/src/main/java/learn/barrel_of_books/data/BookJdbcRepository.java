@@ -2,6 +2,7 @@ package learn.barrel_of_books.data;
 
 
 import learn.barrel_of_books.data.mappers.BookMapper;
+import learn.barrel_of_books.data.mappers.GenreBookMapper;
 import learn.barrel_of_books.models.Book;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -103,6 +104,10 @@ public class BookJdbcRepository implements BookRepository {
 
 
     private void addGenres(Book book) {
+        final String sql = "select gb.book_id, gb.genre_id, g.name, g.description from genre_book gb " +
+                "inner join genre g on gb.genre_id = g.genre_id where gb.book_id = ?;";
 
+        var genres = template.query(sql, new GenreBookMapper(), book.getBookId());
+        book.setGenres(genres);
     }
 }

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Book {
     private int bookId;
+    @EqualsAndHashCode.Exclude
     private int quantity;
     private String title;
     private String description;
@@ -29,4 +30,13 @@ public class Book {
         this.price = price;
     }
 
+    public void addQuantity(int amount){
+            quantity += amount;
+    }
+
+    public void subtractQuantity(int amount){
+        if(amount<=quantity) {
+            quantity -= amount;
+        }
+    }
 }
