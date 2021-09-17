@@ -24,11 +24,12 @@ public class StoreBookService {
     public Result<StoreBook> add(StoreBook storeBook) {
         Result<StoreBook> result = validate(storeBook);
 
-//        for(StoreBook sb : findByBookId(storeBook.getBookId())) {
-//            if(storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
-//                result.addMessage("This store/book combination already exists", ResultType.INVALID);
-//            }
-//        }
+        //WRITE TEST
+        for(StoreBook sb : findByBookId(storeBook.getBookId())) {
+            if(storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
+                result.addMessage("This store/book combination already exists", ResultType.INVALID);
+            }
+        }
 
         if(result.isSuccess()) {
             repository.add(storeBook);
@@ -40,11 +41,6 @@ public class StoreBookService {
     public Result<StoreBook> update(StoreBook storeBook) {
         Result<StoreBook> result = validate(storeBook);
 
-//        for(StoreBook sb : findByBookId(storeBook.getBookId())) {
-//            if(storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
-//                result.addMessage("This store/book combination already exists", ResultType.INVALID);
-//            }
-//        }
         if(result.isSuccess()) {
             repository.update(storeBook);
         }

@@ -52,7 +52,7 @@ public class StoreBookController {
 
 
     @DeleteMapping("/{bookId}/{storeId}")
-    public ResponseEntity<StoreBook> delete(@PathVariable int bookId, @PathVariable int storeId) {
+    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int storeId) {
         Result<StoreBook> result = service.delete(storeId,bookId);
 
         if(result.isSuccess()) {
