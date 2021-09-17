@@ -15,8 +15,8 @@ public class GenreBookMapper implements RowMapper<GenreBook> {
         genreBook.setBookId(resultSet.getInt("book_id"));
 
 
-//        GenreMapper genreMapper = new GenreMapper();
-//        genreBook.setGenre(genreMapper.mapRow(resultSet, i));
+        GenreMapper genreMapper = new GenreMapper();
+        genreBook.setGenre(genreMapper.mapRow(resultSet, i));
 
         return genreBook;
     }

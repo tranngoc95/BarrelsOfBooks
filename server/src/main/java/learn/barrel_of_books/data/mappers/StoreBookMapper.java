@@ -14,8 +14,8 @@ public class StoreBookMapper implements RowMapper<StoreBook> {
         storeBook.setBookId(resultSet.getInt("book_id"));
         storeBook.setQuantity(resultSet.getInt("quantity"));
 
-//        StoreMapper storeMapper = new StoreMapper();
-//        storeBook.setStore(storeMapper.mapRow(resultSet, i));
+        StoreMapper storeMapper = new StoreMapper();
+        storeBook.setStore(storeMapper.mapRow(resultSet, i));
 
         return storeBook;
     }

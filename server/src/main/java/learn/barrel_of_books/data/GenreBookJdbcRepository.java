@@ -21,9 +21,10 @@ public class GenreBookJdbcRepository implements GenreBookRepository {
 
     @Override
     public List<GenreBook> findByBookId(int bookId) {
-        final String sql = "select book_id, genre_id "
-                + "from genre_book "
-                + "where book_id = ?;";
+        final String sql = "select gb.book_id, gb.genre_id, g.name, g.description "
+                + "from genre_book gb "
+                + "left outer join genre g on g.genre_id = gb.genre_id "
+                + "where gb.book_id = ?;";
         GenreBook gb =  template.query(sql, new GenreBookMapper(), bookId).stream()
                 .findFirst().orElse(null);
 

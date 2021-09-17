@@ -22,9 +22,11 @@ public class StoreBookJdbcRepository implements StoreBookRepository {
 
     @Override
     public List<StoreBook> findByBookId(int bookId) {
-        final String sql = "select store_id, book_id, quantity "
-                            + "from store_book "
-                            + "where book_id = ?;";
+        final String sql = "select sb.store_id, sb.book_id, sb.quantity, " +
+                            "s.address, s.city, s.state, s.postal_code, s.phone_number "
+                            + "from store_book sb "
+                            + "left outer join store s on s.store_id = sb.store_id "
+                            + "where sb.book_id = ?;";
         StoreBook sb =  template.query(sql,new StoreBookMapper(), bookId).stream()
                         .findFirst().orElse(null);
        if(sb == null) {
