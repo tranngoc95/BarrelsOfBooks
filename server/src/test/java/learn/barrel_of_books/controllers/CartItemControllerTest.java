@@ -46,7 +46,7 @@ class CartItemControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/cart-item/1"))
+        mvc.perform(get("/api/cart-item/user/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));

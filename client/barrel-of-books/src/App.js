@@ -9,17 +9,23 @@ import './App.css';
 import Home from "./components/Home";
 import Stores from "./components/Stores";
 import EditStore from "./components/EditStore";
-import Cart from "./components/Cart";
-import Orders from "./components/Orders";
+import Cart from "./components/order/Cart";
+import Orders from "./components/order/Orders";
+import CancelOrder from "./components/order/CancelOrder";
+import CancelItem from "./components/order/CancelItem";
+import Confirmation from "./components/order/Confirmation";
 
 const UserRoutes = [
-  { path="/cart", component=Cart },
-  { path="/orders", component=Orders },
-  { path="/stores", component=Stores }
+  { path: "/cart", component: Cart },
+  { path: "/orders", component: Orders },
+  { path: "/stores", component: Stores },
+  { path: "/orders/cancel/:id", component: CancelOrder},
+  { path: "/orders/cancel/item/:id", component: CancelItem},
+  { path: "/orders/confirmation/:id", component: Confirmation}
 ]
 
 const AdminRoutes = [
-  { path="/stores/edits", component=EditStore },
+  { path: "/stores/edits", component: EditStore },
 ]
 
 function App() {

@@ -30,6 +30,10 @@ public class CartItemService {
         return repository.findActiveByUserId(userId);
     }
 
+    public CartItem findByCartItemId(int cartItemId){
+        return repository.findByCartItemId(cartItemId);
+    }
+
     public Result<CartItem> add(CartItem cartItem){
         Result<CartItem> result = validate(cartItem);
 
@@ -107,14 +111,18 @@ public class CartItemService {
 
             transaction.setBooks(transaction.getBooks().stream()
                     .filter(book -> book.getCartItemId()!=cartItemId).collect(Collectors.toList()));
-            transaction.updateTotal();
-            transactionRepository.update(transaction);
+
+            if(transaction.getBooks().size()>0) {
+                transaction.updateTotal();
+                transactionRepository.update(transaction);
+                repository.deleteById(cartItemId);
+            } else {
+                transactionRepository.deleteById(transaction.getTransactionId());
+            }
             Book book = item.getBook();
             book.addQuantity(item.getQuantity());
             bookRepository.update(book);
         }
-
-        repository.deleteById(cartItemId);
 
         return result;
     }

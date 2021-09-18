@@ -27,7 +27,13 @@ public class TransactionJdbcRepository implements TransactionRepository {
     public List<Transaction> findByUserId(String userId) {
         final String sql = "select transaction_id, user_id, date, total, employee_discount, status " +
                 "from transaction where user_id = ?";
-        return jdbcTemplate.query(sql, new TransactionMapper(), userId);
+        List<Transaction> transactions = jdbcTemplate.query(sql, new TransactionMapper(), userId);
+
+        for(int i=0; i<transactions.size(); i++) {
+            addBooks(transactions.get(i));
+        }
+
+        return transactions;
     }
 
     @Override

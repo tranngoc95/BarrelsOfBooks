@@ -3,6 +3,7 @@ package learn.barrel_of_books.controllers;
 import learn.barrel_of_books.domain.CartItemService;
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.models.CartItem;
+import learn.barrel_of_books.models.Transaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +22,18 @@ public class CartItemController {
         this.service = service;
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     public List<CartItem> findActiveByUserId(@PathVariable String userId){
         return service.findActiveByUserId(userId);
+    }
+
+    @GetMapping("/{cartItemId}")
+    public ResponseEntity<CartItem> findByCartItemId(@PathVariable int cartItemId){
+        CartItem cartItem = service.findByCartItemId(cartItemId);
+        if (cartItem == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(cartItem);
     }
 
     @PostMapping
