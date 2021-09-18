@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 function Cart() {
 
     const [items, setItems] = useState([]);
-    const [item, setItem] = useState(null);
     const URL = 'http://localhost:8080/api/cart-item';
 
     useEffect(() => {

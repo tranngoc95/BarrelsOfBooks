@@ -11,30 +11,57 @@ import Stores from "./components/Stores";
 import EditStore from "./components/EditStore";
 import Cart from "./components/Cart";
 import Orders from "./components/Orders";
+
+const UserRoutes = [
+  { path="/cart", component=Cart },
+  { path="/orders", component=Orders },
+  { path="/stores", component=Stores }
+]
+
+const AdminRoutes = [
+  { path="/stores/edits", component=EditStore },
+]
+
 function App() {
+  const user = "placeholder";
   return (
     <Router>
-        <div className="App">
+      <div className="App">
         <Home />
-          <Switch>
-            <Route exact path="/">
-              <Home />
+        
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          {AdminRoutes.map(each => (
+            <Route key={each.path} exact path={each.path}>
+              {user ?
+                <each.component />
+                :
+                <Redirect to={{
+                  pathname: '/login',
+                  state: { nextpath: each.path }
+                }} />
+              }
             </Route>
-            <Route exact path="/stores">
-              <Stores />
+          ))}
+
+          {UserRoutes.map(each => (
+            <Route key={each.path} exact path={each.path}>
+              {user ?
+                <each.component />
+                :
+                <Redirect to={{
+                  pathname: '/login',
+                  state: { nextpath: each.path }
+                }} />
+              }
             </Route>
-            <Route exact path="/stores/edits">
-              <EditStore />
-            </Route>
-            <Route exact path="/cart">
-              <Cart/>
-            </Route>
-            <Route exact path="/orders">
-              <Orders/>
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+          ))}
+
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
