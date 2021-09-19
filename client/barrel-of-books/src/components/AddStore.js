@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 function AddStore() {
   const [store, setStore] = useState({
     address: "",
@@ -42,7 +42,7 @@ function AddStore() {
       })
       .then((data) => {
           if(data.storeId) {
-            history.push("/");
+            history.push("/stores");
           } else {
             setErrorList(data);
           }
@@ -86,6 +86,7 @@ function AddStore() {
             <button type="submit">Submit</button>
         </div>
       </form>
+      <Link className="btn btn-warning" to="/stores">Go Back</Link>
     </div>
   );
 }
