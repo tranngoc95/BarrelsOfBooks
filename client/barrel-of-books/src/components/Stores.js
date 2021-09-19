@@ -84,7 +84,7 @@ function Stores() {
           ))}
         </tbody>
       </table>
-      <Link className="btn btn-warning" to="/">
+      <Link to="/">
         Go Back
       </Link>
     </div>

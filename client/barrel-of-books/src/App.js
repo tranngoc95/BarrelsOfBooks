@@ -11,6 +11,8 @@ import Stores from "./components/Stores";
 import EditStore from "./components/EditStore";
 import AddStore from "./components/AddStore";
 import Books from "./components/Books";
+import AddBook from "./components/AddBook";
+
 function App() {
   return (
     <Router>
@@ -30,6 +32,9 @@ function App() {
             </Route>
             <Route exact path = "/books">
               <Books />
+            </Route>
+            <Route exact path = "/books/add">
+              <AddBook />
             </Route>
           </Switch>
         </div>
