@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import {Link} from "react-router-dom";
 function Stores() {
 const [stores, setStores] = useState([]);
+const[errorList, setErrorList] = useState([]);
 
 
 const getList = () => {
@@ -15,6 +16,32 @@ const getList = () => {
 useEffect(getList,[]);
 
 
+const handleDelete = (storeId) => {
+const init = {
+  method: "DELETE",
+}
+
+fetch(`http://localhost:8080/api/store/${storeId}`,init)
+  .then((response) => {
+    if(response.status === 204 || response.status === 200) {
+      return null;
+    } else if(response.status === 404 || response.status === 400) {
+      return response.json();
+    }
+    return Promise.reject("Something else went wrong");
+  })
+  .then((data) => {
+    if(!data) {
+      getList();
+    } else {
+      setErrorList(data);
+    }
+  })
+  .catch((error) => console.log(error));
+
+
+}
+
     return (
         <div>
         <h2 className="mt-5">List of Stores</h2>
@@ -22,7 +49,7 @@ useEffect(getList,[]);
         <table className="table">
           <thead>
               <tr>
-              <Link to="/api/stores/add">Add New Store</Link>
+              <Link to="/stores/add">Add New Store</Link>
               </tr>
             <tr>
               <th scope="col">ID</th>
@@ -43,7 +70,8 @@ useEffect(getList,[]);
                 <td>{s.state}</td>
                 <td>{s.postalCode}</td>
                 <td>{s.phone}</td>
-                <td><Link to={`/api/stores/edit/${s.storeId}`}>Edit</Link></td>
+                <td><Link to={`/stores/edit/${s.storeId}`}>Edit</Link></td>
+                <td><button type="button" onClick={() => handleDelete(s.storeId)}>Delete</button></td>
               </tr>
             ))}
           </tbody>
