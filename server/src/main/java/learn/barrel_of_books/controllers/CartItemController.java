@@ -3,7 +3,6 @@ package learn.barrel_of_books.controllers;
 import learn.barrel_of_books.domain.CartItemService;
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.models.CartItem;
-import learn.barrel_of_books.models.Transaction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

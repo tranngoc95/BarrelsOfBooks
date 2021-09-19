@@ -22,6 +22,11 @@ public class TransactionController {
         this.service = service;
     }
 
+    @GetMapping
+    public List<Transaction> findAll() {
+        return service.findAll();
+    }
+
     @GetMapping("/user/{userId}")
     public List<Transaction> findByUserId(@PathVariable String userId) {
         return service.findByUserId(userId);

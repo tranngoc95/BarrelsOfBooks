@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface TransactionRepository {
+    List<Transaction> findAll();
+
     List<Transaction> findByUserId(String userId);
 
     Transaction findByTransactionId(int transactionId);

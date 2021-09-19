@@ -4,7 +4,9 @@ import learn.barrel_of_books.data.GenreRepository;
 import learn.barrel_of_books.models.Genre;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GenreService {
@@ -16,7 +18,9 @@ public class GenreService {
     }
 
     public List<Genre> findAll() {
-        return repository.findAll();
+        return repository.findAll().stream()
+                .sorted(Comparator.comparing(Genre::getName))
+                .collect(Collectors.toList());
     }
 
     public Genre findById(int genreId) {

@@ -103,16 +103,6 @@ class TransactionServiceTest {
     }
 
     @Test
-    void shouldNotAddNullDate() {
-        Transaction input = makeNewTransaction();
-        input.setDate(null);
-
-        Result<Transaction> actual = service.add(input);
-        assertEquals(ResultType.INVALID, actual.getType());
-        assertTrue(actual.getMessages().get(0).toLowerCase().contains("date"));
-    }
-
-    @Test
     void shouldNotAddEmptyUserId() {
         Transaction input = makeNewTransaction();
         input.setUserId(" ");

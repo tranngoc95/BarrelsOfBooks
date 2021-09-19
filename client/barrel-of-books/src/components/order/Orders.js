@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function Orders() {
 
     const [orders, setOrders] = useState([]);
-    const [errorsList, setErrorList] = useState([]);
+    const auth = useContext();
 
     const URL = 'http://localhost:8080/api/transaction';
 
@@ -12,11 +12,11 @@ function Orders() {
 
         const init = {
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
-        return fetch(URL + '/user/1', init)
+        fetch(URL + '/user/1', init)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Cart fetch failed.")

@@ -33,7 +33,6 @@ public class Transaction {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "Date cannot be null.")
     private LocalDate date;
 
     @NotBlank(message = "UserId is required and cannot be blank")

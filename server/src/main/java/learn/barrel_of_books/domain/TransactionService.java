@@ -25,6 +25,10 @@ public class TransactionService {
         this.bookRepository = bookRepository;
     }
 
+    public List<Transaction> findAll() {
+        return repository.findAll();
+    }
+
     public List<Transaction> findByUserId(String userId) {
         return repository.findByUserId(userId);
     }
@@ -62,6 +66,9 @@ public class TransactionService {
             }
 
             transaction.updateTotal();
+            if(transaction.getDate()==null){
+                transaction.setDate(LocalDate.now());
+            }
             transaction = repository.add(transaction);
 
             for(int i=0; i<transaction.getBooks().size(); i++){
@@ -84,6 +91,10 @@ public class TransactionService {
             if(transaction.getTransactionId()<=0){
                 result.addMessage("transactionId must be set for `update` operation", ResultType.INVALID);
                 return result;
+            }
+
+            if(transaction.getDate()==null) {
+                result.addMessage("Date cannot be null.", ResultType.INVALID);
             }
 
             Transaction oldTransaction = repository.findByTransactionId(transaction.getTransactionId());
@@ -115,7 +126,7 @@ public class TransactionService {
                     break;
                 }
 
-                if(transaction.getDate().isAfter(LocalDate.now())) {
+                if(transaction.getDate()!=null && transaction.getDate().isAfter(LocalDate.now())) {
                     result.addMessage("Transaction date can't be in future.",
                             ResultType.INVALID);
                 }

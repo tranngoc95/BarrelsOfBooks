@@ -73,7 +73,7 @@ function CancelOrder() {
             <ErrorMessages errorList={errorList} />
             {order && (
                 <>
-                    <div key={order.transactionId}>
+                    <div>
                         <div>{order.status} {order.date}</div>
                         {order.books.map(item => (
                             <div>
