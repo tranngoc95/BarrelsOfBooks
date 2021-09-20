@@ -28,10 +28,6 @@ public class Transaction {
     @NotEmpty(message = "List of books cannot be null.")
     private List<CartItem> books;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date;
 
     @NotBlank(message = "UserId is required and cannot be blank")

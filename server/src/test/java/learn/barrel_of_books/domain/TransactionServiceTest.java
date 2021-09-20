@@ -36,6 +36,16 @@ class TransactionServiceTest {
 
     // READ
     @Test
+    void shouldAll() {
+        List<Transaction> expected = new ArrayList<>();
+        expected.add(makeExistingTransaction());
+
+        Mockito.when(repository.findAll()).thenReturn(expected);
+
+        assertEquals(expected, service.findAll());
+    }
+
+    @Test
     void shouldFindByUserId() {
         List<Transaction> expected = new ArrayList<>();
         expected.add(makeExistingTransaction());
@@ -235,6 +245,7 @@ class TransactionServiceTest {
     void shouldNotUpdateNullDate() {
         Transaction input = makeExistingTransaction();
         input.setDate(null);
+        Mockito.when(repository.findByTransactionId(1)).thenReturn(input);
 
         Result<Transaction> actual = service.update(input);
         assertEquals(ResultType.INVALID, actual.getType());
@@ -285,8 +296,9 @@ class TransactionServiceTest {
     // DELETE
     @Test
     void shouldDelete() {
-        Mockito.when(repository.deleteById(4)).thenReturn(true);
-        assertTrue(service.deleteById(4));
+        Mockito.when(repository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
+        Mockito.when(repository.deleteById(1)).thenReturn(true);
+        assertTrue(service.deleteById(1));
     }
 
     @Test

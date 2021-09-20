@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static learn.barrel_of_books.data.TestData.makeExistingTransaction;
@@ -35,7 +36,24 @@ class TransactionControllerTest {
     @Autowired
     MockMvc mvc;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     // READ
+    @Test
+    void shouldFindAll() throws Exception {
+        List<Transaction> expected = List.of(makeExistingTransaction());
+
+        Mockito.when(repository.findAll()).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/transaction"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
     @Test
     void shouldFindByUserId() throws Exception {
         List<Transaction> expected = List.of(makeExistingTransaction());
@@ -52,7 +70,6 @@ class TransactionControllerTest {
 
     @Test
     void shouldNotFindByTransactionId() throws Exception {
-        Transaction expected = makeExistingTransaction();
         mvc.perform(get("/api/transaction/1"))
                 .andExpect(status().isNotFound());
     }
@@ -82,9 +99,9 @@ class TransactionControllerTest {
 
         Transaction repositoryInput = makeNewTransaction();
         repositoryInput.updateTotal();
+        repositoryInput.setDate(LocalDate.now());
         Transaction repositoryOutput = makeNewTransaction();
         repositoryOutput.setTransactionId(5);
-
 
         Mockito.when(cartItemRepository.findByCartItemId(1)).thenReturn(input.getBooks().get(0));
         Mockito.when(repository.add(repositoryInput)).thenReturn(repositoryOutput);
@@ -163,13 +180,14 @@ class TransactionControllerTest {
     }
 
     @Test
-    void shouldNotUpdateNoDate() throws Exception{
+    void shouldNotUpdateNoUserId() throws Exception{
         Transaction input = makeExistingTransaction();
-        input.setDate(null);
+        input.setUserId(" ");
+        Mockito.when(repository.findByTransactionId(1)).thenReturn(input);
 
         String inputJson = generateJson(input);
 
-        var request = put("/api/transaction/5")
+        var request = put("/api/transaction/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -195,6 +213,7 @@ class TransactionControllerTest {
     // DELETE
     @Test
     void shouldDelete() throws Exception {
+        Mockito.when(repository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
         Mockito.when(repository.deleteById(1)).thenReturn(true);
         mvc.perform(delete("/api/transaction/1"))
                 .andExpect(status().isNoContent());
@@ -208,8 +227,7 @@ class TransactionControllerTest {
 
     // helper methods
     private String generateJson(Object o) throws JsonProcessingException {
-        ObjectMapper jsonMapper = new JsonMapper();
-        return jsonMapper.writeValueAsString(o);
+        return objectMapper.writeValueAsString(o);
     }
 
 }

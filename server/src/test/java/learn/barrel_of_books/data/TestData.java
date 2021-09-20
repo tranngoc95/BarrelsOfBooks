@@ -33,6 +33,6 @@ public class TestData {
     public static Transaction makeNewTransaction() {
         CartItem cartItem = new CartItem(1, 0, "1", makeBook(), 2);
         return new Transaction(0, List.of(cartItem),
-                LocalDate.parse("2021-09-10"),"1", BigDecimal.ZERO, true, TransactionStatus.ORDERED);
+                null,"1", BigDecimal.ZERO, true, TransactionStatus.ORDERED);
     }
 }

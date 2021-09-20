@@ -3,6 +3,7 @@ package learn.barrel_of_books.domain;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
+import learn.barrel_of_books.models.Book;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,7 @@ public class TransactionService {
             if(transaction.getDate()==null){
                 transaction.setDate(LocalDate.now());
             }
+
             transaction = repository.add(transaction);
 
             for(int i=0; i<transaction.getBooks().size(); i++){
@@ -112,7 +114,20 @@ public class TransactionService {
         return result;
     }
 
+    @Transactional
     public boolean deleteById(int transactionId){
+        Transaction transaction = findByTransactionId(transactionId);
+
+        if(transaction==null){
+            return false;
+        }
+
+        for(CartItem each : transaction.getBooks()){
+            Book book = each.getBook();
+            book.addQuantity(each.getQuantity());
+            bookRepository.update(book);
+        }
+
         return repository.deleteById(transactionId);
     }
 

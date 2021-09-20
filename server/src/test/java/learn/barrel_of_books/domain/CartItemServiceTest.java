@@ -2,10 +2,7 @@ package learn.barrel_of_books.domain;
 
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
-import learn.barrel_of_books.models.Book;
-import learn.barrel_of_books.models.CartItem;
-import learn.barrel_of_books.models.Transaction;
-import learn.barrel_of_books.models.TransactionStatus;
+import learn.barrel_of_books.models.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +31,18 @@ class CartItemServiceTest {
     // READ
     @Test
     void shouldFindActiveByUserId() {
-        List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExistingCartItem());
-        expected.add(new CartItem(1, 1, "1", makeBook(), 2));
+        List<CartItem> output = new ArrayList<>();
+        output.add(makeExistingCartItem());
+        output.add(new CartItem(1, 1, "1", makeBook(), 2));
 
-        Mockito.when(repository.findActiveByUserId("1")).thenReturn(expected);
+        Mockito.when(repository.findActiveByUserId("1")).thenReturn(output);
 
-//        assertEquals(expected, service.findCartActiveByUserId("1"));
+        Cart expected = new Cart();
+        expected.setBooks(output);
+        expected.updateItemNum();
+        expected.updateSubtotal();
+
+        assertEquals(expected, service.findCartActiveByUserId("1"));
     }
 
     @Test
@@ -285,7 +287,7 @@ class CartItemServiceTest {
         cartItems.add(cartItem);
         transaction.setBooks(cartItems);
         Mockito.when(repository.findByCartItemId(2)).thenReturn(makeExistingCartItem());
-        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
+        Mockito.when(transactionRepository.findByTransactionId(1)).thenReturn(transaction);
         Result<CartItem> actual = service.deleteById(2);
         assertEquals(ResultType.SUCCESS, actual.getType());
     }

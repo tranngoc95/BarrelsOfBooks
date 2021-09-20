@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
+import learn.barrel_of_books.models.Cart;
 import learn.barrel_of_books.models.CartItem;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -38,11 +39,16 @@ class CartItemControllerTest {
     // READ
     @Test
     void shouldFindActiveByUserId() throws Exception {
-        List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExistingCartItem());
-        expected.add(new CartItem(1, 1, "1", makeBook(), 2));
+        List<CartItem> output = new ArrayList<>();
+        output.add(makeExistingCartItem());
+        output.add(new CartItem(1, 1, "1", makeBook(), 2));
 
-        Mockito.when(repository.findActiveByUserId("1")).thenReturn(expected);
+        Mockito.when(repository.findActiveByUserId("1")).thenReturn(output);
+
+        Cart expected = new Cart();
+        expected.setBooks(output);
+        expected.updateItemNum();
+        expected.updateSubtotal();
 
         String expectedJson = generateJson(expected);
 
@@ -50,6 +56,26 @@ class CartItemControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldFindByCartItemId() throws Exception {
+        CartItem expected = makeExistingCartItem();
+
+        Mockito.when(repository.findByCartItemId(2)).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/cart-item/2"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldNotFindMissing() throws Exception {
+        mvc.perform(get("/api/cart-item/21"))
+                .andExpect(status().isNotFound());
     }
 
     // CREATE

@@ -49,7 +49,10 @@ class TransactionJdbcRepositoryTest {
 
     @Test
     void shouldAdd() {
-        Transaction actual = repository.add(makeNewTransaction());
+        Transaction transaction = makeNewTransaction();
+        transaction.setDate(LocalDate.now());
+        Transaction actual = repository.add(transaction);
+
         assertNotNull(actual);
         assertEquals(4, actual.getTransactionId());
     }
