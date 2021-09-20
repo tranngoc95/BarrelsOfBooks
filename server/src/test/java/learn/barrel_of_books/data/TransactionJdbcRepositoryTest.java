@@ -27,6 +27,13 @@ class TransactionJdbcRepositoryTest {
     }
 
     @Test
+    void shouldFindAll() {
+        List<Transaction> actual = repository.findAll();
+        assertNotNull(actual);
+        assertTrue(actual.size()>=2);
+    }
+
+    @Test
     void shouldFindByUserId() {
         List<Transaction> actual = repository.findByUserId("1");
         assertNotNull(actual);

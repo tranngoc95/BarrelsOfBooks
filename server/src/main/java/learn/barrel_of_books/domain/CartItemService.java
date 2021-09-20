@@ -3,14 +3,10 @@ package learn.barrel_of_books.domain;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
-import learn.barrel_of_books.models.Book;
-import learn.barrel_of_books.models.CartItem;
-import learn.barrel_of_books.models.Transaction;
-import learn.barrel_of_books.models.TransactionStatus;
+import learn.barrel_of_books.models.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +22,12 @@ public class CartItemService {
         this.bookRepository = bookRepository;
     }
 
-    public List<CartItem> findActiveByUserId(String userId){
-        return repository.findActiveByUserId(userId);
+    public Cart findCartActiveByUserId(String userId){
+        Cart cart = new Cart();
+        cart.setBooks(repository.findActiveByUserId(userId));
+        cart.updateSubtotal();
+        cart.updateItemNum();
+        return cart;
     }
 
     public CartItem findByCartItemId(int cartItemId){

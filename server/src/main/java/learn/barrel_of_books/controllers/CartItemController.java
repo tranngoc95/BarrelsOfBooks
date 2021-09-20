@@ -2,6 +2,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.CartItemService;
 import learn.barrel_of_books.domain.Result;
+import learn.barrel_of_books.models.Cart;
 import learn.barrel_of_books.models.CartItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -22,8 +22,8 @@ public class CartItemController {
     }
 
     @GetMapping("/user/{userId}")
-    public List<CartItem> findActiveByUserId(@PathVariable String userId){
-        return service.findActiveByUserId(userId);
+    public Cart findCartActiveByUserId(@PathVariable String userId){
+        return service.findCartActiveByUserId(userId);
     }
 
     @GetMapping("/{cartItemId}")

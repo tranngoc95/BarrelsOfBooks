@@ -7,7 +7,13 @@ import CartItem from './CartItem';
 
 function Cart() {
 
-    const [items, setItems] = useState([]);
+    const emptyCart = {
+        books: [],
+        subtotal: 0,
+        itemNum: 0
+    }
+
+    const [cart, setCart] = useState(emptyCart);
     const [errorList, setErrorList] = useState([]);
 
     const history = useHistory()
@@ -28,20 +34,20 @@ function Cart() {
                 }
                 return response.json();
             })
-            .then(data => setItems(data))
+            .then(data => {
+                setCart(data);
+            })
             .catch(error => console.log("Error", error));
     }
 
-    useEffect(getList, []);    
+    useEffect(getList, []);
 
     const checkout = () => {
 
         const order = {
             userId: "1",
-            books: items
+            books: cart.books
         }
-
-        console.log(order);
 
         const init = {
             method: 'POST',
@@ -75,14 +81,14 @@ function Cart() {
                 <h2>My Shopping Cart</h2>
                 <ErrorMessages errorList={errorList} />
                 <div>
-                    {items.map(item => (
-                        <CartItem item={item} getList={getList}/>
+                    {cart.books.map(item => (
+                        <CartItem key={item.cartItemId} item={item} getList={getList}/>
                     ))}
                 </div>
             </div>
-            {items.length > 0 &&
+            {cart.itemNum > 0 &&
                 (<div>
-                    <h5>Subtotal ({items.length} items): </h5>
+                    <h5>Subtotal ({cart.itemNum} items): ${cart.subtotal}</h5>
                     <button onClick={checkout}>CHECKOUT</button>
                 </div>
                 )}

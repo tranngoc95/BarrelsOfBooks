@@ -4,31 +4,25 @@ function CartItem({ item, getList }) {
 
     const [quantity, setQuantity] = useState(item.quantity);
     const [errorList, setErrorList] = useState([]);
-    const [save, setSave] = useState(false);
-    const [update, setUpdate] = useState(true);
+    const [update, setUpdate] = useState(false);
+    const [toggle, setToggle] = useState(item.quantity < 10)
 
-    const selectRef = useRef();
-    const numRef = useRef();
-    
     const URL = 'http://localhost:8080/api/cart-item';
-
 
     const handleChange = (event) => {
         setQuantity(event.target.value);
+        if (event.target.id === "quantitySel" && event.target.value === "10") {
+            setToggle(false);
+        }
     }
 
     const handleUpdate = () => {
-        selectRef.current.disabled = false;
-        numRef.current.disabled = false;
-        setUpdate(false);
-        setSave(true);
+        setUpdate(true);
     }
 
     const updateQuantity = () => {
-        selectRef[1].current.disabled = true;
-        numRef.current.disabled = true;
-        setSave(false);
-        setUpdate(true);
+        setUpdate(false);
+        setToggle(quantity < 10);
 
         const changedItem = { ...item };
         changedItem.quantity = quantity;
@@ -99,23 +93,23 @@ function CartItem({ item, getList }) {
                 <div>Out Of Stock. Please remove item before processing to checkout</div>}
             <div>
                 <label htmlFor="quantity">Quantity</label>
-                {quantity < 10 && <select id="quantity" name="quantity" ref={selectRef} value={quantity} onChange={handleChange} disabled>
+                {toggle && <select id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
                     <option value={1} disabled={item.book.quantity < 1}>1</option>
-                    <option value="2" disabled={item.book.quantity < 2}>2</option>
-                    <option value="3" disabled={item.book.quantity < 3}>3</option>
-                    <option value="4" disabled={item.book.quantity < 4}>4</option>
-                    <option value="5" disabled={item.book.quantity < 5}>5</option>
-                    <option value="6" disabled={item.book.quantity < 6}>6</option>
-                    <option value="7" disabled={item.book.quantity < 7}>7</option>
-                    <option value="8" disabled={item.book.quantity < 8}>8</option>
-                    <option value="9" disabled={item.book.quantity < 9}>9</option>
-                    <option value="10" disabled={item.book.quantity < 9}>10+</option>
+                    <option value={2} disabled={item.book.quantity < 2}>2</option>
+                    <option value={3} disabled={item.book.quantity < 3}>3</option>
+                    <option value={4} disabled={item.book.quantity < 4}>4</option>
+                    <option value={5} disabled={item.book.quantity < 5}>5</option>
+                    <option value={6} disabled={item.book.quantity < 6}>6</option>
+                    <option value={7} disabled={item.book.quantity < 7}>7</option>
+                    <option value={8} disabled={item.book.quantity < 8}>8</option>
+                    <option value={9} disabled={item.book.quantity < 9}>9</option>
+                    <option value={10} disabled={item.book.quantity < 10}>10+</option>
                 </select>
                 }
-                {quantity > 9 && <input id="quantity" name="quantity" ref={numRef} value={quantity} type="number" required disabled/>
+                {!toggle && <input id="quantityNum" name="quantity" value={quantity} type="number" onChange={handleChange} required disabled={!update} />
                 }
-                {update && <button onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
-                {save && <button onClick={updateQuantity}>Save</button>}
+                {!update && <button onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
+                {update && <button onClick={updateQuantity}>Save</button>}
             </div>
             <button onClick={() => removeItem(item)}>Remove</button>
         </div>

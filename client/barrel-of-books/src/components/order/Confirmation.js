@@ -39,11 +39,11 @@ function Confirmation() {
 
     return (
         <>
-        <ErrorMessages errorList={errorList}/>
+            <ErrorMessages errorList={errorList} />
             {order && (<div>
                 <h3>Successfull Checkout!</h3>
                 <div>Thank you for your order!</div>
-                <br/>
+                <br />
                 <div>What you ordered: </div>
                 <div>
                     <div>Order Id: {order.transactionId}</div>
@@ -52,6 +52,8 @@ function Confirmation() {
                             <h6>{item.book.title}</h6>
                         </div>
                     ))}
+                    {order.books.employeeDiscount &&
+                        <div>Employee Discount: 30%</div>}
                     <div>Total: ${order.total}</div>
                 </div>
 

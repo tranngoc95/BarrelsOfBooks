@@ -32,9 +32,6 @@ function AllOrders() {
 
     useEffect(getList, []);
 
-
-    console.log(orders);
-
     return (
         <>
             <h2>All Orders</h2>
