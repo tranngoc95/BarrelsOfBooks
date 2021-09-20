@@ -17,7 +17,10 @@ return (
       <Link  to="/cart">Cart</Link> 
       </div>
       <div className="col">
-      <Link  to="/orders">Orders</Link> 
+      <Link  to="/orders">My Orders</Link> 
+      </div>
+      <div className="col">
+      <Link  to="/allorders">All Orders</Link> 
       </div>
     </div>
 )

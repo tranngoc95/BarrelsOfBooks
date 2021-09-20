@@ -44,9 +44,11 @@ public class CartItemService {
             if (available != null) {
                 int quantity = cartItem.getQuantity() + available.getQuantity();
                 available.setQuantity(quantity);
-                repository.update(available);
+                Result<CartItem> updateResult = update(available);
+                if(!updateResult.isSuccess()) {
+                    return updateResult;
+                }
                 result.setPayload(available);
-
             } else {
                 if (cartItem.getCartItemId() != 0) {
                     result.addMessage("cartItemId cannot be set for `add` operation", ResultType.INVALID);

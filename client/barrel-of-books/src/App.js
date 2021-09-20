@@ -14,6 +14,7 @@ import Confirmation from "./components/order/Confirmation";
 import Genres from "./components/genre/Genres";
 import AddGenre from "./components/genre/AddGenre";
 import EditGenre from "./components/genre/EditGenre";
+import AllOrders from "./components/order/AllOrders";
 
 const UserRoutes = [
   { path: "/cart", component: Cart },
@@ -27,8 +28,13 @@ const UserRoutes = [
   { path: "/genres/edit/:id", component: EditGenre },
 ]
 
+const ManagerRoutes = [
+  { path: "/allorders", component: AllOrders },
+]
+
 const AdminRoutes = [
   { path: "/stores/edits", component: EditStore },
+
 ]
 
 function App() {
@@ -44,7 +50,8 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            {AdminRoutes.map(each => (
+
+            {UserRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
                 {user ?
                   <each.component />
@@ -57,7 +64,20 @@ function App() {
               </Route>
             ))}
 
-            {UserRoutes.map(each => (
+            {ManagerRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                {user ?
+                  <each.component />
+                  :
+                  <Redirect to={{
+                    pathname: '/login',
+                    state: { nextpath: each.path }
+                  }} />
+                }
+              </Route>
+            ))}
+
+            {AdminRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
                 {user ?
                   <each.component />

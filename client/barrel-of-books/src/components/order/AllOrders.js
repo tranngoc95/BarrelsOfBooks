@@ -1,15 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import AuthContext from '../../AuthContext';
+import ErrorMessages from '../ErrorMessages';
+import EachOrder from './EachOrder';
+
 function AllOrders() {
 
     const [orders, setOrders] = useState([]);
-    const auth = useContext();
+    const auth = useContext(AuthContext);
 
     const URL = 'http://localhost:8080/api/transaction';
 
-    useEffect(() => {
-
+    const getList = () => {
         const init = {
             headers: {
                 'Authorization': `Bearer ${auth.user.token}`
@@ -25,44 +28,29 @@ function AllOrders() {
             })
             .then(data => setOrders(data))
             .catch(error => console.log("Error", error));
-    }, []);
+    }
 
+    useEffect(getList, []);
+
+
+    console.log(orders);
 
     return (
         <>
-            <h2>My Orders</h2>
+            <h2>All Orders</h2>
             <table>
                 <thead>
                     <tr>
                         <th>Order Id</th>
                         <th>Date</th>
                         <th>User Id</th>
+                        <th>List of Books</th>
                         <th>Status</th>
-                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     {orders.map(order => (
-                        <tr key={order.transactionId}>
-                            <td>{order.transactionId}</td>
-                            <td>{order.date}</td>
-                            <td>{order.userId}</td>
-                            <td>
-                                <form>
-                                    <select id="status" name="status" value={order.status} disabled>
-                                        <option value="ORDERED">Ordered</option>
-                                        <option value="SHIPPED">Shipped</option>
-                                        <option value="DELIVERED">Delivered</option>
-                                    </select>
-                                    <button type="button">Update Status</button>
-                                    <button type="submit" hidden>Submit</button>
-                                </form>
-                            </td>
-                            <td>
-                                <button>Detail</button>
-
-                            </td>
-                        </tr>
+                        <EachOrder key={order.transactionId} order={order} getList={getList} auth={auth} />
                     ))
                     }
                 </tbody>
