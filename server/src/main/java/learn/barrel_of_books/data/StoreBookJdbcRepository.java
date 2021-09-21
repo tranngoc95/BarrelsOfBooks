@@ -55,11 +55,10 @@ public class StoreBookJdbcRepository implements StoreBookRepository {
     }
 
     @Override
-    public boolean delete(int store_id, int book_id) {
+    public boolean delete(int book_id) {
         final String sql = "delete from store_book "
-                            + "where store_id = ? "
-                            + "and book_id = ?;";
-        return template.update(sql,store_id,book_id) > 0;
+                            + "where book_id = ?;";
+        return template.update(sql,book_id) > 0;
     }
 
 

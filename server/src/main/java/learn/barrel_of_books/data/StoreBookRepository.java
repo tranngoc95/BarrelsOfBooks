@@ -11,5 +11,5 @@ public interface StoreBookRepository {
 
     boolean update(StoreBook storeBook);
 
-    boolean delete(int store_id, int book_id);
+    boolean delete(int book_id);
 }

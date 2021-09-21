@@ -136,14 +136,14 @@ class StoreBookControllerTest {
 
     @Test
     void shouldDelete() throws Exception {
-        when(repository.delete(1,1)).thenReturn(true);
+        when(repository.delete(1)).thenReturn(true);
         mvc.perform(delete("/api/store-book/1/1"))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void shouldNotDelete() throws Exception {
-        when(repository.delete(1,1)).thenReturn(false);
+        when(repository.delete(1)).thenReturn(false);
         mvc.perform(delete("/api/store-book/1/1"))
                 .andExpect(status().isNotFound());
     }

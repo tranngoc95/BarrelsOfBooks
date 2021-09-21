@@ -52,9 +52,9 @@ public class StoreBookController {
     }
 
 
-    @DeleteMapping("/{bookId}/{storeId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int storeId) {
-        Result<StoreBook> result = service.delete(storeId,bookId);
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Void> delete(@PathVariable int bookId) {
+        Result<StoreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

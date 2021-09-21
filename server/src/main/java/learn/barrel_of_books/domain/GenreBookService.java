@@ -46,10 +46,10 @@ public class GenreBookService {
     }
 
 
-    public Result<GenreBook> delete(int bookId, int genreId) {
+    public Result<GenreBook> delete(int bookId) {
         Result<GenreBook> result = new Result<>();
 
-        if(!repository.delete(bookId,genreId)) {
+        if(!repository.delete(bookId)) {
             result.addMessage("This entry does not exist",ResultType.NOT_FOUND);
         }
         return result;

@@ -56,19 +56,6 @@ public class BookService {
         if(result.isSuccess()) {
             book = repository.add(book);
             result.setPayload(book);
-
-//            for(int g : book.getGenres()) {
-//                Genre genre = genreRepository.findById(g);
-//                GenreBook gb = new GenreBook(genre, book.getBookId());
-//                gbRepository.add(gb);
-//            }
-
-//            for(int s : book.getStoreIds()) {
-//                Store store = storeRepository.findById(s);
-//                StoreBook sb = new StoreBook(book.getBookId(), store,0);
-//                sbRepository.add(sb);
-//            }
-
         }
             return result;
     }

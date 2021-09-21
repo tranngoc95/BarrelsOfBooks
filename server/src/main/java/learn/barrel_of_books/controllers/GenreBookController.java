@@ -36,9 +36,9 @@ public class GenreBookController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{bookId}/{genreId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int genreId) {
-        Result<GenreBook> result = service.delete(bookId,genreId);
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Void> delete(@PathVariable int bookId) {
+        Result<GenreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

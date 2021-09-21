@@ -49,9 +49,9 @@ public class StoreBookService {
         return result;
     }
 
-    public Result<StoreBook> delete(int store_id, int book_id) {
+    public Result<StoreBook> delete(int book_id) {
         Result<StoreBook> result = new Result<>();
-        if(!repository.delete(store_id,book_id)) {
+        if(!repository.delete(book_id)) {
             result.addMessage("Store/Book combination not found", ResultType.NOT_FOUND);
         }
         return result;

@@ -8,7 +8,6 @@ const [book,setBook] = useState({
     author: "",
     price: 0,
     quantity: 0,
-    genres: [],
     stores: []
 })
 const[genres, setGenres] = useState([]);
@@ -60,10 +59,8 @@ function handleGenres(event) {
   const genreId = parseInt(event.target.value,10);
   const genre = genres.find((genre) => genre.genreId === genreId);
   if(event.target.checked) {
-    newGenres.push(genres.find((genre) => genre.genreId === parseInt(event.target.value,10)));
-    console.log(newGenres);
+    newGenres.push(genre);
     setSelectedGenres(newGenres);
-    console.log(selectedGenres);
   } else {
     const genreIndex = newGenres.indexOf(genre);
     if(genreIndex >= 0) {
@@ -107,9 +104,6 @@ function handleGenres(event) {
 
 
 
-
-
-
 const handleSubmit = (event) => {
   event.preventDefault();
   const newBook = {...book};
@@ -146,21 +140,6 @@ const handleSubmit = (event) => {
 }
 
 
-
-// function getGenresFromList() {
-//   const list = [];
-
-//   book.genres.map((g) => {
-
-//      fetch(`http://localhost:8080/api/genre/${g}`)
-//      .then(response => response.json())
-//      .then(data => list.push(data))
-//      .catch(error => console.log(error));
-
-//  }
-// )
-// return list;
-// }
 
 function handleGenreBook(bookId) {
 

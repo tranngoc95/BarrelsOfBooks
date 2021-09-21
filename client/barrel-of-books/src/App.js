@@ -12,7 +12,7 @@ import EditStore from "./components/EditStore";
 import AddStore from "./components/AddStore";
 import Books from "./components/Books";
 import AddBook from "./components/AddBook";
-
+import EditBook from "./components/EditBook";
 
 function App() {
   return (
@@ -36,6 +36,9 @@ function App() {
             </Route>
             <Route exact path = "/books/add">
               <AddBook />
+            </Route>
+            <Route exact path ="/books/edit/:id">
+              <EditBook />
             </Route>
           </Switch>
         </div>
