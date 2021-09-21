@@ -12,6 +12,7 @@ const [book,setBook] = useState({
     stores: []
 })
 const[genres, setGenres] = useState([]);
+const[selectedGenres, setSelectedGenres] = useState([]);
 const[stores, setStores] = useState([]);
 const[errorList, setErrorList] = useState([]);
 const history = useHistory();
@@ -43,9 +44,7 @@ useEffect(getStores,[]);
 const handleChange = (event) => {
     const newBook = {...book};
     if(event.target.name === "genres") {
-      newBook[event.target.name] = handleGenres(event);
-      setBook(newBook);
-      console.log(book.genres);
+      handleGenres(event);
     } else if (event.target.name === "stores") {
       handleStores(event, newBook);
     } else if (event.target.name === "storeQuantity") {
@@ -57,18 +56,21 @@ const handleChange = (event) => {
 }
 
 function handleGenres(event) {
-  const newGenres = [...book.genres];
+  const newGenres = [...selectedGenres];
   const genreId = parseInt(event.target.value,10);
   const genre = genres.find((genre) => genre.genreId === genreId);
   if(event.target.checked) {
-    newGenres.push(genre);
+    newGenres.push(genres.find((genre) => genre.genreId === parseInt(event.target.value,10)));
+    console.log(newGenres);
+    setSelectedGenres(newGenres);
+    console.log(selectedGenres);
   } else {
     const genreIndex = newGenres.indexOf(genre);
     if(genreIndex >= 0) {
       newGenres.splice(genreIndex,1);
+      setSelectedGenres(newGenres);
     }
   }
-  return newGenres;
  }
 
  function handleStores(event, newBook) {
@@ -162,7 +164,7 @@ const handleSubmit = (event) => {
 
 function handleGenreBook(bookId) {
 
-  book.genres.map((genre) => {
+  selectedGenres.map((genre) => {
     console.log(genre);
    const genreBook = { bookId, genre };
 
@@ -174,11 +176,22 @@ function handleGenreBook(bookId) {
      body: JSON.stringify(genreBook),
  };
    fetch("http://localhost:8080/api/genre-book",init)
-   .then((response) => response.json())
+   .then((response) => {
+    if (
+      response.status === 201 ||
+      response.status === 204 ||
+      response.status === 400
+  ) {
+      return response.json();
+  }
+  return Promise.reject("Something else went wrong");
+   })
    .then((data) => {
        if(data.bookId) {
          history.push("/books");
-       }
+       } else {
+        setErrorList(data);
+      }
    })
    .catch((error) => console.log(error));
  })
@@ -250,7 +263,7 @@ return (
         {genres.map((g) => (
           <div key={g.genreId}>
             <input type="checkbox" value={g.genreId} id={g.name} name="genres"
-              checked={book.genres.includes(g)} onChange={handleChange} />
+              checked={selectedGenres.includes(g)} onChange={handleChange} />
             <label htmlFor={g.name}>{g.name}</label>
           </div>
         ))}
