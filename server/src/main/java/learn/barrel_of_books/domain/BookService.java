@@ -1,8 +1,8 @@
 package learn.barrel_of_books.domain;
 
 
-import learn.barrel_of_books.data.BookRepository;
-import learn.barrel_of_books.models.Book;
+import learn.barrel_of_books.data.*;
+import learn.barrel_of_books.models.*;
 import org.springframework.stereotype.Service;
 
 
@@ -12,17 +12,24 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository repository;
+    private final GenreBookRepository gbRepository;
+    private final GenreRepository genreRepository;
+    private final StoreBookRepository sbRepository;
+    private final StoreRepository storeRepository;
 
-    public BookService(BookRepository repository) {
+    public BookService(BookRepository repository, GenreBookRepository gbRepository, GenreRepository genreRepository, StoreBookRepository sbRepository, StoreRepository storeRepository) {
+        this.gbRepository = gbRepository;
         this.repository = repository;
+        this.genreRepository = genreRepository;
+        this.sbRepository = sbRepository;
+        this.storeRepository = storeRepository;
     }
 
     public List<Book> findAll() {
         return repository.findAll();
     }
 
-    public Book findById(int bookId) {
-        return repository.findById(bookId);
+    public Book findById(int bookId) { return repository.findById(bookId);
     }
 
     public Book findByTitle(String title) {
@@ -49,6 +56,19 @@ public class BookService {
         if(result.isSuccess()) {
             book = repository.add(book);
             result.setPayload(book);
+
+//            for(int g : book.getGenres()) {
+//                Genre genre = genreRepository.findById(g);
+//                GenreBook gb = new GenreBook(genre, book.getBookId());
+//                gbRepository.add(gb);
+//            }
+
+//            for(int s : book.getStoreIds()) {
+//                Store store = storeRepository.findById(s);
+//                StoreBook sb = new StoreBook(book.getBookId(), store,0);
+//                sbRepository.add(sb);
+//            }
+
         }
             return result;
     }
@@ -117,7 +137,7 @@ public class BookService {
             result.addMessage("Author is required",ResultType.INVALID);
         }
 
-//        if(book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
+//        if(book.getGenresIds().size() <= 0 || book.getGenresIds().isEmpty()) {
 //            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
 //        }
 

@@ -25,9 +25,11 @@ public class StoreBookService {
         Result<StoreBook> result = validate(storeBook);
 
         //WRITE TEST
-        for(StoreBook sb : findByBookId(storeBook.getBookId())) {
-            if(storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
-                result.addMessage("This store/book combination already exists", ResultType.INVALID);
+        if(findByBookId(storeBook.getBookId()) != null) {
+            for (StoreBook sb : findByBookId(storeBook.getBookId())) {
+                if (storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
+                    result.addMessage("This store/book combination already exists", ResultType.INVALID);
+                }
             }
         }
 

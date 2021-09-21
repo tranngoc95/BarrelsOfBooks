@@ -160,7 +160,7 @@ class BookServiceTest {
         cb.setBookId(1);
         cb.setGenre(c);
         cats.add(cb);
-        book.setGenres(cats);
+//        book.setGenres(cats);
         book.setAuthor("jk rowling");
         book.setPrice(new BigDecimal("13.45"));
         book.setQuantity(12);
