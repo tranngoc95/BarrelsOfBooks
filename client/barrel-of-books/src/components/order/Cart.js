@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import ErrorMessages from '../ErrorMessages';
 import CartItem from './CartItem';
+import AuthContext from '../../AuthContext';
 
 function Cart() {
 
@@ -18,12 +19,13 @@ function Cart() {
 
     const history = useHistory()
     const URL = 'http://localhost:8080/api/cart-item';
+    const auth = useContext(AuthContext);
 
     const getList = () => {
 
         const init = {
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 

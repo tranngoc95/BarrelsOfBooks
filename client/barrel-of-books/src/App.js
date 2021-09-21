@@ -1,5 +1,6 @@
-import * as React from "react";
+import { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import jwt_decode from 'jwt-decode';
 
 import './App.css';
 import AuthContext from "./AuthContext";
@@ -15,6 +16,16 @@ import Genres from "./components/genre/Genres";
 import AddGenre from "./components/genre/AddGenre";
 import EditGenre from "./components/genre/EditGenre";
 import AllOrders from "./components/order/AllOrders";
+import Navbar from "./components/Navbar";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import NotFound from "./components/NotFound";
+
+const GuestRoutes = [
+  { path: "/", component: Home },
+  { path: "/login", component: Login },
+  { path: "/register", component: Register }
+]
 
 const UserRoutes = [
   { path: "/cart", component: Cart },
@@ -34,27 +45,57 @@ const ManagerRoutes = [
 
 const AdminRoutes = [
   { path: "/stores/edits", component: EditStore },
-
 ]
 
 function App() {
-  const user = { token: "placeholder" };
-  const auth = { user }
+
+  const [user, setUser] = useState(null);
+
+  const login = (token) => {
+    const decodedToken = jwt_decode(token);
+
+    const roles = decodedToken.roles.split(',');
+
+    const user = {
+      id: decodedToken.id,
+      username: decodedToken.sub,
+      roles,
+      token,
+      hasRole(role) {
+        return this.roles.includes(role);
+      }
+    };
+
+    setUser(user);
+  }
+
+  const logout = () => {
+    setUser(null);
+  }
+
+  const auth = {
+    user,
+    login,
+    logout
+  };
+
   return (
     <AuthContext.Provider value={auth}>
       <Router>
         <div className="App">
-          <Home />
+          <Navbar />
 
           <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
+            {GuestRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                <each.component />
+              </Route>
+            ))}
 
             {UserRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
-                {user ?
-                  <each.component />
+                {user ?               
+                <each.component />
                   :
                   <Redirect to={{
                     pathname: '/login',
@@ -66,8 +107,8 @@ function App() {
 
             {ManagerRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
-                {user ?
-                  <each.component />
+                {user ? (user.hasRole('MANAGER') ?
+                  <each.component /> : <NotFound />)
                   :
                   <Redirect to={{
                     pathname: '/login',
@@ -79,8 +120,8 @@ function App() {
 
             {AdminRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
-                {user ?
-                  <each.component />
+                {user ? (user.hasRole('ADMIN') ?
+                  <each.component /> : <NotFound />)
                   :
                   <Redirect to={{
                     pathname: '/login',
@@ -89,6 +130,9 @@ function App() {
                 }
               </Route>
             ))}
+            <Route path="*">
+              <NotFound />
+            </Route>
 
           </Switch>
         </div>

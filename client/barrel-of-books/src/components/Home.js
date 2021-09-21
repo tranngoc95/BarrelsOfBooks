@@ -1,29 +1,29 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Home() {
-return (
+  return (
     <div>
-    <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
+      <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
       <div className="col">
-        <Link  to="/books">Books</Link>      
+        <Link to="/books">Books</Link>
       </div>
       <div className="col">
-      <Link  to="/stores">Stores</Link> 
+        <Link to="/stores">Stores</Link>
       </div>
       <div className="col">
-      <Link  to="/genres">Genres</Link> 
+        <Link to="/genres">Genres</Link>
       </div>
       <div className="col">
-      <Link  to="/cart">Cart</Link> 
+        <Link to="/cart">Cart</Link>
       </div>
       <div className="col">
-      <Link  to="/orders">My Orders</Link> 
+        <Link to="/orders">My Orders</Link>
       </div>
       <div className="col">
-      <Link  to="/allorders">All Orders</Link> 
+        <Link to="/allorders">All Orders</Link>
       </div>
     </div>
-)
+  )
 }
 
 
