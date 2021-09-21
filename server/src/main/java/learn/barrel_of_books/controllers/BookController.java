@@ -2,6 +2,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.BookService;
 import learn.barrel_of_books.domain.Result;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.Book;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,12 @@ public class BookController {
 
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody Book book) {
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody Book book) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<Book> result = service.add(book);
 
         if (result.isSuccess()) {
@@ -62,7 +68,12 @@ public class BookController {
 
 
     @PutMapping("/{bookId}")
-    public ResponseEntity<Object> update(@PathVariable int bookId, @RequestBody Book book) {
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @PathVariable int bookId, @RequestBody Book book) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(book.getBookId() != bookId) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -77,7 +88,12 @@ public class BookController {
 
 
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId) {
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") AppUser user,
+                                       @PathVariable int bookId) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<Book> result = service.delete(bookId);
         if(result.isSuccess()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

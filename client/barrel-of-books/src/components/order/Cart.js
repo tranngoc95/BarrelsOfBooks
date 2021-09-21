@@ -62,7 +62,7 @@ function Cart() {
 
         fetch("http://localhost:8080/api/transaction", init)
             .then(response => {
-                if (response.status !== 400 && response.status !== 201) {
+                if (response.status !== 400 && response.status !== 201 && response.status !== 403) {
                     return Promise.reject("Something went wrong. :(")
                 }
                 return response.json();

@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
-import static learn.barrel_of_books.data.TestData.makeExistingTransaction;
-import static learn.barrel_of_books.data.TestData.makeNewTransaction;
+import static learn.barrel_of_books.data.TestData.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +47,8 @@ class TransactionControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/transaction"))
+        mvc.perform(get("/api/transaction")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -62,7 +62,8 @@ class TransactionControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/transaction/user/1"))
+        mvc.perform(get("/api/transaction/user/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -70,7 +71,8 @@ class TransactionControllerTest {
 
     @Test
     void shouldNotFindByTransactionId() throws Exception {
-        mvc.perform(get("/api/transaction/1"))
+        mvc.perform(get("/api/transaction/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
@@ -82,7 +84,8 @@ class TransactionControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/transaction/1"))
+        mvc.perform(get("/api/transaction/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -110,6 +113,7 @@ class TransactionControllerTest {
         String expectedJson = generateJson(expected);
 
         var request = post("/api/transaction")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -127,6 +131,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/transaction")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -141,6 +146,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/transaction")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -159,6 +165,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/transaction/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -172,6 +179,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/transaction/5")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -188,6 +196,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/transaction/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -203,6 +212,7 @@ class TransactionControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/transaction/0")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -215,13 +225,15 @@ class TransactionControllerTest {
     void shouldDelete() throws Exception {
         Mockito.when(repository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
         Mockito.when(repository.deleteById(1)).thenReturn(true);
-        mvc.perform(delete("/api/transaction/1"))
+        mvc.perform(delete("/api/transaction/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void shouldNotDelete() throws Exception {
-        mvc.perform(delete("/api/transaction/11"))
+        mvc.perform(delete("/api/transaction/11")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 

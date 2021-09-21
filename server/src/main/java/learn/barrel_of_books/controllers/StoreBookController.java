@@ -3,6 +3,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.domain.StoreBookService;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.StoreBook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,12 @@ public class StoreBookController {
     }
 
     @PostMapping()
-    public ResponseEntity<Object> add(@RequestBody StoreBook storeBook) {
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody StoreBook storeBook) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<StoreBook> result = service.add(storeBook);
 
         if(result.isSuccess()) {
@@ -37,7 +43,12 @@ public class StoreBookController {
 
 
     @PutMapping("/{bookId}/{storeId}")
-    public ResponseEntity<Object> update(@PathVariable int bookId, @PathVariable int storeId, @RequestBody StoreBook storeBook) {
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @PathVariable int bookId, @PathVariable int storeId, @RequestBody StoreBook storeBook) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(bookId != storeBook.getBookId() || storeBook.getStore().getStoreId() != storeId) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -52,7 +63,12 @@ public class StoreBookController {
 
 
     @DeleteMapping("/{bookId}/{storeId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int storeId) {
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") AppUser user,
+                                       @PathVariable int bookId, @PathVariable int storeId) {
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        
         Result<StoreBook> result = service.delete(storeId,bookId);
 
         if(result.isSuccess()) {

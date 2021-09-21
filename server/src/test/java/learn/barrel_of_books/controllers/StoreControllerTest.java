@@ -82,6 +82,7 @@ class StoreControllerTest {
         String expectedJson = generateJson(expected);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -100,6 +101,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -115,6 +117,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -130,6 +133,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -145,6 +149,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -160,6 +165,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -181,6 +187,7 @@ class StoreControllerTest {
         String inputJson = generateJson(store);
 
         var request = post("/api/store")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -203,6 +210,7 @@ class StoreControllerTest {
         String storeJson = generateJson(store);
 
         var request = put("/api/store/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(storeJson);
 
@@ -225,6 +233,7 @@ class StoreControllerTest {
         String storeJson = generateJson(store);
 
         var request = put("/api/store/2")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(storeJson);
 
@@ -235,7 +244,8 @@ class StoreControllerTest {
     @Test
     void shouldDelete() throws Exception {
         when(repository.delete(1)).thenReturn(true);
-        mvc.perform(delete("/api/store/1"))
+        mvc.perform(delete("/api/store/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
@@ -243,25 +253,16 @@ class StoreControllerTest {
     @Test
     void shouldNotDelete() throws Exception {
         when(repository.delete(11)).thenReturn(false);
-        mvc.perform(delete("/api/store/11"))
+        mvc.perform(delete("/api/store/11")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
-
-
-
-
-
-
-
-
-
-
+    // Helper methods
     private String generateJson(Object o) throws JsonProcessingException {
         ObjectMapper jsonMapper = new JsonMapper();
         return jsonMapper.writeValueAsString(o);
     }
-
 
     private Store makeExistingStore() {
         return new Store(1,"111 birds dr","dundee","IL","60102","2243256666");
@@ -271,4 +272,9 @@ class StoreControllerTest {
         return new Store(0,"222 new store","new york","NY","00000","5555555555");
     }
 
+    public static final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
+            "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
+            "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
+            "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
+            "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
 }

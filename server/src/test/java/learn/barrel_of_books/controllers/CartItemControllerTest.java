@@ -52,7 +52,7 @@ class CartItemControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/cart-item/user/1"))
+        mvc.perform(get("/api/cart-item/user/1").header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -66,7 +66,7 @@ class CartItemControllerTest {
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/cart-item/2"))
+        mvc.perform(get("/api/cart-item/2").header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -74,9 +74,15 @@ class CartItemControllerTest {
 
     @Test
     void shouldNotFindMissing() throws Exception {
-        mvc.perform(get("/api/cart-item/21"))
+        mvc.perform(get("/api/cart-item/21").header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
+
+//    @Test
+//    void shouldNotFindForbidden() throws Exception {
+//        mvc.perform(get("/api/cart-item/1"))
+//                .andExpect(status().isForbidden());
+//    }
 
     // CREATE
     @Test
@@ -91,6 +97,7 @@ class CartItemControllerTest {
         String expectedJson = generateJson(expected);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -108,6 +115,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -122,6 +130,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -138,6 +147,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/3")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -151,6 +161,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/10")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -165,6 +176,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -179,6 +191,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/0")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -191,14 +204,14 @@ class CartItemControllerTest {
     void shouldDelete() throws Exception {
         Mockito.when(repository.findByCartItemId(3)).thenReturn(makeUpdateCartItem());
         Mockito.when(repository.deleteById(3)).thenReturn(true);
-        mvc.perform(delete("/api/cart-item/3"))
+        mvc.perform(delete("/api/cart-item/3").header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void shouldNotDelete() throws Exception {
         Mockito.when(repository.deleteById(11)).thenReturn(false);
-        mvc.perform(delete("/api/cart-item/11"))
+        mvc.perform(delete("/api/cart-item/11").header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 

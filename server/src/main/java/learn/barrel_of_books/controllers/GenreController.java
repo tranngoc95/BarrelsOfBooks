@@ -2,6 +2,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.GenreService;
 import learn.barrel_of_books.domain.Result;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.Genre;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,12 @@ public class GenreController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody @Valid Genre genre, BindingResult result){
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody @Valid Genre genre, BindingResult result){
+        if(user == null || !user.hasRole("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors()){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -45,7 +51,12 @@ public class GenreController {
     }
 
     @PutMapping("/{genreId}")
-    public ResponseEntity<Object> update(@RequestBody @Valid Genre genre, BindingResult result, @PathVariable int genreId){
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @RequestBody @Valid Genre genre, BindingResult result, @PathVariable int genreId){
+        if(user == null || !user.hasRole("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors() || genre==null){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -62,7 +73,12 @@ public class GenreController {
     }
 
     @DeleteMapping("/{genreId}")
-    public ResponseEntity<Genre> deleteById(@PathVariable int genreId) {
+    public ResponseEntity<Genre> deleteById(@RequestHeader("Authorization") AppUser user,
+                                            @PathVariable int genreId) {
+        if(user == null || !user.hasRole("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if (service.deleteById(genreId)){
             return new ResponseEntity <>(HttpStatus.NO_CONTENT);
         }
