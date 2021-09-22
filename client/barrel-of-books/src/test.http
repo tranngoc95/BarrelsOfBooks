@@ -1,0 +1,5 @@
+@url = http://localhost:8080/api/book/search/r
+
+GET {{url}} HTTP/1.1
+
+###

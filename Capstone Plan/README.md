@@ -24,32 +24,32 @@
    - [x] Test StoreService with Mockito
 - StoreController
    - [x] Create and Implement StoreController
-   - [ ] Test StoreController with Mockito
+   - [x] Test StoreController with Mockito
 
 ### Task 1a: Store Front-end
 - Components:
-   - [ ] Store
-   - [ ] AddStore
-   - [ ] EditStore
+   - [x] Store
+   - [x] AddStore
+   - [x] EditStore
 
 ### Task 2a: Book Back-end
-- [ ] Book Model
-- [ ] BookRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement BookRepository
-   - [ ] Test BookRepository
-- [ ] BookService
-   - [ ] Create and Implement BookService
-   - [ ] Test BookService with Mockito
-- [ ] BookController
-   - [ ] Create and Implement BookController
-   - [ ] Test BookController with Mockito
+- [x] Book Model
+- [x] BookRepository
+   - [x] Extract interface
+   - [x] Create and Implement BookRepository
+   - [x] Test BookRepository
+- [x] BookService
+   - [x] Create and Implement BookService
+   - [x] Test BookService with Mockito
+- [x] BookController
+   - [x] Create and Implement BookController
+   - [x] Test BookController with Mockito
 
 ### Task 2b: Book Front-end
-- [ ] Components:
-   - [ ] Book
-   - [ ] AddBook
-   - [ ] EditBook
+- [x] Components:
+   - [x] Book
+   - [x] AddBook
+   - [x] EditBook
 
 ### Task 3a: Genre Back-end
 - [x] Genre Model
@@ -60,48 +60,48 @@
 - [x] GenreService
    - [x] Create and Implement GenreService
    - [x] Test GenreService with Mockito
-- [ ] GenreController
-   - [ ] Create and Implement GenreController
-   - [ ] Test GenreController with Mockito
+- [x] GenreController
+   - [x] Create and Implement GenreController
+   - [x] Test GenreController with Mockito
 
 ### Task 3b: Genre Front-end
-- [ ] Components:
-   - [ ] Genre
-   - [ ] AddGenre
-   - [ ] EditGenre
+- [x] Components:
+   - [x] Genre
+   - [x] AddGenre
+   - [x] EditGenre
 
 ### Task 4a: Transaction Back-end
-- [ ] Transaction  Model
-- [ ] Transaction Repository
-   - [ ] Extract interface
-   - [ ] Create and Implement TransactionRepository
-   - [ ] Test TransactionRepository
-- [ ] TransactionService
-   - [ ] Create and Implement TransactionService
-   - [ ] Test TransactionService with Mockito
-- [ ] TransactionController
-   - [ ] Create and Implement TransactionController
-   - [ ] Test TransactionController with Mockito
+- [x] Transaction  Model
+- [x] Transaction Repository
+   - [x] Extract interface
+   - [x] Create and Implement TransactionRepository
+   - [x] Test TransactionRepository
+- [x] TransactionService
+   - [x] Create and Implement TransactionService
+   - [x] Test TransactionService with Mockito
+- [x] TransactionController
+   - [x] Create and Implement TransactionController
+   - [x] Test TransactionController with Mockito
 
 ### Task 4b: Transaction Front-end
-- [ ] Components:
-   - [ ] Transaction
-   - [ ] AddTransaction
-   - [ ] EditTransaction
+- [x] Components:
+   - [x] Transaction
+   - [x] AddTransaction
+   - [x] EditTransaction
 
 ### Task 5: StoreBook Back-end
-- [ ] StoreBook Model
-- [ ] StoreBookRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement StoreBookRepository
-   - [ ] Test StoreBookRepository
+- [x] StoreBook Model
+- [x] StoreBookRepository
+   - [x] Extract interface
+   - [x] Create and Implement StoreBookRepository
+   - [x] Test StoreBookRepository
 
 ### Task 6: GenreBook Back-end
-- [ ] GenreBook Model
-- [ ] GenreBookRepository
-   - [ ] Extract interface
-   - [ ] Create and Implement GenreBookRepository
-   - [ ] Test GenreBookRepository
+- [x] GenreBook Model
+- [x] GenreBookRepository
+   - [x] Extract interface
+   - [x] Create and Implement GenreBookRepository
+   - [x] Test GenreBookRepository
 
 ### Task 7a: CartItem Back-end
 - [x] CartItem Model
@@ -117,22 +117,22 @@
    - [x] Test CartItemController with Mockito
 
 ### Task 7b: CartItem Front-end
-- [ ] Component: Cart
+- [x] Component: Cart
 
 ### Task 8: Other Front-end
-- [ ] Components
-   - [ ] Homepage
-   - [ ] Error
-   - [ ] Not Found
-   - [ ] Router Dom in App
-   - [ ] Login
-   - [ ] Register - with a role checkbox
+- [x] Components
+   - [x] Homepage
+   - [x] Error
+   - [x] Not Found
+   - [x] Router Dom in App
+   - [x] Login
+   - [x] Register - with a role checkbox
 - [ ] Changing all components to fit with users' role
 - [ ] Using Semantic CSS Framework to polish the UI
 
 ### Task 9: Other Back-end
 - [ ] Global Exception Handler
-- [ ] User API
+- [x] User API
 - [ ] Populate more data for the App
 
 ### Task 9: Presentation

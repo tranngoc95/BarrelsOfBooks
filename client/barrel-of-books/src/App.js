@@ -29,6 +29,7 @@ import Book from './components/book/Book';
 import Books from "./components/book/Books";
 import AddBook from "./components/book/AddBook";
 import EditBook from "./components/book/EditBook";
+import BooksSearched from './components/book/BooksSearched';
 
 const GuestRoutes = [
   { path: "/", component: Home },
@@ -36,6 +37,7 @@ const GuestRoutes = [
   { path: "/register", component: Register },
   { path: "/books/each/:id", component: Book },
   { path: "/books", component: Books },
+  { path: "/books/search/:phrase", component: BooksSearched },
   { path: "/genres", component: Genres },
   { path: "/stores", component: Stores }
 ]
