@@ -35,7 +35,8 @@ const GuestRoutes = [
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/books/each/:id", component: Book },
-  { path: "/books", component: Books }
+  { path: "/books", component: Books },
+  { path: "/stores", component: Stores }
 ]
 
 const UserRoutes = [
@@ -53,11 +54,11 @@ const UserRoutes = [
 const ManagerRoutes = [
   { path: "/allorders", component: AllOrders },
   { path: "/books/edit/:id", component: EditBook },
-  { path: "/books/add/", component: AddBook }
+  { path: "/books/add", component: AddBook }
 ]
 
 const AdminRoutes = [
-  { path: "/stores/edit:id", component: EditStore },
+  { path: "/stores/edit/:id", component: EditStore },
   { path: "/stores/add", component: AddStore }
 ]
 

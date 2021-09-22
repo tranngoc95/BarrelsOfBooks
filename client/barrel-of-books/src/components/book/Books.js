@@ -20,7 +20,9 @@ function Books() {
   const handleDelete = (bookId) => {
     const init = {
         method: "DELETE",
+        headers: {
         'Authorization': `Bearer ${auth.user.token}`
+        }
       };
   
       fetch(`http://localhost:8080/api/book/${bookId}`, init)
@@ -43,46 +45,46 @@ function Books() {
     };
 
   return (
-    <div>
-    <h2 className="mt-5">List of Books</h2>
+  <div className = "home-page">
+    <h2 className="sub-title">Books</h2>
     <ErrorMessages errorList={errorList} />
-    <table className="table">
+    {auth.user && auth.user.hasRole("MANAGER") &&  
+    <Link className="ui primary button add-button" to="/books/add">Add New Book</Link>}
+    <table className="ui fixed table table-margin">
       <thead>
         <tr>
-          <Link to="/books/add">Add New Book</Link>
-        </tr>
-        <tr>
-          <th scope="col">ID</th>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Author</th>
           <th scope="col">Price</th>
           <th scope="col">Quantity</th>
           <th scope="col">&nbsp;</th>
+          <th scope="col">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         {books.map((b) => (
           <tr key={b.bookId}>
-            <td>{b.bookId}</td>
-            <td>{b.title}</td>
-            <td>{b.description}</td>
-            <td>{b.author}</td>
-            <td>{b.price}</td>
-            <td>{b.quantity}</td>
+            <td data-label="Title"><Link to={`books/each/${b.bookId}`}>{b.title}</Link></td>
+            <td data-label="Description">{b.description}</td>
+            <td data-label="Author">{b.author}</td>
+            <td data-label="Price">{b.price}</td>
+            <td data-label="Quantity">{b.quantity}</td>
             <td>
-              <Link to={`/books/edit/${b.bookId}`}>Edit</Link>
+            {auth.user && auth.user.hasRole("MANAGER") &&  
+              <Link className="ui primary button" to={`/books/edit/${b.bookId}`}>Edit</Link>}
             </td>
             <td>
-              <button type="button" onClick={() => handleDelete(b.bookId)}>
+            {auth.user && auth.user.hasRole("MANAGER") &&  
+              <button className="ui primary button" type="button" onClick={() => handleDelete(b.bookId)}>
                 Delete
-              </button>
+              </button>}
             </td>
           </tr>
         ))}
       </tbody>
     </table>
-    <Link to="/">
+    <Link className="ui secondary button" to="/">
       Go Back
     </Link>
   </div>

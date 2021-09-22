@@ -7,8 +7,8 @@ function Navbar() {
     const auth = useContext(AuthContext);
 
     return (
-        <>
-            <div class="ui secondary menu">
+        <div className="nav">
+            <div className="ui secondary menu">
                 <Link className="item" to="/">Barrel of Books</Link>
                 <Link className="item" to="/books">Books</Link>
                 <Link className="item" to="/stores">Stores</Link>
@@ -91,7 +91,7 @@ function Navbar() {
                     </div>
                 </div>
             </nav> */}
-        </>
+        </div>
     )
 }
 

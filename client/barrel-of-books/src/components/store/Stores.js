@@ -21,7 +21,9 @@ function Stores() {
   const handleDelete = (storeId) => {
     const init = {
       method: "DELETE",
+      headers: {
       'Authorization': `Bearer ${auth.user.token}`
+      }
     };
 
     fetch(`http://localhost:8080/api/store/${storeId}`, init)
@@ -44,46 +46,46 @@ function Stores() {
   };
 
   return (
-    <div>
-      <h2 className="mt-5">List of Stores</h2>
+    <div className="home-page">
+      <h2 className="sub-title">Stores</h2>
       <ErrorMessages errorList={errorList} />
-      <table className="table">
+      {auth.user && auth.user.hasRole("ADMIN") &&
+      <Link className="ui primary button add-button" to="/stores/add">Add New Store</Link>}
+      <table className="ui celled table table-margin">
         <thead>
           <tr>
-            <Link to="/stores/add">Add New Store</Link>
-          </tr>
-          <tr>
-            <th scope="col">ID</th>
             <th scope="col">Address</th>
             <th scope="col">City</th>
             <th scope="col">State</th>
             <th scope="col">Postal Code</th>
             <th scope="col">Phone Number</th>
             <th scope="col">&nbsp;</th>
+            <th scope="col">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
           {stores.map((s) => (
             <tr key={s.storeId}>
-              <td>{s.storeId}</td>
-              <td>{s.address}</td>
-              <td>{s.city}</td>
-              <td>{s.state}</td>
-              <td>{s.postalCode}</td>
-              <td>{s.phone}</td>
+              <td data-label="Address">{s.address}</td>
+              <td data-label="City">{s.city}</td>
+              <td data-label="State">{s.state}</td>
+              <td data-label="Postal Code">{s.postalCode}</td>
+              <td data-label="Phone Number">{s.phone}</td>
               <td>
-                <Link to={`/stores/edit/${s.storeId}`}>Edit</Link>
+              {auth.user && auth.user.hasRole("ADMIN") &&
+                <Link className="ui primary button" to={`/stores/edit/${s.storeId}`}>Edit</Link>}
               </td>
               <td>
-                <button type="button" onClick={() => handleDelete(s.storeId)}>
+              {auth.user && auth.user.hasRole("ADMIN") &&
+                <button className="ui primary button" type="button" onClick={() => handleDelete(s.storeId)}>
                   Delete
-                </button>
+                </button>}
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <Link to="/">
+      <Link className="ui secondary button" to="/">
         Go Back
       </Link>
     </div>

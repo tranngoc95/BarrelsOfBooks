@@ -69,33 +69,43 @@ function Genres() {
             <div>
                 <h2>Genres List</h2>
                 <ErrorMessages errorList={errorList}/>
-                <Link to='./genres/add'>Add New Genre</Link>
-                <table>
+                <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>
+                <table className="ui celled table">
                     <thead>
                         <tr>
-                            <th>Genre</th>
-                            <th>Description</th>
+                            <th scope="col">Genre</th>
+                            <th scope="col">Description</th>
                             {button &&
+                            <>
                                 <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                </>
                             }
                         </tr>
                     </thead>
                     <tbody>
                         {genres.map(genre => (
                             <tr key={genre.genreId}>
-                                <td>{genre.name}</td>
-                                <td>{genre.description}</td>
+                                <td data-label="Genre">{genre.name}</td>
+                                <td data-label="Description">{genre.description}</td>
                                 {button &&
+                                <>
                                     <td>
-                                        <Link to={`/genres/edit/${genre.genreId}`}>Update</Link>
-                                        <button type="button" onClick={() => deleteGenre(genre)}>Delete</button>
+                                        <Link className="ui primary button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
                                     </td>
+                                    <td>
+                                         <button className="ui primary button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
+                                    </td>
+                                    </>
                                 }
                             </tr>
                         ))
                         }
                     </tbody>
                 </table>
+                <Link className="ui secondary button" to="/">
+      Go Back
+    </Link>
             </div>
         </>
     );

@@ -298,10 +298,11 @@ setSelectedGenres(selectedGenres);
 
   return (
     <div>
-      <h1>edit book</h1>
+      <h1>Edit Book</h1>
+      <Link className="ui secondary button back-form-button" to="/books">Go Back</Link>
       <ErrorMessages errorList={errorList} />
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form className="ui form" onSubmit={handleSubmit}>
+        <div className="field">
           <label htmlFor="title">Title</label>
           <input
             type="text"
@@ -311,7 +312,7 @@ setSelectedGenres(selectedGenres);
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="description">Description</label>
           <textarea
             type="text"
@@ -322,7 +323,7 @@ setSelectedGenres(selectedGenres);
           />
         </div>
 
-        <div>
+        <div className="field">
           <label htmlFor="author">Author</label>
           <input
             type="text"
@@ -333,7 +334,7 @@ setSelectedGenres(selectedGenres);
           />
         </div>
 
-        <div>
+        <div className="field">
           <label htmlFor="price">Price $</label>
           <input
             type="number"
@@ -345,7 +346,7 @@ setSelectedGenres(selectedGenres);
             onChange={handleChange}
           />
         </div>
-        <div>
+        <div className="field">
           <label htmlFor="quantity">Quantity</label>
           <input
             type="number"
@@ -358,9 +359,9 @@ setSelectedGenres(selectedGenres);
         </div>
 
         <div>
-          <h3>Genres</h3>
+          <h3 className="form-title">Genres</h3>
           {genres.map((g) => (
-            <div key={g.genreId}>
+            <div className="ui checkbox" key={g.genreId}>
               <input
                 type="checkbox"
                 value={g.genreId}
@@ -375,10 +376,10 @@ setSelectedGenres(selectedGenres);
         </div>
 
         <div>
-          <h3>Stores</h3>
+          <h3 className="form-title">Stores</h3>
           {stores.map((s) => (
             <div>
-              <div key={s.storeId}>
+              <div className="ui checkbox check-store" key={s.storeId}>
                 <input
                   type="checkbox"
                   value={s.storeId}
@@ -392,8 +393,8 @@ setSelectedGenres(selectedGenres);
                 />
                 <label htmlFor={s.address}>{s.address}</label>
               </div>
-              <div>
-                <label htmlFor={s.storeId}>Quantity</label>
+              <div className="field">
+                <label className="store-quantity" htmlFor={s.storeId}>Quantity</label>
                 <input
                   type="number"
                   min="0"
@@ -412,12 +413,9 @@ setSelectedGenres(selectedGenres);
         </div>
 
         <div>
-          <button type="submit">Submit</button>
+          <button className="ui primary button form-submit-button" type="submit">Submit</button>
         </div>
       </form>
-      <Link className="btn btn-warning" to="/books">
-        Go Back
-      </Link>
     </div>
   );
 }

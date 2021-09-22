@@ -19,7 +19,7 @@ function GenreForm({ genre, handleOnChange, errorList, action }) {
 		<>
 			<ErrorMessages errorList={errorList} />
 			<form ref={formElement}>
-				<div>
+				<div> 
 					<label htmlFor="name">Name:</label>
 					<input id="name" name="name" value={genre.name} onChange={handleOnChange} type="text" required></input>
 				</div>

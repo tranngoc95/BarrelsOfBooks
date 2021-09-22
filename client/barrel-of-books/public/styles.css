@@ -1,0 +1,69 @@
+.home-button {
+    background-color: seashell !important;
+    margin-top: 4em !important;
+    margin-left: 4em !important;
+    color: black !important;
+    border: 3px solid black !important;
+}
+
+.add-button {
+    background-color:#6209D9 !important;
+}
+
+.table {
+margin-left: auto !important;
+margin-right: auto !important;
+width: 80% !important;
+ 
+}
+
+.form {
+    width: 50% !important;
+    margin-left: auto !important;
+    margin-right: auto !important; 
+}
+
+.checkbox {
+    margin-right: 1em;
+}
+
+.store-quantity {
+    margin-top: 2em !important;
+}
+
+
+.check-store {
+    margin-top: 2em !important;
+}
+
+.form-title {
+    margin-top: 2em !important;
+}
+
+.form-submit-button {
+    margin-top: 2em !important;
+    margin-bottom: 5em !important;
+}
+
+.back-form-button {
+    margin-right: 60em !important;
+}
+
+.home-page {
+background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('bookstore.jpg');
+padding-bottom: 60em !important;
+}
+
+.main-title {
+    font-size: 100px;
+    background-color: seashell;
+}
+
+.sub-title {
+    font-size: 60px;
+    background-color: seashell;
+}
+
+.nav {
+    background-color: seashell;
+}
