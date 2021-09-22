@@ -1,5 +1,7 @@
 import { useState } from "react";
 import {useHistory, Link} from "react-router-dom";
+import ErrorMessages from "./ErrorMessages";
+import AuthContext from '../AuthContext';
 function AddStore() {
   const [store, setStore] = useState({
     address: "",
@@ -10,6 +12,7 @@ function AddStore() {
 });
   const[errorList, setErrorList] = useState([]);
   const history = useHistory();
+  const auth = useContext(AuthContext);
 
   const handleChange = (event) => {
       const newStore = {...store};
@@ -25,7 +28,7 @@ function AddStore() {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
-              'Authorization': 'Bearer ${auth.user.token}'
+              'Authorization': `Bearer ${auth.user.token}`
           },
           body: JSON.stringify(newStore),
       };
@@ -55,13 +58,7 @@ function AddStore() {
   return (
     <div>
       <h1>add new store</h1>
- {errorList.length > 0 ? (
-    <div>
-        {errorList.map((error) => (
-        <li key={error}>{error}</li>
-    ))}
-  </div>
-) : null}
+      <ErrorMessages errorList={errorList} />
       <form onSubmit = {handleSubmit}>
         <div>
           <label htmlFor="address">Address</label>

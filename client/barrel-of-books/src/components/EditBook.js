@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useHistory, Link, useParams } from "react-router-dom";
+import ErrorMessages from "./ErrorMessages";
+import AuthContext from '../AuthContext';
 
-// 'Authorization': 'Bearer ${auth.user.token}'
 // reponse.status!==403
 function EditBook() {
   const [book, setBook] = useState({
@@ -20,6 +21,7 @@ function EditBook() {
   const [errorList, setErrorList] = useState([]);
   const history = useHistory();
   const { id } = useParams();
+  const auth = useContext(AuthContext);
 
 
 useEffect(() => {
@@ -159,7 +161,7 @@ setSelectedGenres(selectedGenres);
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer ${auth.user.token}'
+        'Authorization': `Bearer ${auth.user.token}`
       },
       body: JSON.stringify(newBook),
     };
@@ -182,7 +184,6 @@ setSelectedGenres(selectedGenres);
         if (!data) {
           handleDeleteStoreBooks();
         } else {
-          console.log(data);
           setErrorList(data);
         }
       })
@@ -192,7 +193,7 @@ setSelectedGenres(selectedGenres);
   const handleDeleteStoreBooks = () => {
     const init = {
       method: "DELETE",
-      'Authorization': 'Bearer ${auth.user.token}'
+      'Authorization': `Bearer ${auth.user.token}`
     };
 
     fetch(`http://localhost:8080/api/store-book/${id}`, init)
@@ -221,7 +222,7 @@ setSelectedGenres(selectedGenres);
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ${auth.user.token}'
+          'Authorization': `Bearer ${auth.user.token}`
         },
         body: JSON.stringify(storeBook),
       };
@@ -240,14 +241,14 @@ setSelectedGenres(selectedGenres);
   const handleDeleteGenreBooks = () => {
     const init = {
       method: "DELETE",
-      'Authorization': 'Bearer ${auth.user.token}'
+      'Authorization': `Bearer ${auth.user.token}`
     };
     fetch(`http://localhost:8080/api/genre-book/${id}`, init)
       .then((response) => {
         if (response.status === 204 || response.status === 200) {
           return null;
         } else if (response.status === 404 || response.status === 400) {
-          return "ID not found";
+          return null;
         }
         return Promise.reject("Something else went wrong");
       })
@@ -268,7 +269,7 @@ setSelectedGenres(selectedGenres);
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ${auth.user.token}'
+          'Authorization': `Bearer ${auth.user.token}`
         },
         body: JSON.stringify(genre),
       };
@@ -298,14 +299,7 @@ setSelectedGenres(selectedGenres);
   return (
     <div>
       <h1>edit book</h1>
-      {errorList.length > 0 ? (
-        <div>
-          {errorList.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </div>
-  
-      ) : null}
+      <ErrorMessages errorList={errorList} />
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="title">Title</label>

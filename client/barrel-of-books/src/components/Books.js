@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-
+import ErrorMessages from "./ErrorMessages";
+import AuthContext from '../AuthContext';
 function Books() {
   const [books, setBooks] = useState([]);
   const [errorList, setErrorList] = useState([]);
+  const auth = useContext(AuthContext);
 
   const getList = () => {
     return fetch("http://localhost:8080/api/book")
@@ -18,7 +20,7 @@ function Books() {
   const handleDelete = (bookId) => {
     const init = {
         method: "DELETE",
-        'Authorization': 'Bearer ${auth.user.token}'
+        'Authorization': `Bearer ${auth.user.token}`
       };
   
       fetch(`http://localhost:8080/api/book/${bookId}`, init)
@@ -43,13 +45,7 @@ function Books() {
   return (
     <div>
     <h2 className="mt-5">List of Books</h2>
-    {errorList.length > 0 ? (
-      <div>
-        {errorList.map((error) => (
-          <li key={error}>{error}</li>
-        ))}
-      </div>
-    ) : null}
+    <ErrorMessages errorList={errorList} />
     <table className="table">
       <thead>
         <tr>

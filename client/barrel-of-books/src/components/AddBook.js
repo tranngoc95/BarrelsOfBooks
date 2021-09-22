@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {useHistory, Link} from "react-router-dom";
-
+import ErrorMessages from "./ErrorMessages";
+import AuthContext from '../AuthContext';
 function AddBook() {
 const [book,setBook] = useState({
     title: "",
@@ -16,6 +17,7 @@ const[selectedGenres, setSelectedGenres] = useState([]);
 const[stores, setStores] = useState([]);
 const[errorList, setErrorList] = useState([]);
 const history = useHistory();
+const auth = useContext(AuthContext);
 
 
 
@@ -115,7 +117,7 @@ const handleSubmit = (event) => {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ${auth.user.token}'
+          'Authorization': `Bearer ${auth.user.token}`
       },
       body: JSON.stringify(newBook),
   };
@@ -155,7 +157,7 @@ function handleGenreBook(bookId) {
      method: "POST",
      headers: {
          "Content-Type": "application/json",
-         'Authorization': 'Bearer ${auth.user.token}'
+         'Authorization': `Bearer ${auth.user.token}`
      },
      body: JSON.stringify(genreBook),
  };
@@ -192,7 +194,7 @@ function handleStoreBook(bookId) {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ${auth.user.token}'
+          'Authorization': `Bearer ${auth.user.token}`
       },
       body: JSON.stringify(storeBook),
   };
@@ -211,13 +213,7 @@ function handleStoreBook(bookId) {
 return (
     <div>
     <h1>add new book</h1>
-{errorList.length > 0 ? (
-  <div>
-      {errorList.map((error) => (
-      <li key={error}>{error}</li>
-  ))}
-</div>
-) : null}
+    <ErrorMessages errorList={errorList} />
     <form onSubmit = {handleSubmit}>
       <div>
         <label htmlFor="title">Title</label>

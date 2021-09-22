@@ -1,8 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import ErrorMessages from "./ErrorMessages";
+import AuthContext from '../AuthContext';
 function Stores() {
   const [stores, setStores] = useState([]);
   const [errorList, setErrorList] = useState([]);
+  const auth = useContext(AuthContext);
+
 
   const getList = () => {
     return fetch("http://localhost:8080/api/store")
@@ -17,7 +21,7 @@ function Stores() {
   const handleDelete = (storeId) => {
     const init = {
       method: "DELETE",
-      'Authorization': 'Bearer ${auth.user.token}'
+      'Authorization': `Bearer ${auth.user.token}`
     };
 
     fetch(`http://localhost:8080/api/store/${storeId}`, init)
@@ -42,13 +46,7 @@ function Stores() {
   return (
     <div>
       <h2 className="mt-5">List of Stores</h2>
-      {errorList.length > 0 ? (
-        <div>
-          {errorList.map((error) => (
-            <li key={error}>{error}</li>
-          ))}
-        </div>
-      ) : null}
+      <ErrorMessages errorList={errorList} />
       <table className="table">
         <thead>
           <tr>
