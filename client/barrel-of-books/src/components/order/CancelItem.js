@@ -2,13 +2,15 @@ import { useState, useEffect, useContext } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 
 import ErrorMessages from '../ErrorMessages';
+import AuthContext from '../../AuthContext';
 
 function CancelItem() {
 
     const [errorList, setErrorList] = useState([]);
     const [item, setItem] = useState(null);
+    
     const URL = 'http://localhost:8080/api/cart-item';
-
+    const auth = useContext(AuthContext);
     const history = useHistory();
 
     const { id } = useParams();
@@ -16,7 +18,7 @@ function CancelItem() {
     useEffect(() => {
         const init = {
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -26,6 +28,8 @@ function CancelItem() {
                     return response.json();
                 } else if (response.status === 404) {
                     return [`Item with id ${id} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to access this record.']
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })
@@ -44,7 +48,7 @@ function CancelItem() {
         const init = {
             method: "Delete",
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -54,6 +58,8 @@ function CancelItem() {
                     return null;
                 } else if (response.status === 404) {
                     return [`Item with id ${id} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to make changes to this record.'];
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })
@@ -73,8 +79,8 @@ function CancelItem() {
             <ErrorMessages errorList={errorList} />
             {item && (
                 <>
-                    <h5>item.book.title</h5>
-
+                    <h5>{item.book.title}</h5>
+                    <div>Quantity: {item.quantity}</div>
                     <hr />
                     <div>Are you sure you want to cancel this item?</div>
                     <div >

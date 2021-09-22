@@ -14,16 +14,15 @@ function AddGenre() {
 	const [genre, setGenre] = useState(emptyGenre);
 	const [errorList, setErrorList] = useState([]);
 
+	const URL = 'http://localhost:8080/api/genre';
+	const auth = useContext(AuthContext);
+	const history = useHistory();
+
 	const handleOnChange = (event) => {
 		const newGenre = { ...genre };
 		newGenre[event.target.name] = event.target.value;
 		setGenre(newGenre);
 	};
-
-	const auth = useContext(AuthContext);
-	const URL = 'http://localhost:8080/api/genre';
-
-	const history = useHistory();
 
 	const addGenre = () => {
 
@@ -38,6 +37,9 @@ function AddGenre() {
 
 		fetch(URL, init)
 			.then(response => {
+				if(response.status === 403) {
+					return ['You are not authorized to make changes to this record.'];
+				}
 				if (response.status !== 400 && response.status !== 201) {
 					return Promise.reject("Something went wrong. :(")
 				}

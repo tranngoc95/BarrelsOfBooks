@@ -49,6 +49,8 @@ function Genres() {
                     return null;
                 } else if (response.status === 404) {
                     return [`Genre with id ${genre.genreId} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to make changes to this record.'];
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })

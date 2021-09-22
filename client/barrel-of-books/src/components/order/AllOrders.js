@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import AuthContext from '../../AuthContext';
-import ErrorMessages from '../ErrorMessages';
 import EachOrder from './EachOrder';
+import ErrorMessages from '../ErrorMessages';
 
 function AllOrders() {
 
     const [orders, setOrders] = useState([]);
-    const auth = useContext(AuthContext);
+    const [errorList, setErrorList] = useState([]);
 
     const URL = 'http://localhost:8080/api/transaction';
+    const auth = useContext(AuthContext);
 
     const getList = () => {
         const init = {
@@ -30,11 +30,12 @@ function AllOrders() {
             .catch(error => console.log("Error", error));
     }
 
-    useEffect(getList, []);
+    useEffect(getList, [auth.user.token]);
 
     return (
         <>
             <h2>All Orders</h2>
+            <ErrorMessages errorList={errorList}/>
             <table>
                 <thead>
                     <tr>
@@ -47,7 +48,7 @@ function AllOrders() {
                 </thead>
                 <tbody>
                     {orders.map(order => (
-                        <EachOrder key={order.transactionId} order={order} getList={getList} auth={auth} />
+                        <EachOrder key={order.transactionId} order={order} getList={getList} auth={auth} setErrorList={setErrorList}/>
                     ))
                     }
                 </tbody>

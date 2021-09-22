@@ -2,13 +2,15 @@ import { useState, useEffect, useContext } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom';
 
 import ErrorMessages from '../ErrorMessages';
+import AuthContext from '../../AuthContext';
 
 function CancelOrder() {
 
     const [errorList, setErrorList] = useState([]);
     const [order, setOrder] = useState(null);
+    
     const URL = 'http://localhost:8080/api/transaction';
-
+    const auth = useContext(AuthContext);
     const history = useHistory();
 
     const { id } = useParams();
@@ -16,7 +18,7 @@ function CancelOrder() {
     useEffect(() => {
         const init = {
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -26,6 +28,8 @@ function CancelOrder() {
                     return response.json();
                 } else if (response.status === 404) {
                     return [`Order with id ${id} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to access this record.']
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })
@@ -44,7 +48,7 @@ function CancelOrder() {
         const init = {
             method: "Delete",
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -54,6 +58,8 @@ function CancelOrder() {
                     return null;
                 } else if (response.status === 404) {
                     return [`Order with id ${id} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to make changes to this record.'];
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })
@@ -78,6 +84,7 @@ function CancelOrder() {
                         {order.books.map(item => (
                             <div>
                                 <h6>{item.book.title}</h6>
+                                <div>Quantity: {item.quantity}</div>
                             </div>
                         ))}
                         <div>Total: ${order.total}</div>

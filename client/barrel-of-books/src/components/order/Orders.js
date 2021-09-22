@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AuthContext from '../../AuthContext';
 
+import AuthContext from '../../AuthContext';
 
 function Orders() {
 
     const [orders, setOrders] = useState([]);
-    const auth = useContext(AuthContext);
 
     const URL = 'http://localhost:8080/api/transaction';
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
 

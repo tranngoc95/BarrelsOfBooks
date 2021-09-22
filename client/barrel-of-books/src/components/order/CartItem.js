@@ -1,6 +1,8 @@
-import { useState, useRef } from "react";
+import { useState, useContext } from "react";
+
 import ErrorMessages from "../ErrorMessages";
-function CartItem({ item, getList }) {
+
+function CartItem({ item, getList, auth }) {
 
     const [quantity, setQuantity] = useState(item.quantity);
     const [errorList, setErrorList] = useState([]);
@@ -31,7 +33,7 @@ function CartItem({ item, getList }) {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             },
             body: JSON.stringify(changedItem)
         };
@@ -42,6 +44,8 @@ function CartItem({ item, getList }) {
                     return null;
                 } else if (response.status === 404) {
                     return [`Item with id ${item.cartItemId} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to make changes to this record.'];
                 } else if (response.status === 400) {
                     return response.json();
                 }
@@ -61,7 +65,7 @@ function CartItem({ item, getList }) {
         const init = {
             method: "Delete",
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -71,6 +75,8 @@ function CartItem({ item, getList }) {
                     return null;
                 } else if (response.status === 404) {
                     return [`Item with id ${item.cartItemId} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to make changes to this record.'];
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import ErrorMessages from '../ErrorMessages';
 import CartItem from './CartItem';
@@ -17,9 +17,9 @@ function Cart() {
     const [cart, setCart] = useState(emptyCart);
     const [errorList, setErrorList] = useState([]);
 
-    const history = useHistory()
     const URL = 'http://localhost:8080/api/cart-item';
     const auth = useContext(AuthContext);
+    const history = useHistory()
 
     const getList = () => {
 
@@ -55,7 +55,7 @@ function Cart() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             },
             body: JSON.stringify(order)
         };
@@ -84,7 +84,7 @@ function Cart() {
                 <ErrorMessages errorList={errorList} />
                 <div>
                     {cart.books.map(item => (
-                        <CartItem key={item.cartItemId} item={item} getList={getList}/>
+                        <CartItem key={item.cartItemId} item={item} getList={getList} auth={auth}/>
                     ))}
                 </div>
             </div>

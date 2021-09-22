@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from 'react';
 import { useHistory, useParams } from "react-router-dom";
 
 import GenreForm from "./GenreForm";
-
 import AuthContext from '../../AuthContext';
 
 function EditGenre() {
@@ -15,8 +14,8 @@ function EditGenre() {
 	const [errorList, setErrorList] = useState([]);
 	const [genre, setGenre] = useState(emptyGenre);
 
-	const auth = useContext(AuthContext);
 	const URL = 'http://localhost:8080/api/genre';
+	const auth = useContext(AuthContext);
 	const history = useHistory();
 
 	const { id } = useParams();
@@ -30,7 +29,6 @@ function EditGenre() {
 
 		fetch(URL + `/${id}`, init)
 			.then(response => {
-				console.log('response: ' + response);
 				if (response.status === 200) {
 					return response.json();
 				} else if (response.status === 404) {
@@ -39,7 +37,6 @@ function EditGenre() {
 				return Promise.reject("Something went wrong, sorry :(");
 			})
 			.then(data => {
-				console.log(data);
 				if (data.genreId) {
 					setGenre(data);
 				} else {
@@ -72,7 +69,9 @@ function EditGenre() {
 					return null;
 				} else if (response.status === 404) {
 					return [`Genre with id ${id} does not exist.`];
-				} else if (response.status === 400) {
+				} else if (response.status === 403) {
+					return ['You are not authorized to make changes to this record.'];
+				} else if (response.status === 400 ) {
 					return response.json();
 				}
 				return Promise.reject("Something went wrong, sorry :(");

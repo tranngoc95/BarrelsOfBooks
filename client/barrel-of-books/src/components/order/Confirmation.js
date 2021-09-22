@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import ErrorMessages from '../ErrorMessages';
+import AuthContext from '../../AuthContext';
 
 function Confirmation() {
 
     const { id } = useParams();
     const [order, setOrder] = useState(null);
     const [errorList, setErrorList] = useState([]);
+
     const URL = 'http://localhost:8080/api/transaction';
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
         const init = {
             headers: {
-                'Authorization': 'Bearer ${auth.user.token}'
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -24,6 +27,8 @@ function Confirmation() {
                     return response.json();
                 } else if (response.status === 404) {
                     return [`Order with id ${id} does not exist.`];
+                } else if (response.status === 403) {
+                    return ['You are not authorized to access this record.'];
                 }
                 return Promise.reject("Something went wrong, sorry :(");
             })
@@ -50,6 +55,8 @@ function Confirmation() {
                     {order.books.map(item => (
                         <div>
                             <h6>{item.book.title}</h6>
+                            <div>by {item.book.author}</div>
+                            <div>Quantity: {item.quantity}</div>
                         </div>
                     ))}
                     {order.books.employeeDiscount &&
