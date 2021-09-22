@@ -63,34 +63,43 @@ function Genres() {
                 <h2>Genres List</h2>
                 <ErrorMessages errorList={errorList} />
                 {auth.user && auth.user.hasRole("ADMIN") &&
-                    <Link className="ui blue button" to='./genres/add'>Add New Genre</Link>}
+                    <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
                 <table className="ui selectable celled table">
                     <thead>
                         <tr>
-                            <th>Genre</th>
-                            <th>Description</th>
+                            <th scope="col">Genre</th>
+                            <th scope="col">Description</th>
                             {auth.user && auth.user.hasRole("ADMIN") &&
-                                <th>&nbsp;</th>
+                                <>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
+                                </>
                             }
                         </tr>
                     </thead>
                     <tbody>
                         {genres.map(genre => (
                             <tr key={genre.genreId}>
-                                <td>{genre.name}</td>
-                                <td>{genre.description}</td>
-                                {auth.user && auth.user.hasRole("ADMIN") &&
-                                    <td>
-                                        <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
-                                        <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
-                                    </td>
+                                <td data-label="Genre">{genre.name}</td>
+                                <td data-label="Description">{genre.description}</td>
+                                {
+                                    auth.user && auth.user.hasRole("ADMIN") &&
+                                    <>
+                                        <td>
+                                            <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
+                                            <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
+                                        </td>
+                                    </>
                                 }
                             </tr>
                         ))
                         }
-                    </tbody>
-                </table>
-            </div>
+                    </tbody >
+                </table >
+                <Link className="ui secondary button" to="/">
+                    Go Back
+                </Link>
+            </div >
         </>
     );
 

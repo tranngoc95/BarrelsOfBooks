@@ -2,20 +2,13 @@ import { Link } from "react-router-dom";
 
 function Home() {
   return (
-    <div>
-      <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
-      <div className="col">
-        <Link to="/books">Books</Link>      
-      </div>
-      <div className="col">
-      <Link to="/stores">Stores</Link> 
-      </div>
-      <div className="col">
-      <Link to="/genres">Genres</Link> 
-      </div>
-      <div className="col">
-      <Link to="/cart">Cart</Link> 
-      </div>
+    <div className ="home-page">
+      <h1 className="main-title">Barrel Of Books</h1>
+      {/* <Link className="ui primary button home-button" to="/books">Books</Link>      
+      <Link className="ui primary button home-button" to="/stores">Stores</Link> 
+      <Link className="ui primary button home-button" to="/genres">Genres</Link> 
+      <Link className="ui primary button home-button" to="/cart">Cart</Link>  */}
+
     </div>
   )
 }

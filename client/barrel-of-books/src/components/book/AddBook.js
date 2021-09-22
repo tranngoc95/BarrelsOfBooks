@@ -212,37 +212,38 @@ function handleStoreBook(bookId) {
 
 return (
     <div>
-    <h1>add new book</h1>
+    <h1>Add New Book</h1>
+    <Link className="ui secondary button back-form-button" to="/books">Go Back</Link>
     <ErrorMessages errorList={errorList} />
-    <form onSubmit = {handleSubmit}>
-      <div>
+    <form className="ui form" onSubmit = {handleSubmit}>
+      <div className="field">
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" value={book.title} onChange={handleChange}/>
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="description">Description</label>
         <textarea type="text" id="description" name="description" value={book.description} onChange={handleChange}/>
       </div>
 
-      <div>
+      <div className="field">
         <label htmlFor="author">Author</label>
         <input type="text" id="author" name="author" value={book.author} onChange={handleChange}/>
       </div>
 
-      <div>
+      <div className="field">
         <label htmlFor="price">Price $</label>
         <input type="number" min="1" step="any" id="price" name="price" value={book.price} onChange={handleChange}/>
       </div>
-      <div>
+      <div className="field">
         <label htmlFor="quantity">Quantity</label>
         <input type="number" min="1" id="quantity" name="quantity" value={book.quantity} onChange={handleChange}/>
       </div>
 
 
       <div>
-        <h3>Genres</h3>
+        <h3 className="form-title" >Genres</h3>
         {genres.map((g) => (
-          <div key={g.genreId}>
+          <div className="ui checkbox" key={g.genreId}>
             <input type="checkbox" value={g.genreId} id={g.name} name="genres"
               checked={selectedGenres.includes(g)} onChange={handleChange} />
             <label htmlFor={g.name}>{g.name}</label>
@@ -252,29 +253,26 @@ return (
 
 
       <div>
-        <h3>Stores</h3>
+        <h3 className="form-title" >Stores</h3>
         {stores.map((s) => (
           <div>
-          <div key={s.storeId}>
+          <div className="ui checkbox check-store" key={s.storeId}>
             <input type="checkbox" value={s.storeId} id={s.address} name="stores"
               checked={book.stores.find((store) => store.storeId === s.storeId) !== undefined} onChange={handleChange} />
             <label htmlFor={s.address}>{s.address}</label> 
           </div>
-          <div>
-            <label htmlFor={s.storeId}>Quantity</label>
+          <div className="field">
+            <label className="store-quantity" htmlFor={s.storeId}>Quantity</label>
             <input type="number" min="0" id={s.storeId} name="storeQuantity" value={s.quantity} onChange={handleChange} 
                 disabled = {book.stores.find((store) => store.storeId === s.storeId) === undefined}/>
           </div>
           </div>
         ))}
       </div>
-
-
       <div>
-          <button type="submit">Submit</button>
+          <button className="ui primary button form-submit-button" type="submit">Submit</button>
       </div>
     </form>
-    <Link className="btn btn-warning" to="/books">Go Back</Link>
   </div>
 )
 
