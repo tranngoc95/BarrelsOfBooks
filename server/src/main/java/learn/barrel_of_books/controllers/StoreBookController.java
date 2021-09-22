@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000","http://127.0.0.1:5500"})
 @RequestMapping("/api/store-book")
 public class StoreBookController {
 
@@ -51,14 +52,14 @@ public class StoreBookController {
     }
 
 
-    @DeleteMapping("/{bookId}/{storeId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int storeId) {
-        Result<StoreBook> result = service.delete(storeId,bookId);
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Object> delete(@PathVariable int bookId) {
+        Result<StoreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ErrorResponse.build(result);
     }
 
 }

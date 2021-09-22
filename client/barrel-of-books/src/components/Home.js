@@ -5,16 +5,16 @@ return (
     <div>
     <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
       <div className="col">
-        <Link  to="/api/books">Books</Link>      
+        <Link to="/books">Books</Link>      
       </div>
       <div className="col">
-      <Link  to="/api/stores">Stores</Link> 
+      <Link to="/stores">Stores</Link> 
       </div>
       <div className="col">
-      <Link  to="/api/genres">Genres</Link> 
+      <Link to="/genres">Genres</Link> 
       </div>
       <div className="col">
-      <Link  to="/api/cart">Cart</Link> 
+      <Link to="/cart">Cart</Link> 
       </div>
     </div>
 )

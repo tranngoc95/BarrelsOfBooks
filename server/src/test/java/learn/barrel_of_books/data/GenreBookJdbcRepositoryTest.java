@@ -48,13 +48,13 @@ class GenreBookJdbcRepositoryTest {
 
     @Test
     void shouldDelete() {
-        boolean success = repository.delete(3,1);
+        boolean success = repository.delete(3);
         assertTrue(success);
     }
 
     @Test
     void shouldNotDelete() {
-        boolean success = repository.delete(4,4);
+        boolean success = repository.delete(4);
         assertFalse(success);
     }
 }

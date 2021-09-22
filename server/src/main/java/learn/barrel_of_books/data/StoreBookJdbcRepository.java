@@ -42,19 +42,6 @@ public class StoreBookJdbcRepository implements StoreBookRepository {
 
      return template.update(sql,storeBook.getStore().getStoreId(),storeBook.getBookId(),storeBook.getQuantity()) > 0;
 
-
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//        int rowsAffected = template.update(connection -> {
-//            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//            ps.setInt(1,storeBook.getStore().getStoreId());
-//            ps.setInt(2,storeBook.getBookId());
-//            ps.setInt(3,storeBook.getQuantity());
-//            return ps;
-//        },keyHolder);
-//
-//        if(rowsAffected <= 0) {
-//            return null;
-//        }
     }
 
 
@@ -68,11 +55,10 @@ public class StoreBookJdbcRepository implements StoreBookRepository {
     }
 
     @Override
-    public boolean delete(int store_id, int book_id) {
+    public boolean delete(int book_id) {
         final String sql = "delete from store_book "
-                            + "where store_id = ? "
-                            + "and book_id = ?;";
-        return template.update(sql,store_id,book_id) > 0;
+                            + "where book_id = ?;";
+        return template.update(sql,book_id) > 0;
     }
 
 

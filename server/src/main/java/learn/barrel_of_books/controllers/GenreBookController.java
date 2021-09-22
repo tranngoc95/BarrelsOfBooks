@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000","http://127.0.0.1:5500"})
 @RequestMapping("/api/genre-book")
 public class GenreBookController {
 
@@ -35,9 +36,9 @@ public class GenreBookController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{bookId}/{genreId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId, @PathVariable int genreId) {
-        Result<GenreBook> result = service.delete(bookId,genreId);
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Void> delete(@PathVariable int bookId) {
+        Result<GenreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
