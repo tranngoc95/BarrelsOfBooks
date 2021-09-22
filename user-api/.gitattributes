@@ -1,0 +1,4 @@
+* text=auto
+
+maven-wrapper.properties eol=lf
+mvnw text eol=lf

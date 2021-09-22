@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  api:
+    build: ./server
+    image: dev10-user-api-server
+    environment:
+      DB_URL: jdbc:mysql://db:3306/dev10_users
+      DB_USERNAME: root
+      DB_PASSWORD: top-secret-password
+      JWT_SECRET_KEY: de8a26d0-f6e8-4470-91d0-ba7a44391281
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  db:
+    build: ./database
+    image: dev10-user-api-db
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:

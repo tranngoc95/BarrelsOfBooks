@@ -1,0 +1,96 @@
+@hostname = localhost
+@port = 5000
+@host = {{hostname}}:{{port}}
+@baseurl = http://{{host}}
+
+### Should return a 403 status code
+
+POST {{baseurl}}/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "user"
+}
+
+### Should return a 200 status code with a JWT in the response body
+
+POST {{baseurl}}/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "johnsmith",
+    "password": "P@ssw0rd!"
+}
+
+### Should return a 400 status code with the validation messages in the response body
+
+POST {{baseurl}}/create_account HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+### Should return a 201 status code with the new user's ID in the response body
+
+POST {{baseurl}}/create_account HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "smashdev",
+  "password": "Asdff88f67!"
+}
+
+### Should return a 200 status code with a JWT in the response body
+
+POST {{baseurl}}/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "smashdev",
+    "password": "Asdff88f67!"
+}
+
+### Should return a 403 status code
+
+POST {{baseurl}}/refresh_token HTTP/1.1
+Content-Type: application/json
+
+{
+  "jwt_token": ""
+}
+
+### Should return a 200 status code with an refreshed token in the response body
+
+POST {{baseurl}}/refresh_token HTTP/1.1
+Content-Type: application/json
+
+{
+  "jwt_token": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJhYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRyZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6IkFETUlOIiwiZXhwIjoxNjI5MTU5Nzg3fQ.K7QuemrU4Eh62mXPpHFloUbHHzi1QzOie5ZfdL1iePc"
+}
+
+### Should return a 201 status code with the new user's ID in the response body
+
+POST {{baseurl}}/create_account HTTP/1.1
+Content-Type: application/json
+
+{
+  "username": "smashdev2",
+  "password": "Asdff88f67!",
+  "first_name": "James",
+  "last_name": "Churchill",
+  "email_address": "james@churchill.com",
+  "mobile_phone": "555-555-5555"
+}
+
+### Should return a 200 status code with a JWT in the response body
+
+POST {{baseurl}}/authenticate HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "smashdev2",
+    "password": "Asdff88f67!"
+}
