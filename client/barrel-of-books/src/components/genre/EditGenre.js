@@ -88,7 +88,7 @@ function EditGenre() {
 
 
 	return (
-		<div>
+		<div className="ui container">
 			<h3>Edit Genre</h3>
 			<GenreForm genre={genre} handleOnChange={handleOnChange} errorList={errorList} action={editGenre} />
 		</div>

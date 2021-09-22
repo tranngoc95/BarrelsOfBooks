@@ -12,16 +12,9 @@ function Genres() {
     const URL = 'http://localhost:8080/api/genre';
     const auth = useContext(AuthContext);
 
-    const button = true;
-
     const getList = () => {
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            }
-        }
 
-        fetch(URL, init)
+        fetch(URL)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Genres fetch failed.")
@@ -35,11 +28,11 @@ function Genres() {
     useEffect(getList, []);
 
     const deleteGenre = (genre) => {
-        
+
         const init = {
             method: "Delete",
             headers: {
-                'Authorization':`Bearer ${auth.user.token}`
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -66,19 +59,20 @@ function Genres() {
 
     return (
         <>
-            <div>
+            <div className="ui container">
                 <h2>Genres List</h2>
-                <ErrorMessages errorList={errorList}/>
-                <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>
-                <table className="ui celled table">
+                <ErrorMessages errorList={errorList} />
+                {auth.user && auth.user.hasRole("ADMIN") &&
+                    <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
+                <table className="ui selectable celled table">
                     <thead>
                         <tr>
                             <th scope="col">Genre</th>
                             <th scope="col">Description</th>
-                            {button &&
-                            <>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
+                            {auth.user && auth.user.hasRole("ADMIN") &&
+                                <>
+                                    <th>&nbsp;</th>
+                                    <th>&nbsp;</th>
                                 </>
                             }
                         </tr>
@@ -88,25 +82,24 @@ function Genres() {
                             <tr key={genre.genreId}>
                                 <td data-label="Genre">{genre.name}</td>
                                 <td data-label="Description">{genre.description}</td>
-                                {button &&
-                                <>
-                                    <td>
-                                        <Link className="ui primary button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
-                                    </td>
-                                    <td>
-                                         <button className="ui primary button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
-                                    </td>
+                                {
+                                    auth.user && auth.user.hasRole("ADMIN") &&
+                                    <>
+                                        <td>
+                                            <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
+                                            <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
+                                        </td>
                                     </>
                                 }
                             </tr>
                         ))
                         }
-                    </tbody>
-                </table>
+                    </tbody >
+                </table >
                 <Link className="ui secondary button" to="/">
-      Go Back
-    </Link>
-            </div>
+                    Go Back
+                </Link>
+            </div >
         </>
     );
 

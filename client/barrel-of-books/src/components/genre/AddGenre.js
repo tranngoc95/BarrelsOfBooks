@@ -56,7 +56,7 @@ function AddGenre() {
 	}
 
 	return (
-		<div>
+		<div className="ui container">
 			<h3>Add Genre</h3>
 			<GenreForm genre={genre} handleOnChange={handleOnChange} errorList={errorList} action={addGenre} />
 		</div>

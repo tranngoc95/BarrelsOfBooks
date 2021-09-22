@@ -29,6 +29,7 @@ import Book from './components/book/Book';
 import Books from "./components/book/Books";
 import AddBook from "./components/book/AddBook";
 import EditBook from "./components/book/EditBook";
+import BooksSearched from './components/book/BooksSearched';
 
 const GuestRoutes = [
   { path: "/", component: Home },
@@ -36,30 +37,30 @@ const GuestRoutes = [
   { path: "/register", component: Register },
   { path: "/books/each/:id", component: Book },
   { path: "/books", component: Books },
+  { path: "/books/search/:phrase", component: BooksSearched },
+  { path: "/genres", component: Genres },
   { path: "/stores", component: Stores }
 ]
 
 const UserRoutes = [
   { path: "/cart", component: Cart },
   { path: "/orders", component: Orders },
-  { path: "/stores", component: Stores },
   { path: "/orders/cancel/:id", component: CancelOrder },
   { path: "/orders/cancel/item/:id", component: CancelItem },
-  { path: "/orders/confirmation/:id", component: Confirmation },
-  { path: "/genres", component: Genres },
-  { path: "/genres/add", component: AddGenre },
-  { path: "/genres/edit/:id", component: EditGenre },
+  { path: "/orders/confirmation/:id", component: Confirmation }
 ]
 
 const ManagerRoutes = [
   { path: "/allorders", component: AllOrders },
-  { path: "/books/edit/:id", component: EditBook },
-  { path: "/books/add", component: AddBook }
+  { path: "/books/add/", component: AddBook },
+  { path: "/books/edit/:id", component: EditBook }
 ]
 
 const AdminRoutes = [
+  { path: "/stores/add", component: AddStore },
   { path: "/stores/edit/:id", component: EditStore },
-  { path: "/stores/add", component: AddStore }
+  { path: "/genres/add", component: AddGenre },
+  { path: "/genres/edit/:id", component: EditGenre }
 ]
 
 function App() {

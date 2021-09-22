@@ -10,9 +10,9 @@ function Book() {
 
     const [book, setBook] = useState(null);
     const [errorList, setErrorList] = useState([]);
-    const [find, setFind] = useState(true);
+    const [find, setFind] = useState(false);
     const [state, setState] = useState(null);
-    const [stores, setStores] = useState([]);
+    const [stores, setStores] = useState(null);
 
     const URL = 'http://localhost:8080/api/book';
     const auth = useContext(AuthContext);
@@ -50,8 +50,6 @@ function Book() {
                 quantity: 1
             }
 
-            console.log(item)
-
             const init = {
                 method: 'POST',
                 headers: {
@@ -72,7 +70,6 @@ function Book() {
                     return response.json();
                 })
                 .then(data => {
-                    console.log(data);
                     if (data.cartItemId) {
                         history.push('/cart');
                     } else {
@@ -95,6 +92,10 @@ function Book() {
             .catch(error => console.log("Error", error));
     }
 
+    const handleFind = () => {
+        setFind(true);
+    }
+
     return (
         <div>
             <ErrorMessages errorList={errorList} />
@@ -106,7 +107,7 @@ function Book() {
                     <div>{book.description}</div>
                     <div>{book.price}</div>
                     {auth.user && <button type="button" onClick={addToCart}>Add to cart</button>}
-                    <button>Find Available Stores</button>
+                    {!find && <button onClick={handleFind}>Find Available Stores</button>}
                     <div>
                         {find &&
                             <>
@@ -120,8 +121,22 @@ function Book() {
                             </>
                         }
                     </div>
-                    {stores &&
+                    {stores !== null &&
                         <div>
+                            {stores.length > 0 ?
+                                <div>
+                                    {
+                                        stores.map(each => (
+                                            <>
+                                            <h5>{each.store.city} bookstore</h5>
+                                            <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
+                                            {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
+                                            </>
+                                        ))
+                                    }
+                                </div>
+                                :
+                                <div>There is no store available in this state.</div>}
                         </div>
 
                     }
