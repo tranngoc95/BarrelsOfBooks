@@ -19,7 +19,7 @@ function Cart() {
 
     const URL = 'http://localhost:8080/api/cart-item';
     const auth = useContext(AuthContext);
-    const history = useHistory()
+    const history = useHistory();
 
     const getList = () => {
 
@@ -29,7 +29,7 @@ function Cart() {
             }
         }
 
-        fetch(URL + '/user/1', init)
+        fetch(URL + `/user/${auth.user.id}`, init)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Cart fetch failed.")
@@ -47,7 +47,7 @@ function Cart() {
     const checkout = () => {
 
         const order = {
-            userId: "1",
+            userId: auth.user.id,
             books: cart.books
         }
 

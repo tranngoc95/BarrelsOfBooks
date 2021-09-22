@@ -18,7 +18,7 @@ function Orders() {
             }
         }
 
-        fetch(URL + '/user/1', init)
+        fetch(URL + `/user/${auth.user.id}`, init)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Cart fetch failed.")

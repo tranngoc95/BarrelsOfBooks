@@ -20,11 +20,13 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import NotFound from "./components/NotFound";
+import Book from './components/Book';
 
 const GuestRoutes = [
   { path: "/", component: Home },
   { path: "/login", component: Login },
-  { path: "/register", component: Register }
+  { path: "/register", component: Register },
+  { path: "/books/each/:id", component: Book }
 ]
 
 const UserRoutes = [
@@ -94,8 +96,8 @@ function App() {
 
             {UserRoutes.map(each => (
               <Route key={each.path} exact path={each.path}>
-                {user ?               
-                <each.component />
+                {user ?
+                  <each.component />
                   :
                   <Redirect to={{
                     pathname: '/login',
