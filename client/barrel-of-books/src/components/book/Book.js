@@ -84,7 +84,7 @@ function Book() {
     }
 
     const findStores = () => {
-        fetch(`http://localhost:8080/api/store-book/${id}/${state}`, init)
+        fetch(`http://localhost:8080/api/store-book/${id}/${state}`)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Stores fetch failed.")

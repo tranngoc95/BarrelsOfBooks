@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {useHistory, Link} from "react-router-dom";
 import ErrorMessages from "./ErrorMessages";
 import AuthContext from '../AuthContext';
