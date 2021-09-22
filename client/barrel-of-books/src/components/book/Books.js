@@ -65,7 +65,7 @@ function Books() {
         {books.map((b) => (
           <tr key={b.bookId}>
             <td>{b.bookId}</td>
-            <td>{b.title}</td>
+            <td><Link to={`/books/each/${b.bookId}`}>{b.title}</Link></td>
             <td>{b.description}</td>
             <td>{b.author}</td>
             <td>{b.price}</td>

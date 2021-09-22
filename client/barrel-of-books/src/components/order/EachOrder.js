@@ -70,8 +70,8 @@ function EachOrder({ order, getList, auth, setErrorList }) {
                             <option value="SHIPPED">Shipped</option>
                             <option value="DELIVERED">Delivered</option>
                         </select>
-                        {!update && <button type="button" onClick={handleUpdate}>Update Status</button>}
-                        {update && <button type="submit" onClick={updateStatus}>Save</button>}
+                        {!update && <button className="mini ui teal button" type="button" onClick={handleUpdate}>Update Status</button>}
+                        {update && <button className="mini ui green button" type="submit" onClick={updateStatus}>Save</button>}
                     </form>
                 </td>
             </tr>

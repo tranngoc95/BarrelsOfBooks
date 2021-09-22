@@ -26,39 +26,41 @@ function CartItem({ item, getList, auth }) {
         setUpdate(false);
         setToggle(quantity < 10);
 
-        const changedItem = { ...item };
-        changedItem.quantity = quantity;
+        if (item.quantity != quantity) {
+            const changedItem = { ...item };
+            changedItem.quantity = quantity;
 
-        const init = {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${auth.user.token}`
-            },
-            body: JSON.stringify(changedItem)
-        };
+            const init = {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${auth.user.token}`
+                },
+                body: JSON.stringify(changedItem)
+            };
 
-        fetch(URL + `/${item.cartItemId}`, init)
-            .then(response => {
-                if (response.status === 204) {
-                    return null;
-                } else if (response.status === 404) {
-                    return [`Item with id ${item.cartItemId} does not exist.`];
-                } else if (response.status === 403) {
-                    return ['You are not authorized to make changes to this record.'];
-                } else if (response.status === 400) {
-                    return response.json();
-                }
-                return Promise.reject("Something went wrong, sorry :(");
-            })
-            .then(data => {
-                if (!data) {
-                    getList();
-                } else {
-                    setErrorList(data);
-                }
-            })
-            .catch(error => console.log('Error:', error));
+            fetch(URL + `/${item.cartItemId}`, init)
+                .then(response => {
+                    if (response.status === 204) {
+                        return null;
+                    } else if (response.status === 404) {
+                        return [`Item with id ${item.cartItemId} does not exist.`];
+                    } else if (response.status === 403) {
+                        return ['You are not authorized to make changes to this record.'];
+                    } else if (response.status === 400) {
+                        return response.json();
+                    }
+                    return Promise.reject("Something went wrong, sorry :(");
+                })
+                .then(data => {
+                    if (!data) {
+                        getList();
+                    } else {
+                        setErrorList(data);
+                    }
+                })
+                .catch(error => console.log('Error:', error));
+        }
     }
 
     const removeItem = (item) => {

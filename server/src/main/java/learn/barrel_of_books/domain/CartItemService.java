@@ -124,6 +124,8 @@ public class CartItemService {
             Book book = item.getBook();
             book.addQuantity(item.getQuantity());
             bookRepository.update(book);
+        } else {
+            repository.deleteById(cartItemId);
         }
 
         return result;

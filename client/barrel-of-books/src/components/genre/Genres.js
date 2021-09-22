@@ -12,16 +12,9 @@ function Genres() {
     const URL = 'http://localhost:8080/api/genre';
     const auth = useContext(AuthContext);
 
-    const button = true;
-
     const getList = () => {
-        const init = {
-            headers: {
-                'Authorization': `Bearer ${auth.user.token}`
-            }
-        }
 
-        fetch(URL, init)
+        fetch(URL)
             .then(response => {
                 if (response.status !== 200) {
                     return Promise.reject("Genres fetch failed.")
@@ -35,11 +28,11 @@ function Genres() {
     useEffect(getList, []);
 
     const deleteGenre = (genre) => {
-        
+
         const init = {
             method: "Delete",
             headers: {
-                'Authorization':`Bearer ${auth.user.token}`
+                'Authorization': `Bearer ${auth.user.token}`
             }
         }
 
@@ -66,16 +59,17 @@ function Genres() {
 
     return (
         <>
-            <div>
+            <div className="ui container">
                 <h2>Genres List</h2>
-                <ErrorMessages errorList={errorList}/>
-                <Link to='./genres/add'>Add New Genre</Link>
-                <table>
+                <ErrorMessages errorList={errorList} />
+                {auth.user && auth.user.hasRole("ADMIN") &&
+                    <Link className="ui blue button" to='./genres/add'>Add New Genre</Link>}
+                <table className="ui selectable celled table">
                     <thead>
                         <tr>
                             <th>Genre</th>
                             <th>Description</th>
-                            {button &&
+                            {auth.user && auth.user.hasRole("ADMIN") &&
                                 <th>&nbsp;</th>
                             }
                         </tr>
@@ -85,10 +79,10 @@ function Genres() {
                             <tr key={genre.genreId}>
                                 <td>{genre.name}</td>
                                 <td>{genre.description}</td>
-                                {button &&
+                                {auth.user && auth.user.hasRole("ADMIN") &&
                                     <td>
-                                        <Link to={`/genres/edit/${genre.genreId}`}>Update</Link>
-                                        <button type="button" onClick={() => deleteGenre(genre)}>Delete</button>
+                                        <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
+                                        <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
                                     </td>
                                 }
                             </tr>
