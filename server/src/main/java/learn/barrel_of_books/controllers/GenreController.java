@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000","http://127.0.0.1:5500"})
 @RequestMapping("/api/genre")
 public class GenreController {
     private final GenreService service;

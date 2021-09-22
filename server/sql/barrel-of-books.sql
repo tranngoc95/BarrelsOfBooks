@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `barrel_of_books`.`store_book` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_store_book_bookId`
     FOREIGN KEY (`book_id`)
-    REFERENCES `barrel_of_booksbook_id`.`book` (`book_id`)
+    REFERENCES `barrel_of_books`.`book` (`book_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -9,5 +9,5 @@ public interface GenreBookRepository {
 
     boolean add(GenreBook genreBook);
 
-    boolean delete(int bookId, int genreId);
+    boolean delete(int bookId);
 }

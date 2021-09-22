@@ -20,6 +20,11 @@ public class Book {
     private String author;
     private BigDecimal price;
     private List<GenreBook> genres;
+    private List<StoreBook> stores;
+
+
+
+
 
     public Book(int bookId, int quantity, String title, String description, String author, BigDecimal price) {
         this.bookId = bookId;

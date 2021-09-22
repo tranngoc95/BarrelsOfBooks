@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000","http://127.0.0.1:5500"})
 @RequestMapping("/api/store-book")
 public class StoreBookController {
 
@@ -79,7 +80,7 @@ public class StoreBookController {
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ErrorResponse.build(result);
     }
 
 }

@@ -21,12 +21,17 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import NotFound from "./components/NotFound";
 import Book from './components/Book';
+import AddStore from "./components/AddStore";
+import Books from "./components/Books";
+import AddBook from "./components/AddBook";
+import EditBook from "./components/EditBook";
 
 const GuestRoutes = [
   { path: "/", component: Home },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
-  { path: "/books/each/:id", component: Book }
+  { path: "/books/each/:id", component: Book },
+  { path: "/books", component: Books }
 ]
 
 const UserRoutes = [
@@ -43,14 +48,16 @@ const UserRoutes = [
 
 const ManagerRoutes = [
   { path: "/allorders", component: AllOrders },
+  { path: "/books/edit/:id", component: EditBook },
+  { path: "/books/add/", component: AddBook }
 ]
 
 const AdminRoutes = [
-  { path: "/stores/edits", component: EditStore },
+  { path: "/stores/edit:id", component: EditStore },
+  { path: "/stores/add", component: AddStore }
 ]
 
 function App() {
-
   const [user, setUser] = useState(null);
 
   const login = (token) => {
@@ -80,7 +87,7 @@ function App() {
     login,
     logout
   };
-
+  
   return (
     <AuthContext.Provider value={auth}>
       <Router>

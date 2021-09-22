@@ -43,11 +43,10 @@ public class GenreBookJdbcRepository implements GenreBookRepository {
 
 
     @Override
-    public boolean delete(int bookId, int genreId) {
+    public boolean delete(int bookId) {
         final String sql = "delete from genre_book "
-                            + "where book_id = ? "
-                            + "and genre_id = ?;";
-        return template.update(sql,bookId,genreId) > 0;
+                            + "where book_id = ?; ";
+        return template.update(sql,bookId) > 0;
     }
 
 }

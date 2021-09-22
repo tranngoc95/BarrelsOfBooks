@@ -30,10 +30,11 @@ public class GenreBookService {
         if(genreBook.getGenre() == null) {
             result.addMessage("Genre is required", ResultType.INVALID);
         }
-
-        for(GenreBook gb : findByBookId(genreBook.getBookId())) {
-            if(genreBook.getGenre().getGenreId() == gb.getGenre().getGenreId()) {
-                result.addMessage("The entry already exists in the system", ResultType.INVALID);
+        if(findByBookId(genreBook.getBookId()) != null) {
+            for (GenreBook gb : findByBookId(genreBook.getBookId())) {
+                if (genreBook.getGenre().getGenreId() == gb.getGenre().getGenreId()) {
+                    result.addMessage("The entry already exists in the system", ResultType.INVALID);
+                }
             }
         }
         if(result.isSuccess()) {
@@ -45,10 +46,10 @@ public class GenreBookService {
     }
 
 
-    public Result<GenreBook> delete(int bookId, int genreId) {
+    public Result<GenreBook> delete(int bookId) {
         Result<GenreBook> result = new Result<>();
 
-        if(!repository.delete(bookId,genreId)) {
+        if(!repository.delete(bookId)) {
             result.addMessage("This entry does not exist",ResultType.NOT_FOUND);
         }
         return result;

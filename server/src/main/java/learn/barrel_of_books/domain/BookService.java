@@ -1,8 +1,8 @@
 package learn.barrel_of_books.domain;
 
 
-import learn.barrel_of_books.data.BookRepository;
-import learn.barrel_of_books.models.Book;
+import learn.barrel_of_books.data.*;
+import learn.barrel_of_books.models.*;
 import org.springframework.stereotype.Service;
 
 
@@ -12,9 +12,17 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository repository;
+    private final GenreBookRepository gbRepository;
+    private final GenreRepository genreRepository;
+    private final StoreBookRepository sbRepository;
+    private final StoreRepository storeRepository;
 
-    public BookService(BookRepository repository) {
+    public BookService(BookRepository repository, GenreBookRepository gbRepository, GenreRepository genreRepository, StoreBookRepository sbRepository, StoreRepository storeRepository) {
+        this.gbRepository = gbRepository;
         this.repository = repository;
+        this.genreRepository = genreRepository;
+        this.sbRepository = sbRepository;
+        this.storeRepository = storeRepository;
     }
 
     public List<Book> findAll() {
@@ -121,9 +129,14 @@ public class BookService {
             result.addMessage("Author is required",ResultType.INVALID);
         }
 
-//        if(book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
-//            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
-//        }
+        if(book.getGenres() == null || book.getGenres().size() <= 0 || book.getGenres().isEmpty()) {
+            result.addMessage("Book must belong to at least 1 genre",ResultType.INVALID);
+        }
+
+        if(book.getStores() == null || book.getStores().size() <= 0 || book.getStores().isEmpty()) {
+            result.addMessage("Book must belong to at least 1 store",ResultType.INVALID);
+        }
+
 
         if(book.getQuantity() <= 0) {
             result.addMessage("Quantity must be greater than 0", ResultType.INVALID);

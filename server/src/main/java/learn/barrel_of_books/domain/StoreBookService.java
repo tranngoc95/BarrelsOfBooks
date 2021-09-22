@@ -25,9 +25,11 @@ public class StoreBookService {
         Result<StoreBook> result = validate(storeBook);
 
         //WRITE TEST
-        for(StoreBook sb : findByBookId(storeBook.getBookId())) {
-            if(storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
-                result.addMessage("This store/book combination already exists", ResultType.INVALID);
+        if(findByBookId(storeBook.getBookId()) != null) {
+            for (StoreBook sb : findByBookId(storeBook.getBookId())) {
+                if (storeBook.getStore().getStoreId() == sb.getStore().getStoreId()) {
+                    result.addMessage("This store/book combination already exists", ResultType.INVALID);
+                }
             }
         }
 
@@ -51,9 +53,9 @@ public class StoreBookService {
         return result;
     }
 
-    public Result<StoreBook> delete(int store_id, int book_id) {
+    public Result<StoreBook> delete(int book_id) {
         Result<StoreBook> result = new Result<>();
-        if(!repository.delete(store_id,book_id)) {
+        if(!repository.delete(book_id)) {
             result.addMessage("Store/Book combination not found", ResultType.NOT_FOUND);
         }
         return result;
