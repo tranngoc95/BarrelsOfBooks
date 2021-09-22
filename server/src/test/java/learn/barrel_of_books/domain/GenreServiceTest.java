@@ -26,10 +26,10 @@ class GenreServiceTest {
     @Test
     void shouldFindAll() {
         List<Genre> expected = new ArrayList<>();
-        expected.add(makeExistingGenre());
         expected.add(new Genre(2, "Adventure", "Adventure description"));
-        expected.add(new Genre(3, "Romance", "Romance description"));
+        expected.add(makeExistingGenre());
         expected.add(new Genre(4, "Horror", "Horror description"));
+        expected.add(new Genre(3, "Romance", "Romance description"));
 
         Mockito.when(repository.findAll()).thenReturn(expected);
 

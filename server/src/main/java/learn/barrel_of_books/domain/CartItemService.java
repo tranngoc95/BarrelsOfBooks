@@ -3,14 +3,10 @@ package learn.barrel_of_books.domain;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
-import learn.barrel_of_books.models.Book;
-import learn.barrel_of_books.models.CartItem;
-import learn.barrel_of_books.models.Transaction;
-import learn.barrel_of_books.models.TransactionStatus;
+import learn.barrel_of_books.models.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,8 +22,16 @@ public class CartItemService {
         this.bookRepository = bookRepository;
     }
 
-    public List<CartItem> findActiveByUserId(String userId){
-        return repository.findActiveByUserId(userId);
+    public Cart findCartActiveByUserId(String userId){
+        Cart cart = new Cart();
+        cart.setBooks(repository.findActiveByUserId(userId));
+        cart.updateSubtotal();
+        cart.updateItemNum();
+        return cart;
+    }
+
+    public CartItem findByCartItemId(int cartItemId){
+        return repository.findByCartItemId(cartItemId);
     }
 
     public Result<CartItem> add(CartItem cartItem){
@@ -40,9 +44,11 @@ public class CartItemService {
             if (available != null) {
                 int quantity = cartItem.getQuantity() + available.getQuantity();
                 available.setQuantity(quantity);
-                repository.update(available);
+                Result<CartItem> updateResult = update(available);
+                if(!updateResult.isSuccess()) {
+                    return updateResult;
+                }
                 result.setPayload(available);
-
             } else {
                 if (cartItem.getCartItemId() != 0) {
                     result.addMessage("cartItemId cannot be set for `add` operation", ResultType.INVALID);
@@ -107,14 +113,18 @@ public class CartItemService {
 
             transaction.setBooks(transaction.getBooks().stream()
                     .filter(book -> book.getCartItemId()!=cartItemId).collect(Collectors.toList()));
-            transaction.updateTotal();
-            transactionRepository.update(transaction);
+
+            if(transaction.getBooks().size()>0) {
+                transaction.updateTotal();
+                transactionRepository.update(transaction);
+                repository.deleteById(cartItemId);
+            } else {
+                transactionRepository.deleteById(transaction.getTransactionId());
+            }
             Book book = item.getBook();
             book.addQuantity(item.getQuantity());
             bookRepository.update(book);
         }
-
-        repository.deleteById(cartItemId);
 
         return result;
     }

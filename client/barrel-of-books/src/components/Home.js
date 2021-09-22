@@ -1,9 +1,9 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Home() {
-return (
+  return (
     <div>
-    <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
+      <h1 className="mt-5 mb-5 main-title">Barrel Of Books</h1>
       <div className="col">
         <Link to="/books">Books</Link>      
       </div>
@@ -17,7 +17,7 @@ return (
       <Link to="/cart">Cart</Link> 
       </div>
     </div>
-)
+  )
 }
 
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
+import learn.barrel_of_books.models.Cart;
 import learn.barrel_of_books.models.CartItem;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -38,19 +39,50 @@ class CartItemControllerTest {
     // READ
     @Test
     void shouldFindActiveByUserId() throws Exception {
-        List<CartItem> expected = new ArrayList<>();
-        expected.add(makeExistingCartItem());
-        expected.add(new CartItem(1, 1, "1", makeBook(), 2));
+        List<CartItem> output = new ArrayList<>();
+        output.add(makeExistingCartItem());
+        output.add(new CartItem(1, 1, "1", makeBook(), 2));
 
-        Mockito.when(repository.findActiveByUserId("1")).thenReturn(expected);
+        Mockito.when(repository.findActiveByUserId("1")).thenReturn(output);
+
+        Cart expected = new Cart();
+        expected.setBooks(output);
+        expected.updateItemNum();
+        expected.updateSubtotal();
 
         String expectedJson = generateJson(expected);
 
-        mvc.perform(get("/api/cart-item/1"))
+        mvc.perform(get("/api/cart-item/user/1").header("Authorization", TOKEN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
     }
+
+    @Test
+    void shouldFindByCartItemId() throws Exception {
+        CartItem expected = makeExistingCartItem();
+
+        Mockito.when(repository.findByCartItemId(2)).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/cart-item/2").header("Authorization", TOKEN))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldNotFindMissing() throws Exception {
+        mvc.perform(get("/api/cart-item/21").header("Authorization", TOKEN))
+                .andExpect(status().isNotFound());
+    }
+
+//    @Test
+//    void shouldNotFindForbidden() throws Exception {
+//        mvc.perform(get("/api/cart-item/1"))
+//                .andExpect(status().isForbidden());
+//    }
 
     // CREATE
     @Test
@@ -65,6 +97,7 @@ class CartItemControllerTest {
         String expectedJson = generateJson(expected);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -82,6 +115,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -96,6 +130,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = post("/api/cart-item")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -112,6 +147,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/3")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -125,6 +161,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/10")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -139,6 +176,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -153,6 +191,7 @@ class CartItemControllerTest {
         String inputJson = generateJson(input);
 
         var request = put("/api/cart-item/0")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -165,14 +204,14 @@ class CartItemControllerTest {
     void shouldDelete() throws Exception {
         Mockito.when(repository.findByCartItemId(3)).thenReturn(makeUpdateCartItem());
         Mockito.when(repository.deleteById(3)).thenReturn(true);
-        mvc.perform(delete("/api/cart-item/3"))
+        mvc.perform(delete("/api/cart-item/3").header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void shouldNotDelete() throws Exception {
         Mockito.when(repository.deleteById(11)).thenReturn(false);
-        mvc.perform(delete("/api/cart-item/11"))
+        mvc.perform(delete("/api/cart-item/11").header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 

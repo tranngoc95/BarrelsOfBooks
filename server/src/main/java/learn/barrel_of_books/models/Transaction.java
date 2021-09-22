@@ -13,7 +13,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -29,11 +28,6 @@ public class Transaction {
     @NotEmpty(message = "List of books cannot be null.")
     private List<CartItem> books;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    @NotNull(message = "Date cannot be null.")
     private LocalDate date;
 
     @NotBlank(message = "UserId is required and cannot be blank")

@@ -3,6 +3,7 @@ package learn.barrel_of_books.domain;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
+import learn.barrel_of_books.models.Book;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,10 @@ public class TransactionService {
         this.repository = repository;
         this.cartItemRepository = cartItemRepository;
         this.bookRepository = bookRepository;
+    }
+
+    public List<Transaction> findAll() {
+        return repository.findAll();
     }
 
     public List<Transaction> findByUserId(String userId) {
@@ -62,6 +67,10 @@ public class TransactionService {
             }
 
             transaction.updateTotal();
+            if(transaction.getDate()==null){
+                transaction.setDate(LocalDate.now());
+            }
+
             transaction = repository.add(transaction);
 
             for(int i=0; i<transaction.getBooks().size(); i++){
@@ -86,6 +95,10 @@ public class TransactionService {
                 return result;
             }
 
+            if(transaction.getDate()==null) {
+                result.addMessage("Date cannot be null.", ResultType.INVALID);
+            }
+
             Transaction oldTransaction = repository.findByTransactionId(transaction.getTransactionId());
             if(oldTransaction == null) {
                 String msg = String.format("transactionId: %s, not found", transaction.getTransactionId());
@@ -101,7 +114,20 @@ public class TransactionService {
         return result;
     }
 
+    @Transactional
     public boolean deleteById(int transactionId){
+        Transaction transaction = findByTransactionId(transactionId);
+
+        if(transaction==null){
+            return false;
+        }
+
+        for(CartItem each : transaction.getBooks()){
+            Book book = each.getBook();
+            book.addQuantity(each.getQuantity());
+            bookRepository.update(book);
+        }
+
         return repository.deleteById(transactionId);
     }
 
@@ -115,7 +141,7 @@ public class TransactionService {
                     break;
                 }
 
-                if(transaction.getDate().isAfter(LocalDate.now())) {
+                if(transaction.getDate()!=null && transaction.getDate().isAfter(LocalDate.now())) {
                     result.addMessage("Transaction date can't be in future.",
                             ResultType.INVALID);
                 }

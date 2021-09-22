@@ -2,7 +2,10 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.domain.TransactionService;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.Transaction;
+import learn.barrel_of_books.utility.JwtConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -12,8 +15,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/transaction")
 public class TransactionController {
+
+    @Autowired
+    JwtConverter jwtConverter;
 
     private final TransactionService service;
 
@@ -21,13 +28,32 @@ public class TransactionController {
         this.service = service;
     }
 
+    @GetMapping
+    public ResponseEntity<List<Transaction>> findAll(@RequestHeader("Authorization") AppUser user) {
+
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        return ResponseEntity.ok(service.findAll());
+    }
+
     @GetMapping("/user/{userId}")
-    public List<Transaction> findByUserId(@PathVariable String userId) {
-        return service.findByUserId(userId);
+    public ResponseEntity<List<Transaction>> findByUserId(@RequestHeader("Authorization") AppUser user,
+                                                          @PathVariable String userId) {
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return ResponseEntity.ok(service.findByUserId(userId));
     }
 
     @GetMapping("/{transactionId}")
-    public ResponseEntity<Transaction> findByTransactionId(@PathVariable int transactionId){
+    public ResponseEntity<Transaction> findByTransactionId(@RequestHeader("Authorization") AppUser user,
+                                                           @PathVariable int transactionId){
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Transaction transaction = service.findByTransactionId(transactionId);
         if (transaction == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -36,7 +62,12 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody @Valid Transaction transaction, BindingResult result){
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody @Valid Transaction transaction, BindingResult result){
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors()){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -49,8 +80,13 @@ public class TransactionController {
     }
 
     @PutMapping("/{transactionId}")
-    public ResponseEntity<Object> update(@RequestBody @Valid Transaction transaction, BindingResult result,
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @RequestBody @Valid Transaction transaction, BindingResult result,
                                          @PathVariable int transactionId){
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors() || transaction==null){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -67,7 +103,12 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{transactionId}")
-    public ResponseEntity<Transaction> deleteById(@PathVariable int transactionId) {
+    public ResponseEntity<Transaction> deleteById(@RequestHeader("Authorization") AppUser user,
+                                                  @PathVariable int transactionId) {
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if (service.deleteById(transactionId)){
             return new ResponseEntity <>(HttpStatus.NO_CONTENT);
         }

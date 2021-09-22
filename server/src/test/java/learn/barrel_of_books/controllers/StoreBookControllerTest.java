@@ -62,6 +62,7 @@ class StoreBookControllerTest {
         String inputJson = generateJson(storeBook);
 
         var request = post("/api/store-book")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -78,6 +79,7 @@ class StoreBookControllerTest {
         String inputJson = generateJson(storeBook);
 
         var request = post("/api/store-book")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -94,6 +96,7 @@ class StoreBookControllerTest {
         String inputJson = generateJson(storeBook);
 
         var request = post("/api/store-book")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -110,6 +113,7 @@ class StoreBookControllerTest {
         String jsn = generateJson(storeBook);
 
         var request = put("/api/store-book/1/1")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -126,6 +130,7 @@ class StoreBookControllerTest {
         String jsn = generateJson(storeBook);
 
         var request = put("/api/store-book/11/11")
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -137,23 +142,21 @@ class StoreBookControllerTest {
     @Test
     void shouldDelete() throws Exception {
         when(repository.delete(1)).thenReturn(true);
-        mvc.perform(delete("/api/store-book/1/1"))
+        mvc.perform(delete("/api/store-book/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void shouldNotDelete() throws Exception {
         when(repository.delete(1)).thenReturn(false);
-        mvc.perform(delete("/api/store-book/1/1"))
+        mvc.perform(delete("/api/store-book/1")
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
 
-
-
-
-
-
+    // Helper methods
     private String generateJson(Object o) throws JsonProcessingException {
         ObjectMapper jsonMapper = new JsonMapper();
         return jsonMapper.writeValueAsString(o);
@@ -164,9 +167,15 @@ class StoreBookControllerTest {
         return new StoreBook(1,store,14);
     }
 
-
     private StoreBook makeNewStoreBook() {
         Store store = new Store(2,"222","boulder","CO","80301","2222222222");
         return new StoreBook(3,store,50);
     }
+
+    public static final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
+            "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
+            "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
+            "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
+            "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
+
 }

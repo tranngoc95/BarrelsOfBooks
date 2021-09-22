@@ -1,0 +1,102 @@
+import { useContext, useEffect, useState } from 'react';
+
+import { useHistory } from 'react-router-dom';
+
+import ErrorMessages from '../ErrorMessages';
+import CartItem from './CartItem';
+import AuthContext from '../../AuthContext';
+
+function Cart() {
+
+    const emptyCart = {
+        books: [],
+        subtotal: 0,
+        itemNum: 0
+    }
+
+    const [cart, setCart] = useState(emptyCart);
+    const [errorList, setErrorList] = useState([]);
+
+    const URL = 'http://localhost:8080/api/cart-item';
+    const auth = useContext(AuthContext);
+    const history = useHistory();
+
+    const getList = () => {
+
+        const init = {
+            headers: {
+                'Authorization': `Bearer ${auth.user.token}`
+            }
+        }
+
+        fetch(URL + `/user/${auth.user.id}`, init)
+            .then(response => {
+                if (response.status !== 200) {
+                    return Promise.reject("Cart fetch failed.")
+                }
+                return response.json();
+            })
+            .then(data => {
+                setCart(data);
+            })
+            .catch(error => console.log("Error", error));
+    }
+
+    useEffect(getList, []);
+
+    const checkout = () => {
+
+        const order = {
+            userId: auth.user.id,
+            books: cart.books
+        }
+
+        const init = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${auth.user.token}`
+            },
+            body: JSON.stringify(order)
+        };
+
+        fetch("http://localhost:8080/api/transaction", init)
+            .then(response => {
+                if (response.status !== 400 && response.status !== 201 && response.status !== 403) {
+                    return Promise.reject("Something went wrong. :(")
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.transactionId) {
+                    history.push(`/orders/confirmation/${data.transactionId}`);
+                } else {
+                    setErrorList(data);
+                }
+            })
+            .catch(error => console.log('Error:', error));
+    }
+
+    return (
+        <>
+            <div>
+                <h2>My Shopping Cart</h2>
+                <ErrorMessages errorList={errorList} />
+                <div>
+                    {cart.books.map(item => (
+                        <CartItem key={item.cartItemId} item={item} getList={getList} auth={auth}/>
+                    ))}
+                </div>
+            </div>
+            {cart.itemNum > 0 &&
+                (<div>
+                    <h5>Subtotal ({cart.itemNum} items): ${cart.subtotal}</h5>
+                    <button onClick={checkout}>CHECKOUT</button>
+                </div>
+                )}
+        </>
+    )
+
+}
+
+export default Cart;

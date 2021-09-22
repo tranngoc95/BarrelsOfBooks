@@ -170,8 +170,6 @@ alter table book auto_increment = 1;
 delete from `transaction`;
 alter table `transaction` auto_increment = 1;
 
-
-
 insert into genre(genre_id, name, description) values
 (1, 'Fantasy', 'Fantasy description'),
 (2, 'Adventure', 'Adventure description'),

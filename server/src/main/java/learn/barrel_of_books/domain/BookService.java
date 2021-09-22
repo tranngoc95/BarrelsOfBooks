@@ -29,7 +29,12 @@ public class BookService {
         return repository.findAll();
     }
 
-    public Book findById(int bookId) { return repository.findById(bookId);
+    public List<Book> findByTitleAuthorOrKeyword(String phrase) {
+        return repository.findByTitleAuthorOrKeyword(phrase);
+    }
+
+    public Book findById(int bookId) {
+        return repository.findById(bookId);
     }
 
     public Book findByTitle(String title) {

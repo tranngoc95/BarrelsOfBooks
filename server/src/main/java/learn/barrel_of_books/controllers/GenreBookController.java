@@ -2,6 +2,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.GenreBookService;
 import learn.barrel_of_books.domain.Result;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.GenreBook;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,13 @@ public class GenreBookController {
 
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody GenreBook genreBook) {
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody GenreBook genreBook) {
+
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<GenreBook> result = service.add(genreBook);
 
         if(result.isSuccess()) {
@@ -36,9 +43,15 @@ public class GenreBookController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{bookId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId) {
-        Result<GenreBook> result = service.delete(bookId);
+    @DeleteMapping("/{bookId}/{genreId}")
+    public ResponseEntity<Void> delete(@RequestHeader("Authorization") AppUser user,
+                                       @PathVariable int bookId, @PathVariable int genreId) {
+
+        if(user == null || !user.hasRole("MANAGER")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        Result<GenreBook> result = service.delete(bookId,genreId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

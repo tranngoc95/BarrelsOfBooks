@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>learn</groupId>
-    <artifactId>field-agent</artifactId>
+    <artifactId>barrel-of-books</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

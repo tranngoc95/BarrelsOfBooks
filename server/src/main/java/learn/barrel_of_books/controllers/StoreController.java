@@ -3,6 +3,7 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.domain.StoreService;
+import learn.barrel_of_books.models.AppUser;
 import learn.barrel_of_books.models.Store;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,12 @@ public class StoreController {
 
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody Store store) {
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody Store store) {
+        if(user == null || !user.hasRole("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<Store> result = service.add(store);
 
         if(result.isSuccess()) {
@@ -61,8 +67,13 @@ public class StoreController {
      }
 
 
-     @PutMapping("/{storeId}")
-    public ResponseEntity<Object> update(@PathVariable int storeId, @RequestBody Store store) {
+    @PutMapping("/{storeId}")
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @PathVariable int storeId, @RequestBody Store store) {
+        if(user == null || !user.hasRole("ADMIN")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(store.getStoreId() != storeId) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
@@ -74,7 +85,12 @@ public class StoreController {
      }
 
      @DeleteMapping("/{storeId}")
-    public ResponseEntity<Store> delete(@PathVariable int storeId) {
+    public ResponseEntity<Store> delete(@RequestHeader("Authorization") AppUser user,
+                                        @PathVariable int storeId) {
+         if(user == null || !user.hasRole("ADMIN")) {
+             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+         }
+
         Result<Store> result = service.delete(storeId);
 
         if(result.isSuccess()) {

@@ -1,10 +1,5 @@
-import { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import jwt_decode from 'jwt-decode';
 
 import './App.css';
@@ -30,7 +25,6 @@ import AddStore from "./components/AddStore";
 import Books from "./components/Books";
 import AddBook from "./components/AddBook";
 import EditBook from "./components/EditBook";
-
 
 const GuestRoutes = [
   { path: "/", component: Home },
@@ -93,34 +87,66 @@ function App() {
     login,
     logout
   };
+  
   return (
-    <Router>
+    <AuthContext.Provider value={auth}>
+      <Router>
         <div className="App">
+          <Navbar />
+
           <Switch>
-            <Route exact path="/">
-              <Home />
+            {GuestRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                <each.component />
+              </Route>
+            ))}
+
+            {UserRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                {user ?
+                  <each.component />
+                  :
+                  <Redirect to={{
+                    pathname: '/login',
+                    state: { nextpath: each.path }
+                  }} />
+                }
+              </Route>
+            ))}
+
+            {ManagerRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                {user ? (user.hasRole('MANAGER') ?
+                  <each.component /> : <NotFound />)
+                  :
+                  <Redirect to={{
+                    pathname: '/login',
+                    state: { nextpath: each.path }
+                  }} />
+                }
+              </Route>
+            ))}
+
+            {AdminRoutes.map(each => (
+              <Route key={each.path} exact path={each.path}>
+                {user ? (user.hasRole('ADMIN') ?
+                  <each.component /> : <NotFound />)
+                  :
+                  <Redirect to={{
+                    pathname: '/login',
+                    state: { nextpath: each.path }
+                  }} />
+                }
+              </Route>
+            ))}
+            <Route path="*">
+              <NotFound />
             </Route>
-            <Route exact path="/stores">
-              <Stores />
-            </Route>
-            <Route exact path ="/stores/edit/:id">
-              <EditStore />
-            </Route>
-            <Route exact path = "/stores/add">
-              <AddStore />
-            </Route>
-            <Route exact path = "/books">
-              <Books />
-            </Route>
-            <Route exact path = "/books/add">
-              <AddBook />
-            </Route>
-            <Route exact path ="/books/edit/:id">
-              <EditBook />
-            </Route>
+
           </Switch>
         </div>
       </Router>
+    </AuthContext.Provider>
   );
 }
 

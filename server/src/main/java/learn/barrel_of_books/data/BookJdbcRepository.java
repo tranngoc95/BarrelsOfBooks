@@ -60,6 +60,16 @@ public class BookJdbcRepository implements BookRepository {
     }
 
     @Override
+    public List<Book> findByTitleAuthorOrKeyword(String phrase) {
+        phrase = "%" + phrase + "%";
+        final String sql = "select book_id, title, description, price, author, quantity "
+                + "from book "
+                + "where title like ? or author like ? or description like ?;";
+
+        return template.query(sql,new BookMapper(), phrase, phrase, phrase);
+    }
+
+    @Override
     public Book add(Book book) {
         final String sql = "insert into book(title, description, price, author, quantity) "
                             +"values (?,?,?,?,?);";

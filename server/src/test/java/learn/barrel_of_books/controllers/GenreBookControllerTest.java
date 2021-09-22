@@ -61,6 +61,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
+                .header("Authorization", getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -78,6 +79,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
+                .header("Authorization", getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -94,6 +96,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
+                .header("Authorization", getToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -104,22 +107,20 @@ class GenreBookControllerTest {
     @Test
     void shouldDelete() throws Exception {
         when(repository.delete(1)).thenReturn(true);
-        mvc.perform(delete("/api/genre-book/1/1"))
+        mvc.perform(delete("/api/genre-book/1")
+                .header("Authorization", getToken()))
                 .andExpect(status().isNoContent());
     }
     @Test
     void shouldNotDelete() throws Exception {
         when(repository.delete(1)).thenReturn(false);
-        mvc.perform(delete("/api/genre-book/1/1"))
+        mvc.perform(delete("/api/genre-book/1")
+                .header("Authorization", getToken()))
                 .andExpect(status().isNotFound());
     }
 
 
-
-
-
-
-
+    // Helper methods
     private String generateJson(Object o) throws JsonProcessingException {
         ObjectMapper jsonMapper = new JsonMapper();
         return jsonMapper.writeValueAsString(o);
@@ -129,5 +130,13 @@ class GenreBookControllerTest {
     private GenreBook makeGenreBook() {
         Genre genre = new Genre(1,"fiction", "not real");
         return new GenreBook(genre,1);
+    }
+
+    private String getToken() {
+        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
+                "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
+                "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
+                "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
+                "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
     }
 }

@@ -2,6 +2,8 @@ package learn.barrel_of_books.controllers;
 
 import learn.barrel_of_books.domain.CartItemService;
 import learn.barrel_of_books.domain.Result;
+import learn.barrel_of_books.models.AppUser;
+import learn.barrel_of_books.models.Cart;
 import learn.barrel_of_books.models.CartItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/api/cart-item")
 public class CartItemController {
     private final CartItemService service;
@@ -20,13 +22,38 @@ public class CartItemController {
         this.service = service;
     }
 
-    @GetMapping("/{userId}")
-    public List<CartItem> findActiveByUserId(@PathVariable String userId){
-        return service.findActiveByUserId(userId);
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Cart> findCartActiveByUserId(@RequestHeader("Authorization") AppUser user,
+                                       @PathVariable String userId){
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return ResponseEntity.ok(service.findCartActiveByUserId(userId));
+    }
+
+    @GetMapping("/{cartItemId}")
+    public ResponseEntity<CartItem> findByCartItemId(@RequestHeader("Authorization") AppUser user,
+                                                     @PathVariable int cartItemId){
+
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        CartItem cartItem = service.findByCartItemId(cartItemId);
+        if (cartItem == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(cartItem);
     }
 
     @PostMapping
-    public ResponseEntity<Object> add(@RequestBody @Valid CartItem cartItem, BindingResult result){
+    public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
+                                      @RequestBody @Valid CartItem cartItem, BindingResult result){
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors()){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -39,7 +66,12 @@ public class CartItemController {
     }
 
     @PutMapping("/{cartItemId}")
-    public ResponseEntity<Object> update(@RequestBody @Valid CartItem cartItem, BindingResult result, @PathVariable int cartItemId){
+    public ResponseEntity<Object> update(@RequestHeader("Authorization") AppUser user,
+                                         @RequestBody @Valid CartItem cartItem, BindingResult result, @PathVariable int cartItemId){
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         if(result.hasErrors() || cartItem==null){
             return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
@@ -56,7 +88,12 @@ public class CartItemController {
     }
 
     @DeleteMapping("/{cartItemId}")
-    public ResponseEntity<Object> deleteById(@PathVariable int cartItemId) {
+    public ResponseEntity<Object> deleteById(@RequestHeader("Authorization") AppUser user,
+                                             @PathVariable int cartItemId) {
+        if(user == null) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
         Result<CartItem> serviceResult = service.deleteById(cartItemId);
         if(serviceResult.isSuccess()) {
             return new ResponseEntity <>(HttpStatus.NO_CONTENT);

@@ -7,6 +7,8 @@ import java.util.List;
 public interface StoreBookRepository {
     List<StoreBook> findByBookId(int bookId);
 
+    List<StoreBook> findByBookIdAndState(int bookId, String state);
+
     boolean add(StoreBook storeBook);
 
     boolean update(StoreBook storeBook);
