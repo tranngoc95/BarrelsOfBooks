@@ -37,7 +37,7 @@ function BooksTable({ books, auth, getList }) {
             <ErrorMessages errorList={errorList} />
             {auth.user && auth.user.hasRole("MANAGER") &&
                 <Link className="ui primary button add-button" to="/books/add">Add New Book</Link>}
-            <table className="ui fixed table table-margin">
+            <table className="ui fixed selectable table table-margin">
                 <thead>
                     <tr>
                         <th scope="col">Title</th>

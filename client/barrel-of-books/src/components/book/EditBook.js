@@ -24,49 +24,49 @@ function EditBook() {
   const auth = useContext(AuthContext);
 
 
-useEffect(() => {
+  useEffect(() => {
     const requests = [
-    fetch(`http://localhost:8080/api/book/${id}`)
-    .then((response) => response.json()),
-    fetch("http://localhost:8080/api/genre")
-      .then((response) => response.json()),
-    fetch("http://localhost:8080/api/store")
-      .then((response) => response.json()),
-    fetch(`http://localhost:8080/api/genre-book/${id}`)
-      .then((response) => response.json()),
-    fetch(`http://localhost:8080/api/store-book/${id}`)
-      .then((response) => response.json())
+      fetch(`http://localhost:8080/api/book/${id}`)
+        .then((response) => response.json()),
+      fetch("http://localhost:8080/api/genre")
+        .then((response) => response.json()),
+      fetch("http://localhost:8080/api/store")
+        .then((response) => response.json()),
+      fetch(`http://localhost:8080/api/genre-book/${id}`)
+        .then((response) => response.json()),
+      fetch(`http://localhost:8080/api/store-book/${id}`)
+        .then((response) => response.json())
     ];
 
-Promise.all(requests)
-.then((values) => {
-const book = values[0];
-const genres = values[1];
-const stores = values[2];
-const selectedGenres = values[3];
-const selectedStores = values[4];
+    Promise.all(requests)
+      .then((values) => {
+        const book = values[0];
+        const genres = values[1];
+        const stores = values[2];
+        const selectedGenres = values[3];
+        const selectedStores = values[4];
 
 
-// book from backend doesnt have store array
-book.stores = selectedStores; 
+        // book from backend doesnt have store array
+        book.stores = selectedStores;
 
-stores.forEach((store) => (store.quantity = 0));
+        stores.forEach((store) => (store.quantity = 0));
 
-selectedStores.forEach((selectedStore) => {
-  const storeId = selectedStore.store.storeId;
-  const storeIndex = stores.findIndex((s) => s.storeId === storeId);
-  stores[storeIndex].quantity = selectedStore.quantity;
+        selectedStores.forEach((selectedStore) => {
+          const storeId = selectedStore.store.storeId;
+          const storeIndex = stores.findIndex((s) => s.storeId === storeId);
+          stores[storeIndex].quantity = selectedStore.quantity;
 
-});
-setBook(book);
-setGenres(genres);
-setStores(stores);
-setSelectedGenres(selectedGenres);
+        });
+        setBook(book);
+        setGenres(genres);
+        setStores(stores);
+        setSelectedGenres(selectedGenres);
 
-})
-.catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
 
-},[id])
+  }, [id])
 
 
   const handleChange = (event) => {
@@ -88,7 +88,7 @@ setSelectedGenres(selectedGenres);
     const genreId = parseInt(event.target.value, 10);
     const genre = genres.find((genre) => genre.genreId === genreId);
     if (event.target.checked) {
-      newGenres.push({bookId: id, genre});
+      newGenres.push({ bookId: id, genre });
       setSelectedGenres(newGenres);
     } else {
       const genreIndex = newGenres.findIndex((genre) => genre.genre.genreId === genreId);
@@ -100,12 +100,12 @@ setSelectedGenres(selectedGenres);
   }
 
   function handleStores(event, newBook) {
-      
+
     const newBookStores = [...newBook.stores];
     const storeId = parseInt(event.target.value, 10);
     if (event.target.checked) {
       const store = stores.find((store) => store.storeId === storeId);
-      newBookStores.push({bookId: id, store, quantity: store.quantity});
+      newBookStores.push({ bookId: id, store, quantity: store.quantity });
       newBook.stores = newBookStores;
       setBook(newBook);
     } else {
@@ -120,7 +120,7 @@ setSelectedGenres(selectedGenres);
         // zero out quantity
         const storeIndex = stores.findIndex((store) => store.storeId === storeId);
         const newStores = [...stores];
-        newStores[storeIndex] = {...newStores[storeIndex], quantity: 0};
+        newStores[storeIndex] = { ...newStores[storeIndex], quantity: 0 };
         setStores(newStores);
 
       }
@@ -128,7 +128,7 @@ setSelectedGenres(selectedGenres);
   }
 
   function handleQuantity(event, newBook) {
-    
+
     const storeId = parseInt(event.target.id, 10);
     const newStores = [...stores];
     const storeIndex = newStores.findIndex(
@@ -140,13 +140,13 @@ setSelectedGenres(selectedGenres);
     };
     setStores(newStores);
 
-    
+
     const newBookStores = [...newBook.stores];
-  
+
     const bookStoreIndex = newBookStores.findIndex(
       (s) => s.store.storeId === storeId
     );
-    newBookStores[bookStoreIndex] = {bookId: id, store: newStores[storeIndex], quantity:parseInt(event.target.value, 10) };
+    newBookStores[bookStoreIndex] = { bookId: id, store: newStores[storeIndex], quantity: parseInt(event.target.value, 10) };
     newBook.stores = newBookStores;
     setBook(newBook);
 
@@ -154,8 +154,10 @@ setSelectedGenres(selectedGenres);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newBook = {bookId: book.bookId, title: book.title, description: book.description, author: book.author,
-                        price: book.price, quantity: book.quantity, genres: selectedGenres, stores: book.stores};
+    const newBook = {
+      bookId: book.bookId, title: book.title, description: book.description, author: book.author,
+      price: book.price, quantity: book.quantity, genres: selectedGenres, stores: book.stores
+    };
 
     const init = {
       method: "PUT",
@@ -170,13 +172,13 @@ setSelectedGenres(selectedGenres);
       .then((response) => {
         if (
           response.status === 201 ||
-          response.status === 204 
+          response.status === 204
         ) {
           return null;
-        } else if(response.status === 400 ) {
-            return response.json();
-        } else if(response.status === 409) {
-            return "Book ID does not match the request ID";
+        } else if (response.status === 400) {
+          return response.json();
+        } else if (response.status === 409) {
+          return "Book ID does not match the request ID";
         }
         return Promise.reject("Something else went wrong");
       })
@@ -197,7 +199,7 @@ setSelectedGenres(selectedGenres);
     };
 
     fetch(`http://localhost:8080/api/store-book/${id}`, init)
-    .then((response) => {
+      .then((response) => {
         if (response.status === 204 || response.status === 200) {
           return null;
         } else if (response.status === 404 || response.status === 400) {
@@ -217,7 +219,7 @@ setSelectedGenres(selectedGenres);
 
   function handleStoreBook() {
     book.stores.map((s) => {
-    const storeBook = {bookId: id, store: s.store, quantity: s.quantity};
+      const storeBook = { bookId: id, store: s.store, quantity: s.quantity };
       const init = {
         method: "POST",
         headers: {
@@ -254,7 +256,7 @@ setSelectedGenres(selectedGenres);
       })
       .then((data) => {
         if (!data) {
-            handleGenreBook();
+          handleGenreBook();
         } else {
           setErrorList(data);
         }

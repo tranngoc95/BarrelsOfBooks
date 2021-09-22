@@ -51,7 +51,7 @@ function Stores() {
       <ErrorMessages errorList={errorList} />
       {auth.user && auth.user.hasRole("ADMIN") &&
       <Link className="ui primary button add-button" to="/stores/add">Add New Store</Link>}
-      <table className="ui celled table table-margin">
+      <table className="ui celled selectable table table-margin">
         <thead>
           <tr>
             <th scope="col">Address</th>
