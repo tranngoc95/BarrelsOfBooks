@@ -20,6 +20,7 @@ public class Book {
     private String author;
     private BigDecimal price;
     private List<GenreBook> genres;
+    private List<StoreBook> stores;
 
 
 

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useHistory, Link, useParams } from "react-router-dom";
 
+// 'Authorization': 'Bearer ${auth.user.token}'
+// reponse.status!==403
 function EditBook() {
   const [book, setBook] = useState({
     bookId: 0,
@@ -9,6 +11,7 @@ function EditBook() {
     author: "",
     price: 0,
     quantity: 0,
+    genres: [],
     stores: [],
   });
   const [genres, setGenres] = useState([]);
@@ -17,6 +20,7 @@ function EditBook() {
   const [errorList, setErrorList] = useState([]);
   const history = useHistory();
   const { id } = useParams();
+
 
 useEffect(() => {
     const requests = [
@@ -40,6 +44,7 @@ const stores = values[2];
 const selectedGenres = values[3];
 const selectedStores = values[4];
 
+
 // book from backend doesnt have store array
 book.stores = selectedStores; 
 
@@ -62,9 +67,6 @@ setSelectedGenres(selectedGenres);
 },[id])
 
 
-
-
-  
   const handleChange = (event) => {
     const newBook = { ...book };
     if (event.target.name === "genres") {
@@ -96,6 +98,7 @@ setSelectedGenres(selectedGenres);
   }
 
   function handleStores(event, newBook) {
+      
     const newBookStores = [...newBook.stores];
     const storeId = parseInt(event.target.value, 10);
     if (event.target.checked) {
@@ -123,6 +126,7 @@ setSelectedGenres(selectedGenres);
   }
 
   function handleQuantity(event, newBook) {
+    
     const storeId = parseInt(event.target.id, 10);
     const newStores = [...stores];
     const storeIndex = newStores.findIndex(
@@ -134,28 +138,28 @@ setSelectedGenres(selectedGenres);
     };
     setStores(newStores);
 
+    
     const newBookStores = [...newBook.stores];
+  
     const bookStoreIndex = newBookStores.findIndex(
-      (store) => store.storeId === storeId
+      (s) => s.store.storeId === storeId
     );
-    newBookStores[bookStoreIndex] = newStores[storeIndex];
+    newBookStores[bookStoreIndex] = {bookId: id, store: newStores[storeIndex], quantity:parseInt(event.target.value, 10) };
     newBook.stores = newBookStores;
     setBook(newBook);
+
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const newBook = {bookId: book.bookId, title: book.title, description: book.description, author: book.author,
-    //                     price: book.price, quantity: book.quantity, genres:[]};
-    const newBook = {...book};
-    console.log(JSON.stringify(newBook));
-
-    console.log(newBook);
+    const newBook = {bookId: book.bookId, title: book.title, description: book.description, author: book.author,
+                        price: book.price, quantity: book.quantity, genres: selectedGenres, stores: book.stores};
 
     const init = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': 'Bearer ${auth.user.token}'
       },
       body: JSON.stringify(newBook),
     };
@@ -164,10 +168,13 @@ setSelectedGenres(selectedGenres);
       .then((response) => {
         if (
           response.status === 201 ||
-          response.status === 204 ||
-          response.status === 400
+          response.status === 204 
         ) {
-          return response.json();
+          return null;
+        } else if(response.status === 400 ) {
+            return response.json();
+        } else if(response.status === 409) {
+            return "Book ID does not match the request ID";
         }
         return Promise.reject("Something else went wrong");
       })
@@ -175,6 +182,7 @@ setSelectedGenres(selectedGenres);
         if (!data) {
           handleDeleteStoreBooks();
         } else {
+          console.log(data);
           setErrorList(data);
         }
       })
@@ -184,14 +192,15 @@ setSelectedGenres(selectedGenres);
   const handleDeleteStoreBooks = () => {
     const init = {
       method: "DELETE",
+      'Authorization': 'Bearer ${auth.user.token}'
     };
 
     fetch(`http://localhost:8080/api/store-book/${id}`, init)
-      .then((response) => {
+    .then((response) => {
         if (response.status === 204 || response.status === 200) {
           return null;
         } else if (response.status === 404 || response.status === 400) {
-          return response.json();
+          return null;
         }
         return Promise.reject("Something else went wrong");
       })
@@ -207,13 +216,14 @@ setSelectedGenres(selectedGenres);
 
   function handleStoreBook() {
     book.stores.map((s) => {
-
+    const storeBook = {bookId: id, store: s.store, quantity: s.quantity};
       const init = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': 'Bearer ${auth.user.token}'
         },
-        body: JSON.stringify(s),
+        body: JSON.stringify(storeBook),
       };
       fetch("http://localhost:8080/api/store-book", init)
         .then((response) => response.json())
@@ -230,14 +240,14 @@ setSelectedGenres(selectedGenres);
   const handleDeleteGenreBooks = () => {
     const init = {
       method: "DELETE",
+      'Authorization': 'Bearer ${auth.user.token}'
     };
-
     fetch(`http://localhost:8080/api/genre-book/${id}`, init)
       .then((response) => {
         if (response.status === 204 || response.status === 200) {
           return null;
         } else if (response.status === 404 || response.status === 400) {
-          return response.json();
+          return "ID not found";
         }
         return Promise.reject("Something else went wrong");
       })
@@ -258,6 +268,7 @@ setSelectedGenres(selectedGenres);
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': 'Bearer ${auth.user.token}'
         },
         body: JSON.stringify(genre),
       };
@@ -293,6 +304,7 @@ setSelectedGenres(selectedGenres);
             <li key={error}>{error}</li>
           ))}
         </div>
+  
       ) : null}
       <form onSubmit={handleSubmit}>
         <div>
@@ -390,7 +402,7 @@ setSelectedGenres(selectedGenres);
                 <label htmlFor={s.storeId}>Quantity</label>
                 <input
                   type="number"
-                  min="1"
+                  min="0"
                   id={s.storeId}
                   name="storeQuantity"
                   value={s.quantity}

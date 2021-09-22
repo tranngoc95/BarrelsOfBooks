@@ -18,6 +18,7 @@ function Books() {
   const handleDelete = (bookId) => {
     const init = {
         method: "DELETE",
+        'Authorization': 'Bearer ${auth.user.token}'
       };
   
       fetch(`http://localhost:8080/api/book/${bookId}`, init)
@@ -67,6 +68,7 @@ function Books() {
       <tbody>
         {books.map((b) => (
           <tr key={b.bookId}>
+            <td>{b.bookId}</td>
             <td>{b.title}</td>
             <td>{b.description}</td>
             <td>{b.author}</td>

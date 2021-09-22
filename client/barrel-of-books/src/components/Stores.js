@@ -17,6 +17,7 @@ function Stores() {
   const handleDelete = (storeId) => {
     const init = {
       method: "DELETE",
+      'Authorization': 'Bearer ${auth.user.token}'
     };
 
     fetch(`http://localhost:8080/api/store/${storeId}`, init)

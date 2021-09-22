@@ -8,6 +8,7 @@ const [book,setBook] = useState({
     author: "",
     price: 0,
     quantity: 0,
+    genres: [],
     stores: []
 })
 const[genres, setGenres] = useState([]);
@@ -95,6 +96,7 @@ function handleGenres(event) {
     newStores[storeIndex] = {...newStores[storeIndex], quantity: parseInt(event.target.value ,10)};
     setStores(newStores);
 
+
     const newBookStores = [...newBook.stores];
     const bookStoreIndex = newBookStores.findIndex(store => store.storeId === storeId);
     newBookStores[bookStoreIndex].quantity = parseInt(event.target.value ,10);
@@ -107,11 +109,13 @@ function handleGenres(event) {
 const handleSubmit = (event) => {
   event.preventDefault();
   const newBook = {...book};
+  newBook.genres = selectedGenres;
 
   const init = {
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${auth.user.token}'
       },
       body: JSON.stringify(newBook),
   };
@@ -142,15 +146,16 @@ const handleSubmit = (event) => {
 
 
 function handleGenreBook(bookId) {
-
+ 
   selectedGenres.map((genre) => {
-    console.log(genre);
    const genreBook = { bookId, genre };
+
 
    const init = {
      method: "POST",
      headers: {
-         "Content-Type": "application/json"
+         "Content-Type": "application/json",
+         'Authorization': 'Bearer ${auth.user.token}'
      },
      body: JSON.stringify(genreBook),
  };
@@ -186,7 +191,8 @@ function handleStoreBook(bookId) {
     const init = {
       method: "POST",
       headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ${auth.user.token}'
       },
       body: JSON.stringify(storeBook),
   };
@@ -260,7 +266,7 @@ return (
           </div>
           <div>
             <label htmlFor={s.storeId}>Quantity</label>
-            <input type="number" min="1" id={s.storeId} name="storeQuantity" value={s.quantity} onChange={handleChange} 
+            <input type="number" min="0" id={s.storeId} name="storeQuantity" value={s.quantity} onChange={handleChange} 
                 disabled = {book.stores.find((store) => store.storeId === s.storeId) === undefined}/>
           </div>
           </div>

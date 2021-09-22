@@ -53,13 +53,13 @@ public class StoreBookController {
 
 
     @DeleteMapping("/{bookId}")
-    public ResponseEntity<Void> delete(@PathVariable int bookId) {
+    public ResponseEntity<Object> delete(@PathVariable int bookId) {
         Result<StoreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return ErrorResponse.build(result);
     }
 
 }
