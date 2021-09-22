@@ -26,6 +26,11 @@ public class StoreBookController {
        return service.findByBookId(bookId);
     }
 
+    @GetMapping("/{bookId}/{state}")
+    public List<StoreBook> findByBookIdAndState(@PathVariable("bookId") int bookId, @PathVariable("state") String state) {
+        return service.findByBookIdAndState(bookId, state);
+    }
+
     @PostMapping()
     public ResponseEntity<Object> add(@RequestHeader("Authorization") AppUser user,
                                       @RequestBody StoreBook storeBook) {

@@ -21,6 +21,10 @@ public class BookService {
         return repository.findAll();
     }
 
+    public List<Book> findByTitleAuthorOrKeyword(String phrase) {
+        return repository.findByTitleAuthorOrKeyword(phrase);
+    }
+
     public Book findById(int bookId) {
         return repository.findById(bookId);
     }

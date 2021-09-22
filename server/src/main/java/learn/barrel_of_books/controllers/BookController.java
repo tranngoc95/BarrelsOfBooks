@@ -27,6 +27,10 @@ public class BookController {
         return service.findAll();
     }
 
+    @GetMapping("/search/{phrase}")
+    public List<Book> findByTitleAuthorOrKeyword(@PathVariable String phrase) {
+        return service.findByTitleAuthorOrKeyword(phrase);
+    }
 
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> findById(@PathVariable int bookId) {

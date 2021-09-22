@@ -38,6 +38,10 @@ public class StoreBookService {
         return result;
     }
 
+    public List<StoreBook> findByBookIdAndState(int bookId, String state) {
+        return repository.findByBookIdAndState(bookId, state);
+    }
+
     public Result<StoreBook> update(StoreBook storeBook) {
         Result<StoreBook> result = validate(storeBook);
 

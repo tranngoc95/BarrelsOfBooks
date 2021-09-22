@@ -2,13 +2,17 @@ import { useContext, useEffect, useState } from 'react';
 
 import { useHistory, useParams } from 'react-router-dom';
 
-import ErrorMessages from './ErrorMessages';
-import AuthContext from '../AuthContext';
+import ErrorMessages from '../ErrorMessages';
+import AuthContext from '../../AuthContext';
+import States from '../States';
 
 function Book() {
 
     const [book, setBook] = useState(null);
     const [errorList, setErrorList] = useState([]);
+    const [find, setFind] = useState(true);
+    const [state, setState] = useState(null);
+    const [stores, setStores] = useState([]);
 
     const URL = 'http://localhost:8080/api/book';
     const auth = useContext(AuthContext);
@@ -79,6 +83,18 @@ function Book() {
         }
     }
 
+    const findStores = () => {
+        fetch(`http://localhost:8080/api/store-book/${id}/${state}`, init)
+            .then(response => {
+                if (response.status !== 200) {
+                    return Promise.reject("Stores fetch failed.")
+                }
+                return response.json();
+            })
+            .then(data => setStores(data))
+            .catch(error => console.log("Error", error));
+    }
+
     return (
         <div>
             <ErrorMessages errorList={errorList} />
@@ -90,6 +106,25 @@ function Book() {
                     <div>{book.description}</div>
                     <div>{book.price}</div>
                     {auth.user && <button type="button" onClick={addToCart}>Add to cart</button>}
+                    <button>Find Available Stores</button>
+                    <div>
+                        {find &&
+                            <>
+                                <label htmlFor="state">State:</label>
+                                <select name="state" value={state} onChange={(event) => setState(event.target.value)}>
+                                    {States.map(each => (
+                                        <option key={each.abbr} value={each.abbr} >{each.name}</option>
+                                    ))}
+                                </select>
+                                <button onClick={findStores}>Find</button>
+                            </>
+                        }
+                    </div>
+                    {stores &&
+                        <div>
+                        </div>
+
+                    }
                 </>
             }
         </div>

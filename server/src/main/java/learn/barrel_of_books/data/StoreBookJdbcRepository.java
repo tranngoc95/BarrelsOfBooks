@@ -36,6 +36,31 @@ public class StoreBookJdbcRepository implements StoreBookRepository {
     }
 
     @Override
+    public List<StoreBook> findByBookIdAndState(int bookId, String state) {
+        final String sql = "select sb.store_id, sb.book_id, sb.quantity, " +
+                "s.address, s.city, s.state, s.postal_code, s.phone_number "
+                + "from store_book sb "
+                + "left outer join store s on s.store_id = sb.store_id "
+                + "where sb.book_id = ? and s.state = ?;";
+        return template.query(sql, new StoreBookMapper(), bookId, state);
+    }
+
+    //    @Override
+//    public List<StoreBook> findByBookId(int bookId) {
+//        final String sql = "select sb.store_id, sb.book_id, sb.quantity, " +
+//                "s.address, s.city, s.state, s.postal_code, s.phone_number "
+//                + "from store_book sb "
+//                + "left outer join store s on s.store_id = sb.store_id "
+//                + "where sb.book_id = ?;";
+//        StoreBook sb =  template.query(sql,new StoreBookMapper(), bookId).stream()
+//                .findFirst().orElse(null);
+//        if(sb == null) {
+//            return null;
+//        }
+//        return template.query(sql,new StoreBookMapper(),bookId);
+//    }
+
+    @Override
     public boolean add(StoreBook storeBook) {
         final String sql = "insert into store_book(store_id, book_id, quantity) "
                             + "values(?,?,?);";
