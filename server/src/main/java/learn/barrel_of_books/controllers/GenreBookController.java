@@ -43,15 +43,15 @@ public class GenreBookController {
         return ErrorResponse.build(result);
     }
 
-    @DeleteMapping("/{bookId}/{genreId}")
+    @DeleteMapping("/{bookId}")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") AppUser user,
-                                       @PathVariable int bookId, @PathVariable int genreId) {
+                                       @PathVariable int bookId) {
 
         if(user == null || !user.hasRole("MANAGER")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        Result<GenreBook> result = service.delete(bookId,genreId);
+        Result<GenreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

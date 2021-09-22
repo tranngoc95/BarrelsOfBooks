@@ -68,14 +68,14 @@ public class StoreBookController {
     }
 
 
-    @DeleteMapping("/{bookId}/{storeId}")
-    public ResponseEntity<Void> delete(@RequestHeader("Authorization") AppUser user,
-                                       @PathVariable int bookId, @PathVariable int storeId) {
+    @DeleteMapping("/{bookId}")
+    public ResponseEntity<Object> delete(@RequestHeader("Authorization") AppUser user,
+                                       @PathVariable int bookId) {
         if(user == null || !user.hasRole("MANAGER")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         
-        Result<StoreBook> result = service.delete(storeId,bookId);
+        Result<StoreBook> result = service.delete(bookId);
 
         if(result.isSuccess()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
