@@ -1,7 +1,7 @@
 import { useState, useEffect,useContext } from "react";
 import {useHistory, Link} from "react-router-dom";
-import ErrorMessages from "./ErrorMessages";
-import AuthContext from '../AuthContext';
+import ErrorMessages from "../ErrorMessages";
+import AuthContext from '../../AuthContext';
 function AddBook() {
 const [book,setBook] = useState({
     title: "",

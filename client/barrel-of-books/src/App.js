@@ -5,26 +5,30 @@ import jwt_decode from 'jwt-decode';
 import './App.css';
 import AuthContext from "./AuthContext";
 import Home from "./components/Home";
-import Stores from "./components/Stores";
-import EditStore from "./components/EditStore";
+import Navbar from "./components/Navbar";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import NotFound from "./components/NotFound";
+
+import Stores from "./components/store/Stores";
+import EditStore from "./components/store/EditStore";
+import AddStore from "./components/store/AddStore";
+
 import Cart from "./components/order/Cart";
 import Orders from "./components/order/Orders";
 import CancelOrder from "./components/order/CancelOrder";
 import CancelItem from "./components/order/CancelItem";
 import Confirmation from "./components/order/Confirmation";
+
 import Genres from "./components/genre/Genres";
 import AddGenre from "./components/genre/AddGenre";
 import EditGenre from "./components/genre/EditGenre";
 import AllOrders from "./components/order/AllOrders";
-import Navbar from "./components/Navbar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import NotFound from "./components/NotFound";
+
 import Book from './components/book/Book';
-import AddStore from "./components/AddStore";
-import Books from "./components/Books";
-import AddBook from "./components/AddBook";
-import EditBook from "./components/EditBook";
+import Books from "./components/book/Books";
+import AddBook from "./components/book/AddBook";
+import EditBook from "./components/book/EditBook";
 
 const GuestRoutes = [
   { path: "/", component: Home },
@@ -87,7 +91,7 @@ function App() {
     login,
     logout
   };
-  
+
   return (
     <AuthContext.Provider value={auth}>
       <Router>
