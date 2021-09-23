@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.StoreRepository;
 import learn.barrel_of_books.models.Genre;
 import learn.barrel_of_books.models.Store;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class StoreControllerTest {
 
+    private String TOKEN;
 
     @MockBean
     StoreRepository repository;
@@ -35,13 +37,21 @@ class StoreControllerTest {
     @Autowired
     MockMvc mvc;
 
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     @Test
     void shouldFindAll() throws Exception {
         List<Store> expected = new ArrayList<>();
         expected.add(makeExistingStore());
-        expected.add(new Store(2,"mary rd","boulder","CO","80301","1111111111"));
-        expected.add(new Store(3,"miles dr","boulder","CO","80301","2222222222"));
+        expected.add(new Store(2, "mary rd", "boulder", "CO", "80301", "1111111111"));
+        expected.add(new Store(3, "miles dr", "boulder", "CO", "80301", "2222222222"));
 
 
         when(repository.findAll()).thenReturn(expected);
@@ -57,7 +67,7 @@ class StoreControllerTest {
 
 
     @Test
-    void shouldFindById() throws Exception{
+    void shouldFindById() throws Exception {
         Store store = makeExistingStore();
 
         when(repository.findById(1)).thenReturn(store);
@@ -65,6 +75,20 @@ class StoreControllerTest {
         String expectedJson = generateJson(store);
 
         mvc.perform(get("/api/store/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldFindByPostCode() throws Exception {
+        Store store = makeExistingStore();
+
+        when(repository.findByPostCode("60102")).thenReturn(store);
+
+        String expectedJson = generateJson(store);
+
+        mvc.perform(get("/api/store/postal/60102"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -94,7 +118,7 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddEmptyAddress() throws Exception{
+    void shouldNotAddEmptyAddress() throws Exception {
         Store store = makeNewStore();
         store.setAddress(" ");
 
@@ -110,7 +134,7 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddEmptyCity() throws Exception{
+    void shouldNotAddEmptyCity() throws Exception {
         Store store = makeNewStore();
         store.setCity(" ");
 
@@ -126,7 +150,7 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddEmptyState() throws Exception{
+    void shouldNotAddEmptyState() throws Exception {
         Store store = makeNewStore();
         store.setState(" ");
 
@@ -142,7 +166,7 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddEmptyPostCode() throws Exception{
+    void shouldNotAddEmptyPostCode() throws Exception {
         Store store = makeNewStore();
         store.setPostalCode(" ");
 
@@ -158,7 +182,7 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddEmptyPhone() throws Exception{
+    void shouldNotAddEmptyPhone() throws Exception {
         Store store = makeNewStore();
         store.setPhone(" ");
 
@@ -174,11 +198,11 @@ class StoreControllerTest {
     }
 
     @Test
-    void shouldNotAddDuplicateAddressAndPostCode() throws Exception{
+    void shouldNotAddDuplicateAddressAndPostCode() throws Exception {
         List<Store> expected = new ArrayList<>();
         expected.add(makeExistingStore());
-        expected.add(new Store(2,"mary rd","boulder","CO","80301","1111111111"));
-        expected.add(new Store(3,"miles dr","boulder","CO","80301","2222222222"));
+        expected.add(new Store(2, "mary rd", "boulder", "CO", "80301", "1111111111"));
+        expected.add(new Store(3, "miles dr", "boulder", "CO", "80301", "2222222222"));
 
         Store store = makeExistingStore();
 
@@ -199,8 +223,8 @@ class StoreControllerTest {
     void shouldUpdate() throws Exception {
         List<Store> expected = new ArrayList<>();
         expected.add(makeExistingStore());
-        expected.add(new Store(2,"mary rd","boulder","CO","80301","1111111111"));
-        expected.add(new Store(3,"miles dr","boulder","CO","80301","2222222222"));
+        expected.add(new Store(2, "mary rd", "boulder", "CO", "80301", "1111111111"));
+        expected.add(new Store(3, "miles dr", "boulder", "CO", "80301", "2222222222"));
 
         Store store = makeExistingStore();
         store.setAddress("777 heaven st");
@@ -222,8 +246,8 @@ class StoreControllerTest {
     void shouldNotUpdateIfConflict() throws Exception {
         List<Store> expected = new ArrayList<>();
         expected.add(makeExistingStore());
-        expected.add(new Store(2,"mary rd","boulder","CO","80301","1111111111"));
-        expected.add(new Store(3,"miles dr","boulder","CO","80301","2222222222"));
+        expected.add(new Store(2, "mary rd", "boulder", "CO", "80301", "1111111111"));
+        expected.add(new Store(3, "miles dr", "boulder", "CO", "80301", "2222222222"));
 
         Store store = makeExistingStore();
         store.setAddress("777 heaven st");
@@ -265,16 +289,11 @@ class StoreControllerTest {
     }
 
     private Store makeExistingStore() {
-        return new Store(1,"111 birds dr","dundee","IL","60102","2243256666");
+        return new Store(1, "111 birds dr", "dundee", "IL", "60102", "2243256666");
     }
 
     private Store makeNewStore() {
-        return new Store(0,"222 new store","new york","NY","00000","5555555555");
+        return new Store(0, "222 new store", "new york", "NY", "00000", "5555555555");
     }
 
-    public static final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
-            "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
-            "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
-            "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
-            "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
 }

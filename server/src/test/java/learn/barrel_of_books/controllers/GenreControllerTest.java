@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.GenreRepository;
 import learn.barrel_of_books.models.Genre;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class GenreControllerTest {
+
+    private String TOKEN;
+
     @MockBean
     GenreRepository repository;
 
     @Autowired
     MockMvc mvc;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     // READ
     @Test
@@ -219,9 +232,4 @@ class GenreControllerTest {
         return new Genre(0, "Thriller", "Thriller description");
     }
 
-    private final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
-                "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
-                "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
-                "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
-                "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
     }

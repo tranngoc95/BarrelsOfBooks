@@ -38,6 +38,11 @@ class StoreBookJdbcRepositoryTest {
         assertNull(list);
     }
 
+    @Test
+    void shouldFindByBookIdAndState() {
+        List<StoreBook> list = repository.findByBookIdAndState(1, "WI");
+        assertEquals(1, list.size());
+    }
 
     @Test
     void shouldAdd() {

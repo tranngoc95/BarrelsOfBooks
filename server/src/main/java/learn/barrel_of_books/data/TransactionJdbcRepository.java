@@ -105,7 +105,8 @@ public class TransactionJdbcRepository implements TransactionRepository {
 
     private void addBooks(Transaction transaction) {
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
-                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
+                "b.quantity, b.title, b.description, b.author, b.price, " +
+                "b.publisher, b.language, b.pages, b.age_range, b.dimensions, b.isbn13 from cart_item c " +
                 "inner join book b on b.book_id = c.book_id where c.transaction_id = ?";
         var books = jdbcTemplate.query(sql, new CartItemMapper(), transaction.getTransactionId());
         transaction.setBooks(books);

@@ -7,6 +7,7 @@ import com.sun.tools.jconsole.JConsoleContext;
 import learn.barrel_of_books.data.StoreBookRepository;
 import learn.barrel_of_books.models.Store;
 import learn.barrel_of_books.models.StoreBook;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,11 +30,22 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 class StoreBookControllerTest {
 
+    private String TOKEN;
+
     @Autowired
     MockMvc mvc;
 
     @MockBean
     StoreBookRepository repository;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     @Test
     void shouldFindByBookId() throws Exception {
@@ -48,6 +60,24 @@ class StoreBookControllerTest {
         String expectedJson = generateJson(expected);
 
         mvc.perform(get("/api/store-book/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldFindByBookIdAndState() throws Exception{
+        Store store = new Store(1,"111","boulder","CO","80301","2222222222");
+        List<StoreBook> expected = new ArrayList<>();
+        expected.add(makeExistingStoreBook());
+        expected.add(new StoreBook(1,store,45));
+        expected.add(new StoreBook(1,store,4));
+
+        when(repository.findByBookIdAndState(1, "CO")).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/store-book/1/CO"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(expectedJson));
@@ -171,11 +201,5 @@ class StoreBookControllerTest {
         Store store = new Store(2,"222","boulder","CO","80301","2222222222");
         return new StoreBook(3,store,50);
     }
-
-    public static final String TOKEN = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
-            "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
-            "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
-            "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
-            "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
 
 }

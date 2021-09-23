@@ -2,10 +2,10 @@ package learn.barrel_of_books.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.Transaction;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TransactionControllerTest {
+
+    private String TOKEN;
+
     @MockBean
     TransactionRepository repository;
 
@@ -37,6 +40,15 @@ class TransactionControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     // READ
     @Test

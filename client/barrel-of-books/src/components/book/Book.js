@@ -106,7 +106,7 @@ function Book() {
             {book &&
                 <>
                 <div>
-                    <img src={ require('../../public/1.jpg') } />
+                    {/* <img src={ require('../../public/1.jpg') } /> */}
                 </div>
                     <div className="ui container">
                         <h2>{book.title}</h2>

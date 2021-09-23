@@ -7,6 +7,7 @@ import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.Cart;
 import learn.barrel_of_books.models.CartItem;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class CartItemControllerTest {
+
+    private String TOKEN;
+
     @MockBean
     CartItemRepository repository;
 
@@ -35,6 +39,15 @@ class CartItemControllerTest {
 
     @Autowired
     MockMvc mvc;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     // READ
     @Test
