@@ -60,7 +60,7 @@ function Confirmation() {
                             <div>Quantity: {item.quantity}</div>
                         </div>
                     ))}
-                    {order.books.employeeDiscount &&
+                    {order.employeeDiscount &&
                         <div>Employee Discount: 30%</div>}
                     <div>Total: ${order.total}</div>
                 </div>

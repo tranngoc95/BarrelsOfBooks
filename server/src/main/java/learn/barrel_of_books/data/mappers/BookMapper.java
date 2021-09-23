@@ -18,6 +18,12 @@ public class BookMapper implements RowMapper<Book> {
         book.setPrice(resultSet.getBigDecimal("price"));
         book.setAuthor(resultSet.getString("author"));
         book.setQuantity(resultSet.getInt("quantity"));
+        book.setPublisher(resultSet.getString("publisher"));
+        book.setLanguage(resultSet.getString("language"));
+        book.setPages(resultSet.getInt("pages"));
+        book.setAgeRange(resultSet.getString("age_range"));
+        book.setDimensions(resultSet.getString("dimensions"));
+        book.setIsbn13(resultSet.getString("isbn13"));
         return book;
     }
 }

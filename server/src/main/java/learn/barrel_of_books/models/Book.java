@@ -19,12 +19,26 @@ public class Book {
     private String description;
     private String author;
     private BigDecimal price;
+    private String publisher;
+    private String language;
+    private int pages;
+    private String ageRange;
+    private String dimensions;
+    private String isbn13;
     private List<GenreBook> genres;
     private List<StoreBook> stores;
 
-
-
-
+    public Book(int bookId, int quantity, String title, String description, String author, BigDecimal price,
+                List<GenreBook> genres, List<StoreBook> stores) {
+        this.bookId = bookId;
+        this.quantity = quantity;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.price = price;
+        this.genres = genres;
+        this.stores = stores;
+    }
 
     public Book(int bookId, int quantity, String title, String description, String author, BigDecimal price) {
         this.bookId = bookId;

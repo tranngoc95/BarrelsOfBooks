@@ -12,7 +12,7 @@ import java.util.List;
 public class TestData {
     public static Book makeBook() {
         return new Book(1, 45, "hp", "magic",
-                "jk rowling", new BigDecimal("13.45"), null,null);
+                "jk rowling", new BigDecimal("13.45"), null, null);
     }
 
     public static CartItem makeUpdateCartItem() {return new CartItem(3, 0, "1", makeBook(), 1);}

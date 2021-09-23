@@ -22,11 +22,17 @@ DROP TABLE IF EXISTS `barrel_of_books`.`book` ;
 
 CREATE TABLE IF NOT EXISTS `barrel_of_books`.`book` (
   `book_id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(200) NULL,
+  `title` VARCHAR(200) NOT NULL,
+  `description` VARCHAR(2000) NULL,
   `price` DECIMAL(6,2) NOT NULL,
   `author` VARCHAR(45) NOT NULL,
   `quantity` INT NOT NULL,
+  `publisher` VARCHAR(45),
+  `language` VARCHAR(45),
+  `pages` INT,
+  `age_range` VARCHAR(45),
+  `dimensions` VARCHAR(45),
+  `isbn13` VARCHAR(45),
   PRIMARY KEY (`book_id`),
   UNIQUE INDEX `bookId_UNIQUE` (`book_id` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -176,10 +182,58 @@ insert into genre(genre_id, name, description) values
 (3, 'Romance', 'Romance description'),
 (4, 'Horror', 'Horror description');
 
-insert into book(book_id, title, description, price, author, quantity) values
-  (1, 'hp', 'magic', 13.45, 'jk rowling', 45),
-  (2, 'red robin', 'yum', 14.55, 'bear', 9),
-  (3, 'got', 'fiction', 13.45, 'george rr martin', 45);
+insert into book(book_id, title, description, price, author, quantity, publisher, language, pages, age_range, dimensions, isbn13) values
+  (1, 'Harry Potter and the Sorcerer\'s Stone', 'Harry Potter spent ten long years living with Mr. and Mrs. Dursley, an aunt and uncle whose 
+  outrageous favoritism of their perfectly awful son Dudley leads to some of the most inspired dark comedy since Charlie and the Chocolate 
+  Factory. But fortunately for Harry, he\'s about to be granted a scholarship to a unique boarding school called THE HOGWORTS SCHOOL OF 
+  WITCHCRAFT AND WIZARDRY, where he will become a school hero at the game of Quidditch (a kind of aerial soccer played high above the ground 
+  on broomsticks), he will make some wonderful friends, and, unfortunately, a few terrible enemies. For although he seems to be getting your 
+  run-of-the-mill boarding school experience (well, ok, even that\'s pretty darn out of the ordinary), Harry Potter has a destiny that he was 
+  born to fulfill. A destiny that others would kill to keep him from.', 13.49, 'J.K. Rowling', 115, '‎Scholastic Press (October 1, 1998)',
+  'English', 309, '9 - 12 years', '6.1 x 1.3 x 9.1 inches', '‎978-0590353403'),
+  (2, 'Harry Potter and the Chamber of Secrets', 'The Dursleys were so mean that hideous that summer that all Harry Potter wanted was to get back to the Hogwarts School for Witchcraft
+  and Wizardry. But just as he\'s packing his bags, Harry receives a warning from a strange, impish creature named Dobby who says that if 
+  Harry Potter returns to Hogwarts, disaster will strike. And strike it does. For in Harry\'s second year at Hogwarts, fresh torments and horrors arise, including an outrageously stuck-up new professor,
+ Gilderoy Lockheart, a spirit named Moaning Myrtle who haunts the girls\' bathroom, and the unwanted attentions of Ron Weasley\'s younger 
+ sister, Ginny. But each of these seem minor annoyances when the real trouble begins, and someone--or something--starts turning Hogwarts students to stone. 
+Could it be Draco Malfoy, a more poisonous rival than ever? Could it possibly be Hagrid, whose mysterious past is finally told? Or could it 
+be the one everyone at Hogwarts most suspects...Harry Potter himself?', 11.94, 'J.K. Rowling', 125, 'Scholastic (July 1, 1999)',
+  'English', 352, '9 - 12 years', '6.3 x 1.4 x 9.1 inches', '‎978-0439064866'),
+  (3, 'Harry Potter and the Prisoner of Azkaban', 'For twelve long years, the dread fortress of Azkaban held an infamous prisoner named 
+  Sirius Black. Convicted of killing thirteen people with a single curse, he was said to be the heir apparent to the Dark Lord, Voldemort.
+  Now he has escaped, leaving only two clues as to where he might be headed: Harry Potter\'s defeat of You-Know-Who was Black\'s downfall 
+  as well. And the Azkaban guards heard Black muttering in his sleep, "He\'s at Hogwarts . . . he\'s at Hogwarts."Harry Potter isn\'t safe,
+  not even within the walls of his magical school, surrounded by his friends. Because on top of it all, there may well be a traitor in their
+  midst.', 13.97, 'J.K. Rowling', 93, '‎‎Scholastic; 1st edition (October 1, 1999)',
+  'English', 435, '9 - 12 years', '6.38 x 1.41 x 9.24 inches', '‎978-0439136358'),
+  (4, 'Gone Girl', 'On a warm summer morning in North Carthage, Missouri, it is Nick and Amy Dunne’s fifth wedding anniversary. Presents are
+  being wrapped and reservations are being made when Nick’s clever and beautiful wife disappears. Husband-of-the-Year Nick isn’t doing himself
+  any favors with cringe-worthy daydreams about the slope and shape of his wife’s head, but passages from Amy\'s diary reveal the alpha-girl
+  perfectionist could have put anyone dangerously on edge. Under mounting pressure from the police and the media—as well as Amy’s fiercely
+  doting parents—the town golden boy parades an endless series of lies, deceits, and inappropriate behavior. Nick is oddly evasive, and he’s
+  definitely bitter—but is he really a killer?', 23.80, 'Gillian Flynn', 73, 'Crown Publishing Group',
+  'English', 432, null, '5.20 x 1.10 x 7.90 inches', '978-0307588371'),
+  (5, 'Madhouse at the End of the Earth: The Belgica\'s Journey into the Dark Antarctic Night', 'In Madhouse at the End of the Earth, Julian Sancton
+  unfolds an epic story of adventure and horror for the ages. As the Belgica’s men teetered on the brink, de Gerlache relied increasingly on
+  two young officers whose friendship had blossomed in captivity: the expedition’s lone American, Dr. Frederick Cook—half genius, half con
+  man—whose later infamy would overshadow his brilliance on the Belgica; and the ship’s first mate, soon-to-be legendary Roald Amundsen, even
+  in his youth the storybook picture of a sailor. Together, they would plan a last-ditch, nearly certain-to-fail escape from the ice—one that
+  would either etch their names in history or doom them to a terrible fate at the ocean’s bottom.', 15.76, 'Julian Sancton', 103, 'Crown Publishing Group',
+  'English', 368, null, '6.3 x 1.2 x 9.5 inches', '978-1984824332'),
+  (6, 'Life of Pi', 'Pi Patel is an unusual boy. The son of a zookeeper, he has an encyclopedic knowledge of animal behavior, a fervent love
+  of stories, and practices not only his native Hinduism, but also Christianity and Islam. When Pi is sixteen, his family emigrates from India
+  to North America aboard a Japanese cargo ship, along with their zoo animals bound for new homes. 
+  The ship sinks. Pi finds himself alone in a lifeboat, his only companions a hyena, an orangutan, a wounded zebra, and Richard Parker, a
+  450-pound Bengal tiger. Soon the tiger has dispatched all but Pi, whose fear, knowledge, and cunning allow him to coexist with Richard
+  Parker for 227 days lost at sea. When they finally reach the coast of Mexico, Richard Parker flees to the jungle, never to be seen again.
+  The Japanese authorities who interrogate Pi refuse to believe his story and press him to tell them "the truth." After hours of coercion,
+  Pi tells a second story, a story much less fantastical, much more conventional-but is it more true? Life of Pi is at once a realistic,
+  rousing adventure and a meta-tale of survival that explores the redemptive power of storytelling and the transformative nature of fiction.
+  It\'s a story, as one character puts it, to make you believe in God.', 21.83, 'Yann Martel', 123, 'Mariner Books; First edition (June 4, 2002)',
+  'English', 336, '14 years and up', '9.3 x 6.38 x 1.1', '978-1984824332')
+  ;
+  
+  
   
 insert into genre_book(genre_id, book_id) values
   (1,1),
