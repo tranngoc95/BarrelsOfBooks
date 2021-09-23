@@ -39,7 +39,7 @@ function BooksTable({ books, auth, getList, linkPath }) {
                 <thead>
                     <tr>
                         <th scope="col">Title</th>
-                        <th scope="col">Description</th>
+
                         <th scope="col">Author</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
@@ -53,7 +53,6 @@ function BooksTable({ books, auth, getList, linkPath }) {
                     {books.map((b) => (
                         <tr key={b.bookId}>
                             <td data-label="Title"><Link to={`/books/each/${b.bookId}`}>{b.title}</Link></td>
-                            <td data-label="Description">{b.description}</td>
                             <td data-label="Author">{b.author}</td>
                             <td data-label="Price">{b.price}</td>
                             <td data-label="Quantity">{b.quantity}</td>
