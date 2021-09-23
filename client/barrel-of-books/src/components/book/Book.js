@@ -152,7 +152,7 @@ function Book() {
                                     }
                                 </div>
                                 :
-                                <div>There is no store available in this state.</div>}
+                                <div className="book-info">There is no store available in this state.</div>}
                         </div>
 
                     }
