@@ -23,7 +23,8 @@ public class CartItemJdbcRepository implements CartItemRepository {
     @Override
     public List<CartItem> findActiveByUserId(String userId) {
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
-                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
+                "b.quantity, b.title, b.description, b.author, b.price, " +
+                "b.publisher, b.language, b.pages, b.age_range, b.dimensions, b.isbn13 from cart_item c " +
                 "left outer join book b on b.book_id = c.book_id where c.user_id = ? and c.transaction_id is null";
         return jdbcTemplate.query(sql, new CartItemMapper(), userId);
     }
@@ -31,7 +32,8 @@ public class CartItemJdbcRepository implements CartItemRepository {
     @Override
     public CartItem findByCartItemId(int cartItemId) {
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
-                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
+                "b.quantity, b.title, b.description, b.author, b.price, " +
+                "b.publisher, b.language, b.pages, b.age_range, b.dimensions, b.isbn13 from cart_item c " +
                 "left outer join book b on b.book_id = c.book_id where c.cart_item_id = ?";
         return jdbcTemplate.query(sql, new CartItemMapper(), cartItemId).stream().findFirst().orElse(null);
     }
@@ -39,7 +41,8 @@ public class CartItemJdbcRepository implements CartItemRepository {
     @Override
     public CartItem findActiveByUserIdAndBookId(String userId, int bookId){
         final String sql = "select c.cart_item_id, c.transaction_id, c.user_id, c.quantity item_quantity, c.book_id, " +
-                "b.quantity, b.title, b.description, b.author, b.price from cart_item c " +
+                "b.quantity, b.title, b.description, b.author, b.price, " +
+                "b.publisher, b.language, b.pages, b.age_range, b.dimensions, b.isbn13 from cart_item c " +
                 "left outer join book b on b.book_id = c.book_id " +
                 "where c.user_id = ? and c.book_id = ? and c.transaction_id is null";
         return jdbcTemplate.query(sql, new CartItemMapper(), userId, bookId).stream().findFirst().orElse(null);

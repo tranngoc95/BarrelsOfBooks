@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.GenreBookRepository;
 import learn.barrel_of_books.models.Genre;
 import learn.barrel_of_books.models.GenreBook;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,11 +28,22 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 class GenreBookControllerTest {
 
+    private String TOKEN;
+
     @Autowired
     MockMvc mvc;
 
     @MockBean
     GenreBookRepository repository;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     @Test
     void shouldFindByBookId() throws Exception {
@@ -61,7 +73,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -79,7 +91,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -96,7 +108,7 @@ class GenreBookControllerTest {
         String jsn = generateJson(genreBook);
 
         var request = post("/api/genre-book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsn);
 
@@ -108,14 +120,14 @@ class GenreBookControllerTest {
     void shouldDelete() throws Exception {
         when(repository.delete(1)).thenReturn(true);
         mvc.perform(delete("/api/genre-book/1")
-                .header("Authorization", getToken()))
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
     @Test
     void shouldNotDelete() throws Exception {
         when(repository.delete(1)).thenReturn(false);
         mvc.perform(delete("/api/genre-book/1")
-                .header("Authorization", getToken()))
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
@@ -130,13 +142,5 @@ class GenreBookControllerTest {
     private GenreBook makeGenreBook() {
         Genre genre = new Genre(1,"fiction", "not real");
         return new GenreBook(genre,1);
-    }
-
-    private String getToken() {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
-                "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
-                "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
-                "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
-                "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
     }
 }

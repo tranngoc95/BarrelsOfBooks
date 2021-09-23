@@ -56,6 +56,18 @@ class BookJdbcRepositoryTest {
     }
 
     @Test
+    void shouldFindByTitleAuthorOrKeyWord() {
+        List<Book> books = repository.findByTitleAuthorOrKeyword("hp");
+        assertEquals(1, books.size());
+    }
+
+    @Test
+    void shouldFindByGenreName() {
+        List<Book> books = repository.findByGenreName("fantasy");
+        assertEquals(2, books.size());
+    }
+
+    @Test
     void shouldAddBook() {
         List<Book> books = repository.findAll();
         Book book = makeBook();

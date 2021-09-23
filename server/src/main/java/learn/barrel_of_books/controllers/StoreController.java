@@ -40,7 +40,7 @@ public class StoreController {
     }
 
     @GetMapping("/postal/{postCode}")
-    public ResponseEntity<Store> findById(@PathVariable String postCode) {
+    public ResponseEntity<Store> findByPostCode(@PathVariable String postCode) {
         Store store = service.findByPostCode(postCode);
 
         if(store == null) {

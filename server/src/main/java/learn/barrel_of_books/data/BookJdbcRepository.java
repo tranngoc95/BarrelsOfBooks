@@ -47,7 +47,7 @@ public class BookJdbcRepository implements BookRepository {
 
     @Override
     public Book findByTitle(String title) {
-        final String sql = "select book_id, title, description, price, author, quantity "
+        final String sql = "select book_id, title, description, price, author, quantity, "
                 + "publisher, language, pages, age_range, dimensions, isbn13 from book "
                 + "where title = ?;";
 
@@ -63,7 +63,7 @@ public class BookJdbcRepository implements BookRepository {
     @Override
     public List<Book> findByTitleAuthorOrKeyword(String phrase) {
         phrase = "%" + phrase + "%";
-        final String sql = "select book_id, title, description, price, author, quantity "
+        final String sql = "select book_id, title, description, price, author, quantity, "
                 + "publisher, language, pages, age_range, dimensions, isbn13 from book "
                 + "where title like ? or author like ? or description like ?;";
 
@@ -72,7 +72,8 @@ public class BookJdbcRepository implements BookRepository {
 
     @Override
     public List<Book> findByGenreName(String genreName) {
-        final String sql = "select b.book_id, b.title, b.description, b.price, b.author, b.quantity from book b " +
+        final String sql = "select b.book_id, b.title, b.description, b.price, b.author, b.quantity, " +
+                "b.publisher, b.language, b.pages, b.age_range, b.dimensions, b.isbn13 from book b " +
                 "inner join genre_book gb on b.book_id = gb.book_id " +
                 "inner join genre g on g.genre_id = gb.genre_id " +
                 "where g.name = ?;";
