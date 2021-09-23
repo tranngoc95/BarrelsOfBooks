@@ -9,6 +9,8 @@ public interface BookRepository {
 
     List<Book> findByTitleAuthorOrKeyword(String phrase);
 
+    List<Book> findByGenreName(String genreName);
+
     Book findById(int id);
 
     Book findByTitle(String title);

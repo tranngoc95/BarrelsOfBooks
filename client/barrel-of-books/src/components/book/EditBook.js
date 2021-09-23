@@ -218,7 +218,7 @@ function EditBook() {
   };
 
   function handleStoreBook() {
-    book.stores.map((s) => {
+    book.stores.forEach((s) => {
       const storeBook = { bookId: id, store: s.store, quantity: s.quantity };
       const init = {
         method: "POST",
@@ -266,7 +266,7 @@ function EditBook() {
 
 
   function handleGenreBook() {
-    selectedGenres.map((genre) => {
+    selectedGenres.forEach((genre) => {
       const init = {
         method: "POST",
         headers: {

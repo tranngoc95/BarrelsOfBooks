@@ -22,7 +22,7 @@ function Stores() {
     const init = {
       method: "DELETE",
       headers: {
-      'Authorization': `Bearer ${auth.user.token}`
+        'Authorization': `Bearer ${auth.user.token}`
       }
     };
 
@@ -50,7 +50,7 @@ function Stores() {
       <h2 className="sub-title">Stores</h2>
       <ErrorMessages errorList={errorList} />
       {auth.user && auth.user.hasRole("ADMIN") &&
-      <Link className="ui primary button add-button" to="/stores/add">Add New Store</Link>}
+        <Link className="ui primary button add-button" to="/stores/add">Add New Store</Link>}
       <table className="ui celled selectable table table-margin">
         <thead>
           <tr>
@@ -59,8 +59,12 @@ function Stores() {
             <th scope="col">State</th>
             <th scope="col">Postal Code</th>
             <th scope="col">Phone Number</th>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">&nbsp;</th>
+            {auth.user && auth.user.hasRole("ADMIN") && (
+              <>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
@@ -71,16 +75,18 @@ function Stores() {
               <td data-label="State">{s.state}</td>
               <td data-label="Postal Code">{s.postalCode}</td>
               <td data-label="Phone Number">{s.phone}</td>
-              <td>
-              {auth.user && auth.user.hasRole("ADMIN") &&
-                <Link className="ui primary button" to={`/stores/edit/${s.storeId}`}>Edit</Link>}
-              </td>
-              <td>
-              {auth.user && auth.user.hasRole("ADMIN") &&
-                <button className="ui primary button" type="button" onClick={() => handleDelete(s.storeId)}>
-                  Delete
-                </button>}
-              </td>
+              {auth.user && auth.user.hasRole("ADMIN") && (
+                <>
+                  <td>
+                    <Link className="ui primary button" to={`/stores/edit/${s.storeId}`}>Edit</Link>
+                  </td>
+                  <td>
+                    <button className="ui primary button" type="button" onClick={() => handleDelete(s.storeId)}>
+                      Delete
+                    </button>
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

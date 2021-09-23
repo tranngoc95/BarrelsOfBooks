@@ -30,38 +30,41 @@ import Books from "./components/book/Books";
 import AddBook from "./components/book/AddBook";
 import EditBook from "./components/book/EditBook";
 import BooksSearched from './components/book/BooksSearched';
+import BooksGenre from './components/book/BooksGenre';
 
 const GuestRoutes = [
   { path: "/", component: Home },
   { path: "/login", component: Login },
   { path: "/register", component: Register },
   { path: "/books/each/:id", component: Book },
-  { path: "/books", component: Books },
   { path: "/books/search/:phrase", component: BooksSearched },
+  { path: "/books/genre/:name", component: BooksGenre },
+  { path: "/books", component: Books },
   { path: "/genres", component: Genres },
   { path: "/stores", component: Stores }
 ]
 
 const UserRoutes = [
   { path: "/cart", component: Cart },
-  { path: "/orders", component: Orders },
-  { path: "/orders/cancel/:id", component: CancelOrder },
   { path: "/orders/cancel/item/:id", component: CancelItem },
-  { path: "/orders/confirmation/:id", component: Confirmation }
+  { path: "/orders/cancel/:id", component: CancelOrder },
+  { path: "/orders/confirmation/:id", component: Confirmation },
+  { path: "/orders", component: Orders },
 ]
 
 const ManagerRoutes = [
   { path: "/allorders", component: AllOrders },
-  { path: "/books/add/", component: AddBook },
-  { path: "/books/edit/:id", component: EditBook }
+  { path: "/books/edit/:id", component: EditBook },
+  { path: "/books/add/", component: AddBook }
 ]
 
 const AdminRoutes = [
-  { path: "/stores/add", component: AddStore },
-  { path: "/stores/edit/:id", component: EditStore },
+  { path: "/genres/edit/:id", component: EditGenre },
   { path: "/genres/add", component: AddGenre },
-  { path: "/genres/edit/:id", component: EditGenre }
+  { path: "/stores/edit/:id", component: EditStore },
+  { path: "/stores/add", component: AddStore }
 ]
+
 
 function App() {
   const [user, setUser] = useState(null);

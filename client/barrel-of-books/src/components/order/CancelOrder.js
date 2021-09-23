@@ -41,7 +41,7 @@ function CancelOrder() {
                 }
             })
             .catch(error => console.log("Error", error));
-    }, [id]);
+    }, [id, auth.user.token]);
 
     const cancelOrder = () => {
 

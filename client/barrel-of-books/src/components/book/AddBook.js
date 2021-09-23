@@ -149,7 +149,7 @@ const handleSubmit = (event) => {
 
 function handleGenreBook(bookId) {
  
-  selectedGenres.map((genre) => {
+  selectedGenres.forEach((genre) => {
    const genreBook = { bookId, genre };
 
 
@@ -187,7 +187,7 @@ function handleGenreBook(bookId) {
 
 
 function handleStoreBook(bookId) {
-  book.stores.map((s) => {
+  book.stores.forEach((s) => {
     const storeBook = { bookId, store: s, quantity: s.quantity };
 
     const init = {

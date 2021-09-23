@@ -33,6 +33,10 @@ public class BookService {
         return repository.findByTitleAuthorOrKeyword(phrase);
     }
 
+    public List<Book> findByGenreName(String genreName) {
+        return repository.findByGenreName(genreName);
+    }
+
     public Book findById(int bookId) {
         return repository.findById(bookId);
     }

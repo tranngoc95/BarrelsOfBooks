@@ -15,7 +15,7 @@ function Navbar() {
                 <Link className="item" to="/genres">Genres</Link>
                 {auth.user && <Link className="item" to="/orders">My Orders</Link>}
                 {auth.user && auth.user.hasRole('MANAGER') && <Link className="item" to="/allorders">All Orders</Link>}
-                <div class="right menu">
+                <div className="right menu">
                     {!auth.user && (
                         <>
                             <Link className="ui item" to="/login">Login</Link>

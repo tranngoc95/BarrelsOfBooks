@@ -77,7 +77,7 @@ function Genres() {
                     <tbody>
                         {genres.map(genre => (
                             <tr key={genre.genreId}>
-                                <td data-label="Genre">{genre.name}</td>
+                                <td data-label="Genre"><Link to={`/books/genre/${genre.name}`}>{genre.name}</Link></td>
                                 <td data-label="Description">{genre.description}</td>
                                 {
                                     auth.user && auth.user.hasRole("ADMIN") &&

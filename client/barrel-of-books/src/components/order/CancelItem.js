@@ -41,7 +41,7 @@ function CancelItem() {
                 }
             })
             .catch(error => console.log("Error", error));
-    }, [id]);
+    }, [id, auth.user.token]);
 
     const cancelItem = () => {
 
