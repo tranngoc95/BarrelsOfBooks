@@ -114,6 +114,12 @@ function Book() {
                         <hr/>
                         <div>Price: {book.price}</div>
                         <div>Overview: {book.description}</div>
+                        <div>Publisher: {book.publisher}</div>
+                        <div>Language: {book.language}</div>
+                        <div>Page Count: {book.pages}</div>
+                        <div>Age Range: {book.ageRange}</div>
+                        <div>Dimensions: {book.dimensions}</div>
+                        <div>ISBN-13: {book.isbn13}</div>
                         {auth.user && <button className="ui primary button" type="button" onClick={addToCart}>Add to cart</button>}
                         {!find && <button className="ui button" onClick={handleFind}>Find Available Stores</button>}
                     </div>
