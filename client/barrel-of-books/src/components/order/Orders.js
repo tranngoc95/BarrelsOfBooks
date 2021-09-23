@@ -31,8 +31,10 @@ function Orders() {
 
 
     return (
-        <div className="ui container">
-            <h2>My Orders</h2>
+        <div className="home-page">
+             <h2 className="sub-title">My Orders</h2>
+        <div className="ui container white-bg">
+           
             <div className="ui celled list">
                 {orders.map(order => (
                     <div className="item" key={order.transactionId}>
@@ -55,6 +57,7 @@ function Orders() {
                 ))}
             </div>
 
+        </div>
         </div>
     )
 }

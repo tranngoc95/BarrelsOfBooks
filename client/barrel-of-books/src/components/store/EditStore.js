@@ -70,8 +70,8 @@ function EditStore() {
 
 
 return (
-    <div>
-    <h1>Edit Store</h1>
+    <div className="home-page">
+    <h1 className="sub-title">Edit Store</h1>
     <ErrorMessages errorList={errorList} />
     <form className="ui small form" onSubmit = {handleSubmit}>
       <div class="ui stacked segment">

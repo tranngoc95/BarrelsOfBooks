@@ -100,7 +100,8 @@ function Book() {
     }
 
     return (
-        <div className="ui container">
+        <div className="home-page">
+        <div className="ui container book-container white-bg">
             <ErrorMessages errorList={errorList} />
             {book &&
                 <>
@@ -151,6 +152,7 @@ function Book() {
                     }
                 </>
             }
+        </div>
         </div>
     )
 }

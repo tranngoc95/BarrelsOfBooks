@@ -299,8 +299,8 @@ function EditBook() {
 
 
   return (
-    <div className="seashell-bg">
-      <h1>Edit Book</h1>
+    <div className="home-page">
+      <h1 className="sub-title">Edit Book</h1>
       <ErrorMessages errorList={errorList} />
       <form className="ui small form" onSubmit={handleSubmit}>
         <div class="ui stacked segment">
