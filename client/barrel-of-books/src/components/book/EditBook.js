@@ -299,11 +299,11 @@ function EditBook() {
 
 
   return (
-    <div>
+    <div className="seashell-bg">
       <h1>Edit Book</h1>
-      <Link className="ui secondary button back-form-button" to="/books">Go Back</Link>
       <ErrorMessages errorList={errorList} />
-      <form className="ui form" onSubmit={handleSubmit}>
+      <form className="ui small form" onSubmit={handleSubmit}>
+        <div class="ui stacked segment">
         <div className="field">
           <label htmlFor="title">Title</label>
           <input
@@ -414,8 +414,11 @@ function EditBook() {
           ))}
         </div>
 
-        <div>
-          <button className="ui primary button form-submit-button" type="submit">Submit</button>
+        <div className="ui buttons">
+						<button className="ui positive button active" type="submit">Submit</button>
+						<div class="or"></div>
+						<Link className="ui button" type="button" to='/books'>Cancel</Link>
+					</div>
         </div>
       </form>
     </div>
