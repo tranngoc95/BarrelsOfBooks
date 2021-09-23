@@ -47,6 +47,10 @@ function Stores() {
   return (
     <div className="home-page">
       <h2 className="sub-title">Stores</h2>
+      <div>
+            {auth.user && auth.user.hasRole("ADMIN") &&
+                <Link className="ui primary button add-button back-form-button" to="/stores/add">Add New Store</Link>}
+            </div>
       <ErrorMessages errorList={errorList} />
       <table className="ui fixed selectable table table-margin">
         <thead>
@@ -76,7 +80,7 @@ function Stores() {
                     <Link
                       className="ui green left attached button"
                       to={`/stores/edit/${s.storeId}`}>
-                      Edit
+                     Update
                     </Link>
                     <button
                       className="ui red right attached button"
@@ -93,13 +97,7 @@ function Stores() {
           }
         </tbody >
       </table >
-      <div>
-        {auth.user && auth.user.hasRole("ADMIN") && (
-          <Link className="ui primary button add-button" to="/stores/add">
-            Add New Store
-          </Link>
-        )}
-      </div>
+
     </div >
   );
 }

@@ -61,6 +61,10 @@ function Genres() {
         <>
             <div className="home-page">
                 <h2 className="sub-title">Genres List</h2>
+                <div>
+            {auth.user && auth.user.hasRole("ADMIN") &&
+                <Link className="ui primary button add-button back-form-button" to="/genres/add">Add New Genre</Link>}
+            </div>
                 <ErrorMessages errorList={errorList} />
 
                 <table className="ui fixed selectable table table-margin">
@@ -92,10 +96,6 @@ function Genres() {
                         }
                     </tbody >
                 </table >
-                <div>
-                    {auth.user && auth.user.hasRole("ADMIN") &&
-                        <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
-                </div>
             </div >
         </>
     );

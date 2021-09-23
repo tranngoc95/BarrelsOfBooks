@@ -43,7 +43,8 @@ function Confirmation() {
     }, [id, auth.user.token]);
 
     return (
-        <>
+        <div className="home-page">
+            <div className="ui container white-bg">
             <ErrorMessages errorList={errorList} />
             {order && (<div>
                 <h3>Successfull Checkout!</h3>
@@ -67,7 +68,8 @@ function Confirmation() {
 
             </div>
             )}
-        </>
+            </div>
+        </div>
     )
 
 }

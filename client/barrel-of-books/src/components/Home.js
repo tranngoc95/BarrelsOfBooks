@@ -7,7 +7,7 @@ function Home() {
   return (
     <div className="home-page">
       <h1 className="main-title">Barrel Of Books</h1>
-      <div class="ui icon input">
+      <div className="ui icon input search-width">
         <input type="text" placeholder="Search by Title, Author, or Keyword" onChange={(event) => setPhrase(event.target.value)} />
         <Link to={`/books/search/${phrase}`} className="ui button"><i class="search link icon"></i></Link>
       </div>

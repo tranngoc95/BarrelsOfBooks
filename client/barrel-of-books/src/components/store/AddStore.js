@@ -56,9 +56,9 @@ function AddStore() {
   }
 
   return (
-    <div className="store-container seashell-bg">
-    <div>
-      <h1>Add New Store</h1>
+
+    <div className="home-page">
+      <h1 className="sub-title">Add New Store</h1>
       <ErrorMessages errorList={errorList} />
       <form className="ui small form" onSubmit = {handleSubmit}>
         <div class="ui stacked segment">
@@ -88,9 +88,8 @@ function AddStore() {
 						<Link className="ui button" type="button" to='/stores'>Cancel</Link>
 					</div>
         </div>
-      </form>
-  
-    </div>
+      </form>  
+   
     </div>
   );
 }

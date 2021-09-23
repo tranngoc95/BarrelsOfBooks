@@ -7,7 +7,8 @@
 }
 
 .add-button {
-    background-color:#FA281F !important;
+    background-color:#DBD80C !important;
+    color: black !important;
 }
 
 .table {
@@ -46,7 +47,7 @@ width: 80% !important;
 }
 
 .back-form-button {
-    margin-right: 60em !important;
+    margin-right: 100em !important;
 }
 
 .home-page {
@@ -72,4 +73,25 @@ padding-bottom: 60em !important;
 
 .seashell-bg {
     background-color: seashell;
+}
+
+.store-container {
+    height: 100% !important;
+    width: 100% !important
+}
+
+.white-bg {
+    background-color: white;
+}
+
+.mb-1 {
+    margin-bottom: 1em !important;
+}
+
+.book-container {
+    padding-bottom: 30% !important;
+}
+
+.search-width {
+    width: 50em !important;
 }

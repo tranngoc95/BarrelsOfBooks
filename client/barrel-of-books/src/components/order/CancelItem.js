@@ -74,8 +74,9 @@ function CancelItem() {
     }
 
     return (
-        <div>
-            <h3>Cancel Item</h3>
+        <div className="home-page">
+            <h3 className="sub-title">Cancel Item</h3>
+            <div className="ui container white-bg">
             <ErrorMessages errorList={errorList} />
             {item && (
                 <>
@@ -84,11 +85,12 @@ function CancelItem() {
                     <hr />
                     <div>Are you sure you want to cancel this item?</div>
                     <div >
-                        <button type="button" onClick={cancelItem}>Yes</button>
-                        <Link to='/orders'>Cancel</Link>
+                        <button className="ui primary button" type="button" onClick={cancelItem}>Yes</button>
+                        <Link className="ui secondary button" to='/orders'>Cancel</Link>
                     </div>
                 </>
             )}
+            </div>
         </div>
     )
 }
