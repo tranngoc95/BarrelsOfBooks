@@ -50,7 +50,7 @@ function Orders() {
                         ))}
                         <div>Total: ${order.total}</div>
                         {order.status === "ORDERED" &&
-                            <Link className="ui tiny button grey" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
+                            <Link className="ui button" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
                         }
                     </div>
 

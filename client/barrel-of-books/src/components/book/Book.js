@@ -101,58 +101,58 @@ function Book() {
 
     return (
         <div className="home-page">
-        <div className="ui container book-container white-bg">
-            <ErrorMessages errorList={errorList} />
-            {book &&
-                <>
-                <div>
-                    {/* <img src={ require('../../public/1.jpg') } /> */}
-                </div>
-                    <div className="ui container">
-                        <h2>{book.title}</h2>
-                        <div>by {book.author}</div>
-                        <hr/>
-                        <div>Price: {book.price}</div>
-                        <div>Overview: {book.description}</div>
-                        {auth.user && <button className="ui primary button" type="button" onClick={addToCart}>Add to cart</button>}
-                        {!find && <button className="ui button" onClick={handleFind}>Find Available Stores</button>}
-                    </div>
-                    <div>
-                        {find &&
-                            <div>
-                                <label htmlFor="state">State: </label>
-                                <select name="state" value={state} onChange={(event) => setState(event.target.value)}>
-                                    <option value="">Select State</option>
-                                    {States.map(each => (
-                                        <option key={each.abbr} value={each.abbr} >{each.name}</option>
-                                    ))}
-                                </select>
-                                <button className="ui mini button" onClick={findStores}>Find</button>
-                            </div>
-                        }
-                    </div>
-                    {stores !== null &&
+            <div className="ui container book-container white-bg">
+                <ErrorMessages errorList={errorList} />
+                {book &&
+                    <>
                         <div>
-                            {stores.length > 0 ?
-                                <div>
-                                    {
-                                        stores.map(each => (
-                                            <>
-                                                <h5>{each.store.city} bookstore</h5>
-                                                <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
-                                                {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
-                                            </>
-                                        ))
-                                    }
-                                </div>
-                                :
-                                <div>There is no store available in this state.</div>}
+                            <img className="ui image" src="/1.jpg" alt="image" />
                         </div>
+                        <div className="ui container">
+                            <h2>{book.title}</h2>
+                            <div>by {book.author}</div>
+                            <hr />
+                            <div>Price: {book.price}</div>
+                            <div>Overview: {book.description}</div>
+                            {auth.user && <button className="ui primary button" type="button" onClick={addToCart}>Add to cart</button>}
+                            {!find && <button className="ui button" onClick={handleFind}>Find Available Stores</button>}
+                        </div>
+                        <div>
+                            {find &&
+                                <div>
+                                    <label htmlFor="state">State: </label>
+                                    <select className="ui search dropdown" name="state" value={state} onChange={(event) => setState(event.target.value)}>
+                                        <option value="">Select State</option>
+                                        {States.map(each => (
+                                            <option key={each.abbr} value={each.abbr} >{each.name}</option>
+                                        ))}
+                                    </select>
+                                    <button className="ui button" onClick={findStores}>Find</button>
+                                </div>
+                            }
+                        </div>
+                        {stores !== null &&
+                            <div>
+                                {stores.length > 0 ?
+                                    <div>
+                                        {
+                                            stores.map(each => (
+                                                <>
+                                                    <h5>{each.store.city} bookstore</h5>
+                                                    <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
+                                                    {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
+                                                </>
+                                            ))
+                                        }
+                                    </div>
+                                    :
+                                    <div>There is no store available in this state.</div>}
+                            </div>
 
-                    }
-                </>
-            }
-        </div>
+                        }
+                    </>
+                }
+            </div>
         </div>
     )
 }

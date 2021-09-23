@@ -113,8 +113,8 @@ function CartItem({ item, getList, auth }) {
                     )}
             </div>
             <div>
-                <label htmlFor="quantity">Quantity</label>
-                {toggle && <select id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
+                <label htmlFor="quantity">Quantity: </label>
+                {toggle && <select className="ui search dropdown" id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
                     <option value={1} disabled={item.book.quantity < 1}>1</option>
                     <option value={2} disabled={item.book.quantity < 2}>2</option>
                     <option value={3} disabled={item.book.quantity < 3}>3</option>
@@ -129,9 +129,9 @@ function CartItem({ item, getList, auth }) {
                 }
                 {!toggle && <input id="quantityNum" name="quantity" value={quantity} type="number" onChange={handleChange} required disabled={!update} />
                 }
-                {!update && <button className="ui mini blue button" onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
-                {update && <button onClick={updateQuantity}>Save</button>}
-                <div><button className="ui mini orange button" onClick={() => removeItem(item)}>Remove</button></div>
+                {!update && <button className="ui blue button" onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
+                {update && <button className="ui green button" onClick={updateQuantity}>Save</button>}
+                <div><button className="ui button" onClick={() => removeItem(item)}>Remove</button></div>
             </div>
             
         </div>

@@ -9,7 +9,7 @@ function Navbar() {
     return (
         <div className="nav">
             <div className="ui secondary menu">
-                <Link className="item" to="/">Barrel of Books</Link>
+                <Link className="item" to="/"><b><i>Barrel of Books</i></b></Link>
                 <Link className="item" to="/books">Books</Link>
                 <Link className="item" to="/stores">Stores</Link>
                 <Link className="item" to="/genres">Genres</Link>
@@ -25,7 +25,11 @@ function Navbar() {
                     {auth.user &&
                         <>
                             <span className="ui item"><i>Hello {auth.user.username}!</i></span>
-                            <Link className="item" to="/cart">Cart</Link>
+                            <div className="ui item vertical animated button" tabindex="0">
+                                <Link className="visible content" to="/cart"><i class="shopping cart icon"></i></Link>
+                                <Link className="hidden content" to="/cart">Cart</Link>
+                            </div>
+
                             <Link className="ui item" to="/login" onClick={() => auth.logout()} >Logout</Link>
                         </>
                     }
