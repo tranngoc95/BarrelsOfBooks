@@ -59,12 +59,11 @@ function Genres() {
 
     return (
         <>
-            <div className="ui container">
-                <h2>Genres List</h2>
+            <div className="home-page">
+                <h2 className="sub-title">Genres List</h2>
                 <ErrorMessages errorList={errorList} />
-                {auth.user && auth.user.hasRole("ADMIN") &&
-                    <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
-                <table className="ui selectable celled table">
+
+                <table className="ui fixed selectable table table-margin">
                     <thead>
                         <tr>
                             <th scope="col">Genre</th>
@@ -93,9 +92,10 @@ function Genres() {
                         }
                     </tbody >
                 </table >
-                <Link className="ui secondary button" to="/">
-                    Go Back
-                </Link>
+                <div>
+                    {auth.user && auth.user.hasRole("ADMIN") &&
+                        <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
+                </div>
             </div >
         </>
     );

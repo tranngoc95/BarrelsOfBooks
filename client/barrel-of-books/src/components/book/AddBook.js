@@ -211,11 +211,11 @@ function handleStoreBook(bookId) {
 
 
 return (
-    <div>
+    <div className="seashell-bg">
     <h1>Add New Book</h1>
-    <Link className="ui secondary button back-form-button" to="/books">Go Back</Link>
     <ErrorMessages errorList={errorList} />
-    <form className="ui form" onSubmit = {handleSubmit}>
+    <form className="ui small form" onSubmit = {handleSubmit}>
+      <div class="ui stacked segment">
       <div className="field">
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" value={book.title} onChange={handleChange}/>
@@ -255,7 +255,7 @@ return (
       <div>
         <h3 className="form-title" >Stores</h3>
         {stores.map((s) => (
-          <div>
+          <div class="ui stacked segment">
           <div className="ui checkbox check-store" key={s.storeId}>
             <input type="checkbox" value={s.storeId} id={s.address} name="stores"
               checked={book.stores.find((store) => store.storeId === s.storeId) !== undefined} onChange={handleChange} />
@@ -269,8 +269,11 @@ return (
           </div>
         ))}
       </div>
-      <div>
-          <button className="ui primary button form-submit-button" type="submit">Submit</button>
+      <div className="ui buttons">
+						<button className="ui positive button active" type="submit">Submit</button>
+						<div class="or"></div>
+						<Link className="ui button" type="button" to='/books'>Cancel</Link>
+					</div>
       </div>
     </form>
   </div>

@@ -35,8 +35,6 @@ function BooksTable({ books, auth, getList, linkPath }) {
     return (
         <div>
             <ErrorMessages errorList={errorList} />
-            {auth.user && auth.user.hasRole("MANAGER") &&
-                <Link className="ui primary button add-button" to="/books/add">Add New Book</Link>}
             <table className="ui fixed selectable table table-margin">
                 <thead>
                     <tr>
@@ -46,12 +44,11 @@ function BooksTable({ books, auth, getList, linkPath }) {
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
                         {auth.user && auth.user.hasRole("MANAGER") &&
-                            <>
                                 <th scope="col">&nbsp;</th>
-                                <th scope="col">&nbsp;</th>
-                            </>}
+                            }
                     </tr>
                 </thead>
+
                 <tbody>
                     {books.map((b) => (
                         <tr key={b.bookId}>
@@ -63,22 +60,21 @@ function BooksTable({ books, auth, getList, linkPath }) {
                             {auth.user && auth.user.hasRole("MANAGER") &&
                                 <>
                                     <td>
-                                        <Link className="ui primary button" to={`/books/edit/${b.bookId}`}>Edit</Link>
-                                    </td>
-                                    <td>
-                                        <button className="ui primary button" type="button" onClick={() => handleDelete(b.bookId)}>
+                                        <Link  className="ui green left attached button" to={`/books/edit/${b.bookId}`}>Edit</Link>
+                                        <button className="ui red right attached button" type="button" onClick={() => handleDelete(b.bookId)}>
                                             Delete
                                         </button>
-
                                     </td>
-                                </>}
+                                </>
+                                }
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <Link className="ui secondary button" to="/">
-                Go Back
-            </Link>
+            <div>
+            {auth.user && auth.user.hasRole("MANAGER") &&
+                <Link className="ui primary button add-button" to="/books/add">Add New Book</Link>}
+            </div>
         </div>
     )
 }
