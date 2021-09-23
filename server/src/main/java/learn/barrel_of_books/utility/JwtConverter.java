@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import java.util.Date;
+
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
 @Component
@@ -18,6 +20,19 @@ public class JwtConverter {
     SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), HS256.getJcaName());
 
     private final String ISSUER = "dev10-users-api";
+    private final int EXPIRATION_MINUTES = 1440; // 24 hours
+    private final int EXPIRATION_MILLIS = EXPIRATION_MINUTES * 60 * 1000;
+
+    public String getTokenFromUser(AppUser user) {
+        return Jwts.builder()
+                .setIssuer(ISSUER)
+                .setSubject(user.getUsername())
+                .claim("id", user.getId())
+                .claim("roles", String.join(",", user.getRoles()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MILLIS))
+                .signWith(secretKeySpec)
+                .compact();
+    }
 
     public AppUser getUserFromToken(String token) {
         if (token == null || token.isBlank()) {

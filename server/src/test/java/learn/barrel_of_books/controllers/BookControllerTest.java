@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import learn.barrel_of_books.data.BookRepository;
 import learn.barrel_of_books.models.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,11 +31,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class BookControllerTest {
 
+    private String TOKEN;
+
     @MockBean
     BookRepository repository;
 
     @Autowired
     MockMvc mvc;
+
+    @Autowired
+    SetToken setToken;
+
+    @BeforeEach
+    void setup() {
+        setToken.set();
+        TOKEN = SetToken.TOKEN;
+    }
 
     @Test
     void shouldFindAll() throws Exception {
@@ -53,7 +65,40 @@ class BookControllerTest {
                 .andExpect(content().json(expectedJson));
     }
 
+    @Test
+    void shouldFindByGenreName() throws Exception {
+        List<Book> expected = new ArrayList<>();
+        expected.add(makeExistingBook());
+        expected.add(new Book(2,15,"harry potter 2", "magic 2","jk rowling", new BigDecimal("13.45")));
+        expected.add(new Book(3,15,"harry potter 3", "magic 3","jk rowling", new BigDecimal("13.45")));
 
+        when(repository.findByGenreName("fantasy")).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/book/genre/fantasy"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+    }
+
+    @Test
+    void shouldFindByTitleAuthorOrKeyword() throws Exception {
+        List<Book> expected = new ArrayList<>();
+        expected.add(makeExistingBook());
+        expected.add(new Book(2,15,"harry potter 2", "magic 2","jk rowling", new BigDecimal("13.45")));
+        expected.add(new Book(3,15,"harry potter 3", "magic 3","jk rowling", new BigDecimal("13.45")));
+
+        when(repository.findByTitleAuthorOrKeyword("harry")).thenReturn(expected);
+
+        String expectedJson = generateJson(expected);
+
+        mvc.perform(get("/api/book/search/harry"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(expectedJson));
+
+    }
 
     @Test
     void shouldFindById() throws Exception {
@@ -95,7 +140,7 @@ class BookControllerTest {
         String bookJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bookJson);
 
@@ -113,7 +158,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -129,7 +174,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -145,7 +190,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -161,7 +206,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -189,7 +234,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = post("/api/book")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -226,7 +271,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = put("/api/book/1")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -252,7 +297,7 @@ class BookControllerTest {
         String inputJson = generateJson(book);
 
         var request = put("/api/book/10")
-                .header("Authorization", getToken())
+                .header("Authorization", TOKEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(inputJson);
 
@@ -265,7 +310,7 @@ class BookControllerTest {
     void shouldDelete() throws Exception {
         when(repository.delete(1)).thenReturn(true);
         mvc.perform(delete("/api/book/1")
-                .header("Authorization", getToken()))
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNoContent());
     }
 
@@ -273,7 +318,7 @@ class BookControllerTest {
     void shouldNotDelete() throws Exception {
         when(repository.delete(11)).thenReturn(false);
         mvc.perform(delete("/api/book/11")
-                .header("Authorization", getToken()))
+                .header("Authorization", TOKEN))
                 .andExpect(status().isNotFound());
     }
 
@@ -283,14 +328,6 @@ class BookControllerTest {
     private String generateJson(Object o) throws JsonProcessingException {
         ObjectMapper jsonMapper = new JsonMapper();
         return jsonMapper.writeValueAsString(o);
-    }
-
-    private String getToken() {
-        return "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkZXYxMC11c2" +
-                "Vycy1hcGkiLCJzdWIiOiJqb2huc21pdGgiLCJpZCI6Ijk4M2YxMjI0LWFmNGYtMTFlYi04MzY4LTAyNDJ" +
-                "hYzExMDAwMiIsImZpcnN0X25hbWUiOiJKb2huIiwibGFzdF9uYW1lIjoiU21pdGgiLCJlbWFpbF9hZGRy" +
-                "ZXNzIjoiam9obkBzbWl0aC5jb20iLCJtb2JpbGVfcGhvbmUiOiI1NTUtNTU1LTU1NTUiLCJyb2xlcyI6I" +
-                "kFETUlOLE1BTkFHRVIsVVNFUiIsImV4cCI6MTYzMjM0MzI1Nn0.IrZkesm5Uc5Ei4Tmpdrbk9kaaIt6mlEydX7z9yKm3QY";
     }
 
     private Book makeExistingBook() {
