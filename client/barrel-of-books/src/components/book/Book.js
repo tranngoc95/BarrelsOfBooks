@@ -140,7 +140,7 @@ function Book() {
                         {stores !== null &&
                             <div>
                                 {stores.length > 0 ?
-                                    <div>
+                                    <div className="book-info">
                                         {
                                             stores.map(each => (
                                                 <>
@@ -152,7 +152,7 @@ function Book() {
                                         }
                                     </div>
                                     :
-                                    <div>There is no store available in this state.</div>}
+                                    <div className="book-info">There is no store available in this state.</div>}
                             </div>
 
                         }
