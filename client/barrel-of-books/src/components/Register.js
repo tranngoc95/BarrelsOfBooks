@@ -72,7 +72,7 @@ export default function Register() {
 
   return (
     <div className="home-page">
-      <div className="ui container white-bg">
+      <div className="ui container seashell-bg">
       <h2>Register</h2>
       <ErrorMessages errorList={errorList} />
       <form className="ui small form" onSubmit={handleSubmit}>

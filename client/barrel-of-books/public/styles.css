@@ -47,7 +47,7 @@ width: 60% !important;
 }
 
 .back-form-button {
-    margin-right: 100em !important;
+    margin-right: 70em !important;
 }
 
 .home-page {
@@ -59,20 +59,17 @@ padding-bottom: 60em !important;
 
 .main-title {
     font-size: 100px;
-    background-color: seashell;
+    background-color: #f8f8ff;
 }
 
 .sub-title {
     font-size: 60px;
-    background-color: seashell;
+    background-color: #f8f8ff;
 }
 
-.nav {
-    background-color: seashell;
-}
 
 .seashell-bg {
-    background-color: seashell;
+    background-color: #f8f8ff;
 }
 
 .store-container {
