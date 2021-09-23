@@ -7,7 +7,7 @@
 }
 
 .add-button {
-    background-color:#6209D9 !important;
+    background-color:#FA281F !important;
 }
 
 .table {
@@ -20,7 +20,7 @@ width: 80% !important;
 .form {
     width: 50% !important;
     margin-left: auto !important;
-    margin-right: auto !important; 
+    margin-right: auto !important;
 }
 
 .checkbox {
@@ -41,8 +41,8 @@ width: 80% !important;
 }
 
 .form-submit-button {
-    margin-top: 2em !important;
-    margin-bottom: 5em !important;
+    margin-top: 10em !important;
+    margin-bottom: 10em !important;
 }
 
 .back-form-button {
@@ -50,9 +50,11 @@ width: 80% !important;
 }
 
 .home-page {
-background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('bookstore.jpg');
+background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url('barrel_of_books.jpg');
 padding-bottom: 60em !important;
 }
+
+
 
 .main-title {
     font-size: 100px;
@@ -65,5 +67,9 @@ padding-bottom: 60em !important;
 }
 
 .nav {
+    background-color: seashell;
+}
+
+.seashell-bg {
     background-color: seashell;
 }
