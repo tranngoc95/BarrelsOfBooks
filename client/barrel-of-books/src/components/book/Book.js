@@ -101,19 +101,19 @@ function Book() {
 
     return (
         <div className="home-page">
-        <div className="ui container book-container white-bg">
+        <div className="ui container book-container">
             <ErrorMessages errorList={errorList} />
             {book &&
                 <>
                 <div>
                     {/* <img src={ require('../../public/1.jpg') } /> */}
                 </div>
-                    <div className="ui container">
+                    <div className="ui container book-info">
                         <h2>{book.title}</h2>
                         <div>by {book.author}</div>
                         <hr/>
                         <div>Price: {book.price}</div>
-                        <div>Overview: {book.description}</div>
+                        <div className="ui container book-overview">{book.description}</div>
                         <div>Publisher: {book.publisher}</div>
                         <div>Language: {book.language}</div>
                         <div>Page Count: {book.pages}</div>
@@ -125,7 +125,7 @@ function Book() {
                     </div>
                     <div>
                         {find &&
-                            <div>
+                            <div className="book-info">
                                 <label htmlFor="state">State: </label>
                                 <select name="state" value={state} onChange={(event) => setState(event.target.value)}>
                                     <option value="">Select State</option>
@@ -140,7 +140,7 @@ function Book() {
                     {stores !== null &&
                         <div>
                             {stores.length > 0 ?
-                                <div>
+                                <div className="book-info">
                                     {
                                         stores.map(each => (
                                             <>
