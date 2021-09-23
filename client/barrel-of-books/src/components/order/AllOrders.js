@@ -33,8 +33,8 @@ function AllOrders() {
     useEffect(getList, [auth.user.token]);
 
     return (
-        <div className="ui container">
-            <h2>All Orders</h2>
+        <div className="home-page">
+            <h2 className="sub-title">All Orders</h2>
             <ErrorMessages errorList={errorList}/>
             <table className="ui selectable celled table">
                 <thead>

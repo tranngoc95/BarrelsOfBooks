@@ -71,10 +71,11 @@ export default function Register() {
   };
 
   return (
-    <div>
+    <div className="home-page">
+      <div className="ui container white-bg">
       <h2>Register</h2>
       <ErrorMessages errorList={errorList} />
-      <form onSubmit={handleSubmit}>
+      <form className="ui small form" onSubmit={handleSubmit}>
         <div>
           <label>Username:</label>
           <input type="text" onChange={(event) => setUsername(event.target.value)} />
@@ -88,10 +89,11 @@ export default function Register() {
           <input type="password" onChange={(event) => setConfirmPassword(event.target.value)} />
         </div>
         <div>
-          <button type="submit">Register</button>
+          <button className="ui primary button" type="submit">Register</button>
           <Link to="/login">I already have an account</Link>
         </div>
       </form>
+      </div>
     </div>
   );
 }

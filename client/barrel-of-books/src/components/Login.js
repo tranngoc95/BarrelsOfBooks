@@ -55,10 +55,11 @@ export default function Login() {
 	};
 
 	return (
-		<div>
+		<div className="home-page">
+			<div className="ui container white-bg">
 			<h2 >Login</h2>
 			<ErrorMessages errorList={errorList} />
-			<form onSubmit={handleSubmit}>
+			<form className="ui small form" onSubmit={handleSubmit}>
 				<div>
 					<label>Username:</label>
 					<input type="text" onChange={(event) => setUsername(event.target.value)} />
@@ -68,10 +69,11 @@ export default function Login() {
 					<input type="password" onChange={(event) => setPassword(event.target.value)} />
 				</div>
 				<div>
-					<button type="submit" >Login</button>
+					<button className="ui primary button" type="submit" >Login</button>
 					<Link to="/register">I don't have an account</Link>
 				</div>
 			</form>
+		</div>
 		</div>
 	);
 }

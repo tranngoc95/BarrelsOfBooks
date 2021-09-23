@@ -211,9 +211,11 @@ function handleStoreBook(bookId) {
 
 
 return (
-    <div className="seashell-bg">
-    <h1>Add New Book</h1>
+    <div className="home-page">
+    <h1 className="sub-title">Add New Book</h1>
+   
     <ErrorMessages errorList={errorList} />
+
     <form className="ui small form" onSubmit = {handleSubmit}>
       <div class="ui stacked segment">
       <div className="field">
