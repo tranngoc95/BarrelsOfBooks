@@ -32,6 +32,11 @@ public class BookController {
         return service.findByTitleAuthorOrKeyword(phrase);
     }
 
+    @GetMapping("genre/{genreName}")
+    public List<Book> findByGenreName(@PathVariable String genreName) {
+        return service.findByGenreName(genreName);
+    }
+
     @GetMapping("/{bookId}")
     public ResponseEntity<Book> findById(@PathVariable int bookId) {
         Book book = service.findById(bookId);

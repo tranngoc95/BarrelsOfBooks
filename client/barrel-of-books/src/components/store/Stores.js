@@ -21,8 +21,8 @@ function Stores() {
     const init = {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${auth.user.token}`,
-      },
+        Authorization: `Bearer ${auth.user.token}`
+      }
     };
 
     fetch(`http://localhost:8080/api/store/${storeId}`, init)
@@ -48,7 +48,6 @@ function Stores() {
     <div className="home-page">
       <h2 className="sub-title">Stores</h2>
       <ErrorMessages errorList={errorList} />
-
       <table className="ui fixed selectable table table-margin">
         <thead>
           <tr>
@@ -58,7 +57,7 @@ function Stores() {
             <th scope="col">Postal Code</th>
             <th scope="col">Phone Number</th>
             {auth.user && auth.user.hasRole("ADMIN") && (
-                <th>&nbsp;</th>
+              <th>&nbsp;</th>
             )}
           </tr>
         </thead>
@@ -70,29 +69,30 @@ function Stores() {
               <td data-label="State">{s.state}</td>
               <td data-label="Postal Code">{s.postalCode}</td>
               <td data-label="Phone Number">{s.phone}</td>
-             
-                {auth.user && auth.user.hasRole("ADMIN") &&               
-                  <>
+
+              {auth.user && auth.user.hasRole("ADMIN") &&
+                <>
                   <td>
-                  <Link
-                    className="ui green left attached button"
-                    to={`/stores/edit/${s.storeId}`}>
-                    Edit
-                  </Link>
-                  <button
-                    className="ui red right attached button"
-                    type="button"
-                    onClick={() => handleDelete(s.storeId)}
-                  >
-                    Delete
-                  </button>
+                    <Link
+                      className="ui green left attached button"
+                      to={`/stores/edit/${s.storeId}`}>
+                      Edit
+                    </Link>
+                    <button
+                      className="ui red right attached button"
+                      type="button"
+                      onClick={() => handleDelete(s.storeId)}
+                    >
+                      Delete
+                    </button>
                   </td>
-                  </>
-                }
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </>
+              }
+            </tr >
+          ))
+          }
+        </tbody >
+      </table >
       <div>
         {auth.user && auth.user.hasRole("ADMIN") && (
           <Link className="ui primary button add-button" to="/stores/add">
@@ -100,7 +100,7 @@ function Stores() {
           </Link>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 

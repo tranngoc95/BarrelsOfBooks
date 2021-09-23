@@ -70,6 +70,15 @@ public class BookJdbcRepository implements BookRepository {
     }
 
     @Override
+    public List<Book> findByGenreName(String genreName) {
+        final String sql = "select b.book_id, b.title, b.description, b.price, b.author, b.quantity from book b " +
+                "inner join genre_book gb on b.book_id = gb.book_id " +
+                "inner join genre g on g.genre_id = gb.genre_id " +
+                "where g.name = ?;";
+        return template.query(sql,new BookMapper(), genreName);
+    }
+
+    @Override
     public Book add(Book book) {
         final String sql = "insert into book(title, description, price, author, quantity) "
                             +"values (?,?,?,?,?);";

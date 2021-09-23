@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import ErrorMessages from "../ErrorMessages";
 
-function BooksTable({ books, auth, getList }) {
+function BooksTable({ books, auth, getList, linkPath }) {
     const [errorList, setErrorList] = useState([]);
 
     const handleDelete = (bookId) => {
@@ -52,7 +52,7 @@ function BooksTable({ books, auth, getList }) {
                 <tbody>
                     {books.map((b) => (
                         <tr key={b.bookId}>
-                            <td data-label="Title"><Link to={`books/each/${b.bookId}`}>{b.title}</Link></td>
+                            <td data-label="Title"><Link to={`/books/each/${b.bookId}`}>{b.title}</Link></td>
                             <td data-label="Description">{b.description}</td>
                             <td data-label="Author">{b.author}</td>
                             <td data-label="Price">{b.price}</td>

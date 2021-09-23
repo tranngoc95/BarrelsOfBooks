@@ -11,7 +11,7 @@ function Book() {
     const [book, setBook] = useState(null);
     const [errorList, setErrorList] = useState([]);
     const [find, setFind] = useState(false);
-    const [state, setState] = useState(null);
+    const [state, setState] = useState("");
     const [stores, setStores] = useState(null);
 
     const URL = 'http://localhost:8080/api/book';
@@ -81,6 +81,9 @@ function Book() {
     }
 
     const findStores = () => {
+        if (state === "") {
+            return;
+        }
         fetch(`http://localhost:8080/api/store-book/${id}/${state}`)
             .then(response => {
                 if (response.status !== 200) {
@@ -97,28 +100,31 @@ function Book() {
     }
 
     return (
-        <div>
+        <div className="ui container">
             <ErrorMessages errorList={errorList} />
             {book &&
                 <>
-                    <h2>{book.title}</h2>
-                    <div>by {book.author}</div>
-                    <div>Price: {book.price}</div>
-                    <div>{book.description}</div>
-                    <div>{book.price}</div>
-                    {auth.user && <button type="button" onClick={addToCart}>Add to cart</button>}
-                    {!find && <button onClick={handleFind}>Find Available Stores</button>}
+                    <div className="ui container">
+                        <h2>{book.title}</h2>
+                        <div>by {book.author}</div>
+                        <hr/>
+                        <div>Price: {book.price}</div>
+                        <div>Overview: {book.description}</div>
+                        {auth.user && <button className="ui primary button" type="button" onClick={addToCart}>Add to cart</button>}
+                        {!find && <button className="ui button" onClick={handleFind}>Find Available Stores</button>}
+                    </div>
                     <div>
                         {find &&
-                            <>
-                                <label htmlFor="state">State:</label>
+                            <div>
+                                <label htmlFor="state">State: </label>
                                 <select name="state" value={state} onChange={(event) => setState(event.target.value)}>
+                                    <option value="">Select State</option>
                                     {States.map(each => (
                                         <option key={each.abbr} value={each.abbr} >{each.name}</option>
                                     ))}
                                 </select>
-                                <button onClick={findStores}>Find</button>
-                            </>
+                                <button className="ui mini button" onClick={findStores}>Find</button>
+                            </div>
                         }
                     </div>
                     {stores !== null &&
@@ -128,9 +134,9 @@ function Book() {
                                     {
                                         stores.map(each => (
                                             <>
-                                            <h5>{each.store.city} bookstore</h5>
-                                            <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
-                                            {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
+                                                <h5>{each.store.city} bookstore</h5>
+                                                <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
+                                                {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
                                             </>
                                         ))
                                     }

@@ -60,7 +60,7 @@ class StoreBookJdbcRepositoryTest {
     void shouldDelete() {
         boolean success = repository.delete(2);
         assertTrue(success);
-        assertNull(repository.findByBookId(3));
+        assertNull(repository.findByBookId(2));
     }
 
     @Test

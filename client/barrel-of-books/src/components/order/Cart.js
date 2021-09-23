@@ -42,9 +42,14 @@ function Cart() {
             .catch(error => console.log("Error", error));
     }
 
-    useEffect(getList, []);
+    useEffect(getList, [auth.user]);
 
-    const checkout = () => {
+    const checkOut = () => {
+
+        if (cart.books.some(one => one.book.quantity < one.quantity)) {
+            setErrorList(["Please adjust item quantity to match with our in stock quantity before proceeding to checkout."]);
+            return;
+        }
 
         const order = {
             userId: auth.user.id,
@@ -78,23 +83,23 @@ function Cart() {
     }
 
     return (
-        <>
-            <div>
+        <div className="ui container grid">
+            <div className="twelve wide column">
                 <h2>My Shopping Cart</h2>
                 <ErrorMessages errorList={errorList} />
-                <div>
+                <div className="ui middle aligned celled divided list">
                     {cart.books.map(item => (
-                        <CartItem key={item.cartItemId} item={item} getList={getList} auth={auth}/>
+                        <CartItem key={item.cartItemId} item={item} getList={getList} auth={auth} />
                     ))}
                 </div>
             </div>
             {cart.itemNum > 0 &&
-                (<div>
+                (<div className="four wide column">
                     <h5>Subtotal ({cart.itemNum} items): ${cart.subtotal}</h5>
-                    <button onClick={checkout}>CHECKOUT</button>
+                    <button className="ui green button" onClick={checkOut}>CHECKOUT</button>
                 </div>
                 )}
-        </>
+        </div>
     )
 
 }

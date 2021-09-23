@@ -27,31 +27,35 @@ function Orders() {
             })
             .then(data => setOrders(data))
             .catch(error => console.log("Error", error));
-    }, []);
-    
+    }, [auth.user]);
+
 
     return (
-        <>
+        <div className="ui container">
             <h2>My Orders</h2>
-            {orders.map(order => (
-                <div key={order.transactionId}>
-                    <div>{order.status} {order.date}</div>
-                    {order.books.map(item => (
-                        <div key={item.cartItemId}>
-                            <h6>{item.book.title}</h6>
-                            {order.status === "ORDERED" && order.books.length > 1 &&
-                                <Link to={`/orders/cancel/item/${item.cartItemId}`}>Cancel Item</Link>
-                            }
-                        </div>
-                    ))}
-                    <div>Total: ${order.total}</div>
-                    {order.status === "ORDERED" &&
-                        <Link className="ui button grey" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
-                    }
-                </div>
-            ))}
+            <div className="ui celled list">
+                {orders.map(order => (
+                    <div className="item" key={order.transactionId}>
+                        <div>{order.status} {order.date}</div>
+                        {order.books.map(item => (
+                            <div key={item.cartItemId}>
+                                <h3>{item.book.title}</h3>
+                                <div>Quantity: {item.quantity}</div>
+                                {order.status === "ORDERED" && order.books.length > 1 &&
+                                    <Link to={`/orders/cancel/item/${item.cartItemId}`}>Cancel Item</Link>
+                                }
+                            </div>
+                        ))}
+                        <div>Total: ${order.total}</div>
+                        {order.status === "ORDERED" &&
+                            <Link className="ui tiny button grey" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
+                        }
+                    </div>
 
-        </>
+                ))}
+            </div>
+
+        </div>
     )
 }
 

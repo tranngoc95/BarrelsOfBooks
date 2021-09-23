@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import ErrorMessages from "../ErrorMessages";
 
@@ -26,7 +26,7 @@ function CartItem({ item, getList, auth }) {
         setUpdate(false);
         setToggle(quantity < 10);
 
-        if (item.quantity != quantity) {
+        if (item.quantity !== quantity) {
             const changedItem = { ...item };
             changedItem.quantity = quantity;
 
@@ -93,12 +93,25 @@ function CartItem({ item, getList, auth }) {
     }
 
     return (
-        <div>
+        <div className="item">
             <ErrorMessages errorList={errorList} />
-            <h4>{item.book.title}</h4>
-            <div>Price: ${item.book.price}</div>
-            {item.book.quantity === 0 &&
-                <div>Out Of Stock. Please remove item before processing to checkout</div>}
+            <div>
+                <h4>{item.book.title}</h4>
+                <div>Price: ${item.book.price}</div>
+                {item.book.quantity === 0 && (
+                    <div >
+                        <div>Out Of Stock.</div>
+                        <div>Please remove item before proceeding to checkout.</div>
+                    </div>
+                )}
+                {item.book.quantity !== 0 && item.book.quantity < item.quantity
+                    && (
+                        <div>
+                            <div>In stock: {item.book.quantity}</div>
+                            <div>Please adjust the item quantity to match our instock before proceeding to checkout.</div>
+                        </div>
+                    )}
+            </div>
             <div>
                 <label htmlFor="quantity">Quantity</label>
                 {toggle && <select id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
@@ -116,10 +129,11 @@ function CartItem({ item, getList, auth }) {
                 }
                 {!toggle && <input id="quantityNum" name="quantity" value={quantity} type="number" onChange={handleChange} required disabled={!update} />
                 }
-                {!update && <button onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
+                {!update && <button className="ui mini blue button" onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
                 {update && <button onClick={updateQuantity}>Save</button>}
+                <div><button className="ui mini orange button" onClick={() => removeItem(item)}>Remove</button></div>
             </div>
-            <button onClick={() => removeItem(item)}>Remove</button>
+            
         </div>
     )
 

@@ -62,21 +62,21 @@ function Genres() {
             <div className="home-page">
                 <h2 className="sub-title">Genres List</h2>
                 <ErrorMessages errorList={errorList} />
-         
+
                 <table className="ui fixed selectable table table-margin">
                     <thead>
                         <tr>
                             <th scope="col">Genre</th>
                             <th scope="col">Description</th>
                             {auth.user && auth.user.hasRole("ADMIN") &&
-                                    <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                             }
                         </tr>
                     </thead>
                     <tbody>
                         {genres.map(genre => (
                             <tr key={genre.genreId}>
-                                <td data-label="Genre">{genre.name}</td>
+                                <td data-label="Genre"><Link to={`/books/genre/${genre.name}`}>{genre.name}</Link></td>
                                 <td data-label="Description">{genre.description}</td>
                                 {
                                     auth.user && auth.user.hasRole("ADMIN") &&
@@ -93,8 +93,8 @@ function Genres() {
                     </tbody >
                 </table >
                 <div>
-                {auth.user && auth.user.hasRole("ADMIN") &&
-                    <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
+                    {auth.user && auth.user.hasRole("ADMIN") &&
+                        <Link className="ui primary button add-button" to='./genres/add'>Add New Genre</Link>}
                 </div>
             </div >
         </>
