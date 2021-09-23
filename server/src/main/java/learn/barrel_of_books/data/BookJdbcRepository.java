@@ -25,7 +25,8 @@ public class BookJdbcRepository implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        final String sql = "select book_id, title, description, price, author, quantity "
+        final String sql = "select book_id, title, description, price, author, quantity, " +
+                "publisher, language, pages, age_range, dimensions, isbn13 "
                             + "from book";
 
        return template.query(sql,new BookMapper());
@@ -33,8 +34,8 @@ public class BookJdbcRepository implements BookRepository {
 
     @Override
     public Book findById(int id) {
-        final String sql = "select book_id, title, description, price, author, quantity "
-                + "from book "
+        final String sql = "select book_id, title, description, price, author, quantity, "
+                + "publisher, language, pages, age_range, dimensions, isbn13 from book "
                 + "where book_id = ?;";
         Book book = template.query(sql,new BookMapper(), id).stream()
                             .findFirst().orElse(null);
@@ -47,7 +48,7 @@ public class BookJdbcRepository implements BookRepository {
     @Override
     public Book findByTitle(String title) {
         final String sql = "select book_id, title, description, price, author, quantity "
-                + "from book "
+                + "publisher, language, pages, age_range, dimensions, isbn13 from book "
                 + "where title = ?;";
 
         Book book = template.query(sql,new BookMapper(), title).stream()
@@ -63,7 +64,7 @@ public class BookJdbcRepository implements BookRepository {
     public List<Book> findByTitleAuthorOrKeyword(String phrase) {
         phrase = "%" + phrase + "%";
         final String sql = "select book_id, title, description, price, author, quantity "
-                + "from book "
+                + "publisher, language, pages, age_range, dimensions, isbn13 from book "
                 + "where title like ? or author like ? or description like ?;";
 
         return template.query(sql,new BookMapper(), phrase, phrase, phrase);
@@ -80,7 +81,7 @@ public class BookJdbcRepository implements BookRepository {
 
     @Override
     public Book add(Book book) {
-        final String sql = "insert into book(title, description, price, author, quantity) "
+        final String sql = "insert into book(title, description, price, author, quantity ) "
                             +"values (?,?,?,?,?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int rowsAffected = template.update(connection -> {

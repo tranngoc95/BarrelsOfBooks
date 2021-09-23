@@ -53,7 +53,8 @@ function Cart() {
 
         const order = {
             userId: auth.user.id,
-            books: cart.books
+            books: cart.books,
+            employeeDiscount: auth.user.hasRole('MANAGER')
         }
 
         const init = {

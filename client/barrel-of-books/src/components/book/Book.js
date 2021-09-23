@@ -104,6 +104,9 @@ function Book() {
             <ErrorMessages errorList={errorList} />
             {book &&
                 <>
+                <div>
+                    <img src={ require('../../public/1.jpg') } />
+                </div>
                     <div className="ui container">
                         <h2>{book.title}</h2>
                         <div>by {book.author}</div>
