@@ -1,9 +1,7 @@
 package learn.barrel_of_books.domain;
 
 import learn.barrel_of_books.data.BookRepository;
-import learn.barrel_of_books.models.Book;
-import learn.barrel_of_books.models.Genre;
-import learn.barrel_of_books.models.GenreBook;
+import learn.barrel_of_books.models.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,14 +58,14 @@ class BookServiceTest {
         assertFalse(result.isSuccess());
     }
 
-//    @Test
-//    void shouldNotAddIfGenresAreEmpty() {
-//        Book book = makeBook();
-//        List<GenreBook> cats = new ArrayList<>();
-//        book.setGenres(cats);
-//        Result<Book> result = service.add(book);
-//        assertFalse(result.isSuccess());
-//    }
+    @Test
+    void shouldNotAddIfGenresAreEmpty() {
+        Book book = makeBook();
+        List<GenreBook> cats = new ArrayList<>();
+        book.setGenres(cats);
+        Result<Book> result = service.add(book);
+        assertFalse(result.isSuccess());
+    }
 
     @Test
     void shouldNotAddIfQuantityIs0() {
@@ -160,7 +158,15 @@ class BookServiceTest {
         cb.setBookId(1);
         cb.setGenre(c);
         cats.add(cb);
-//        book.setGenres(cats);
+        List<StoreBook> storeBooks = new ArrayList<>();
+        StoreBook sb = new StoreBook();
+        Store s = new Store();
+        s.setStoreId(1);
+        sb.setBookId(1);
+        sb.setStore(s);
+        storeBooks.add(sb);
+        book.setStores(storeBooks);
+        book.setGenres(cats);
         book.setAuthor("jk rowling");
         book.setPrice(new BigDecimal("13.45"));
         book.setQuantity(12);
