@@ -70,10 +70,7 @@ function Genres() {
                             <th scope="col">Genre</th>
                             <th scope="col">Description</th>
                             {auth.user && auth.user.hasRole("ADMIN") &&
-                                <>
-                                    <th>&nbsp;</th>
-                                    <th>&nbsp;</th>
-                                </>
+                                <th>&nbsp;</th>
                             }
                         </tr>
                     </thead>
