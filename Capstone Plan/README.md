@@ -127,19 +127,19 @@
    - [x] Router Dom in App
    - [x] Login
    - [x] Register - with a role checkbox
-- [ ] Changing all components to fit with users' role
-- [ ] Using Semantic CSS Framework to polish the UI
+- [x] Changing all components to fit with users' role
+- [x] Using Semantic CSS Framework to polish the UI
 
 ### Task 9: Other Back-end
-- [ ] Global Exception Handler
+- [x] Global Exception Handler
 - [x] User API
-- [ ] Populate more data for the App
+- [x] Populate more data for the App
 
 ### Task 9: Presentation
-- [ ] Create Presentation
-   - [ ] Introduce team
-   - [ ] Describe project
-   - [ ] Challenges and how overcame them
+- [x] Create Presentation
+   - [x] Introduce team
+   - [x] Describe project
+   - [x] Challenges and how overcame them
 
 ## Technical Requirements
 1. Manage 4-7 database tables (bridge tables don't count)
