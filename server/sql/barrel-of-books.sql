@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `barrel_of_books`.`genre` ;
 CREATE TABLE IF NOT EXISTS `barrel_of_books`.`genre` (
   `genre_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(200) NULL,
+  `description` VARCHAR(1000) NULL,
   PRIMARY KEY (`genre_id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -177,10 +177,18 @@ delete from transaction;
 alter table transaction auto_increment = 1;
 
 insert into genre(genre_id, name, description) values
-(1, 'Fantasy', 'Fantasy description'),
-(2, 'Adventure', 'Adventure description'),
-(3, 'Romance', 'Romance description'),
-(4, 'Horror', 'Horror description');
+(1, 'Fantasy', 'Fantasy is a genre of speculative fiction set in a fictional universe, 
+often inspired by real world myth and folklore. Its roots are in oral traditions, which then became fantasy literature and drama.'),
+(2, 'Adventure', 'Adventure fiction is a genre of fiction that usually presents danger, or gives the reader a sense of excitement.'),
+(3, 'Romance', 'A romance novel or romantic novel is a type of genre fiction novel which places its primary focus on the relationship 
+and romantic love between two people, and usually has an "emotionally satisfying and optimistic ending."'),
+(4, 'Horror', 'Horror is a genre of speculative fiction which is intended to frighten, scare, or disgust. Literary historian J. A. Cuddon
+ defined the horror story as "a piece of fiction in prose of variable length... which shocks, or even frightens the reader, or perhaps induces
+ a feeling of repulsion or loathing".'),
+(5, 'Mystery', 'Mystery is a fiction genre where the nature of an event, usually a murder or other crime, remains mysterious until the end of
+ the story. Often within a closed circle of suspects, each suspect is usually provided with a credible motive and a reasonable opportunity for 
+ committing the crime.'),
+ (6, 'History', 'History is a figurative record of great achievements or moments in human history.');
 
 insert into book(book_id, title, description, price, author, quantity, publisher, language, pages, age_range, dimensions, isbn13) values
   (1, 'Harry Potter and the Sorcerer\'s Stone', 'Harry Potter spent ten long years living with Mr. and Mrs. Dursley, an aunt and uncle whose 
@@ -233,12 +241,13 @@ be the one everyone at Hogwarts most suspects...Harry Potter himself?', 11.94, '
   'English', 336, '14 years and up', '9.3 x 6.38 x 1.1', '978-1984824332')
   ;
   
-  
-  
 insert into genre_book(genre_id, book_id) values
   (1,1),
+  (1,2),
   (1,3),
-  (2,2);
+  (5,4),
+  (6,5),
+  (2,6);
   
   insert into store(store_id, address, city, state, postal_code, phone_number) values 
   (1, 'address 1', 'Greenfield', 'WI', '12345', '12345678'),
@@ -252,15 +261,15 @@ insert into genre_book(genre_id, book_id) values
   (3,2,50);
   
   insert into transaction(transaction_id, user_id, date, total, employee_discount, status) values
-  (1,1,'2020-09-09', 9.42, true, 'ORDERED'),
-  (2,3,'2020-11-09', 14.55, false, 'SHIPPED'),
-  (3,1,'2020-03-22', 9.42, true, 'DELIVERED');
+  (1,'983f1224-af4f-11eb-8368-0242ac110002','2020-09-09', 9.44, true, 'ORDERED'),
+  (2,'9e5d9272-af4f-11eb-8368-0242ac110002','2020-11-09', 13.97, false, 'SHIPPED'),
+  (3,'9bda12f0-1314-4d9b-8d1b-f03cb3bfb42a','2020-03-22', 8.36, true, 'DELIVERED');
   
   insert into cart_item(cart_item_id, user_id, book_id, quantity, transaction_id) values 
-  (1,1,1,2,null),
-  (2,1,1,1,1),
-  (3,3,2,1,2),
-  (4,1,3,1,3);
+  (1,'983f1224-af4f-11eb-8368-0242ac110002',1,2,null),
+  (2,'983f1224-af4f-11eb-8368-0242ac110002',1,1,1),
+  (3,'9e5d9272-af4f-11eb-8368-0242ac110002',3,1,2),
+  (4,'9bda12f0-1314-4d9b-8d1b-f03cb3bfb42a',2,1,3);
 
 end //
 -- 4. Change the statement terminator back to the original.

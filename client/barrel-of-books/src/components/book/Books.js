@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import{Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import AuthContext from '../../AuthContext';
 import BooksTable from "./BooksTable";
 function Books() {
@@ -18,11 +18,11 @@ function Books() {
   return (
     <div className="home-page">
       <h2 className="sub-title">Books</h2>
-      <div className= "mb-1">
-            {auth.user && auth.user.hasRole("MANAGER") &&
-                <Link className="ui primary button add-button back-form-button" to="/books/add">Add New Book</Link>}
-            </div>
-      <BooksTable books={books} auth={auth} getList={getList} />
+      <div className="mb-1">
+        {auth.user && auth.user.hasRole("MANAGER") &&
+          <Link className="ui primary button add-button back-form-button" to="/books/add">Add New Book</Link>}
+      </div>
+      {books && <BooksTable books={books} auth={auth} getList={getList} />}
     </div>
   )
 }

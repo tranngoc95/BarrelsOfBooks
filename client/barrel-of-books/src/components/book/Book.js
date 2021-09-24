@@ -129,13 +129,13 @@ function Book() {
                             {find &&
                                 <div className="book-info">
                                     <label htmlFor="state">State: </label>
-                                    <select name="state" value={state} onChange={(event) => setState(event.target.value)}>
+                                    <select className="ui search dropdown" name="state" value={state} onChange={(event) => setState(event.target.value)}>
                                         <option value="">Select State</option>
                                         {States.map(each => (
                                             <option key={each.abbr} value={each.abbr} >{each.name}</option>
                                         ))}
                                     </select>
-                                    <button className="ui mini button" onClick={findStores}>Find</button>
+                                    <button className="ui button" onClick={findStores}>Find</button>
                                 </div>
                             }
                         </div>
