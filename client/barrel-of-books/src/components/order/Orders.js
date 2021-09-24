@@ -32,34 +32,61 @@ function Orders() {
 
     return (
         <div className="home-page">
-             <h2 className="sub-title">My Orders</h2>
-        <div className="ui container white-bg">
-           
-            <div className="ui celled list">
-                {orders.map(order => (
-                    <div className="item" key={order.transactionId}>
-                        <div>{order.status} {order.date}</div>
-                        {order.books.map(item => (
-                            <div key={item.cartItemId}>
-                                <h3>{item.book.title}</h3>
-                                <div>Quantity: {item.quantity}</div>
-                                {order.status === "ORDERED" && order.books.length > 1 &&
-                                    <Link to={`/orders/cancel/item/${item.cartItemId}`}>Cancel Item</Link>
-                                }
+            <h2 className="sub-title">My Orders</h2>
+            <div className="orders-container white-bg">
+                <div className="">
+                    {orders.map(order => (
+                        <div className="ui segments" key={order.transactionId}>
+                            <div className="ui secondary segment">
+                                <div className="ui six column grid">
+                                    <div className="column">
+                                        <div >Order Placed</div>
+                                        <div>{dateFormat(order.date)}</div>
+                                    </div>
+                                    <div className="column">
+                                        <div>Total</div>
+                                        <div>${order.total}</div>
+                                    </div>
+                                    <div className="column">
+                                        <div>Status</div>
+                                        <div>{order.status}</div>
+                                    </div>
+                                    <div className="right floated column">
+                                        <div>Order #{order.transactionId}</div>
+                                        {order.status === "ORDERED" &&
+                                            <Link className="ui small button" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                        ))}
-                        <div>Total: ${order.total}</div>
-                        {order.status === "ORDERED" &&
-                            <Link className="ui tiny button grey" to={`/orders/cancel/${order.transactionId}`}>Cancel Order</Link>
-                        }
-                    </div>
+                            {order.books.map(item => (
+                                <div className="ui segment" key={item.cartItemId}>
+                                    <div className="ui six column grid">
+                                        <div className="column" />
+                                        <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} /></div>
+                                        <div className="six wide column">
+                                            <h5>{item.book.title}</h5>
+                                            <div>Quantity: {item.quantity}</div>
+                                            {order.status === "ORDERED" && order.books.length > 1 &&
+                                                <Link to={`/orders/cancel/item/${item.cartItemId}`}>Cancel Item</Link>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
 
-                ))}
+                    ))}
+                </div>
+
             </div>
-
-        </div>
         </div>
     )
+}
+
+function dateFormat(date) {
+    let parts = date.split('-');
+    return new Date(parts[0], parts[1] - 1, parts[2]).toDateString();
 }
 
 export default Orders;

@@ -55,11 +55,12 @@ function Confirmation() {
                     <div>Order Id: {order.transactionId}</div>
                     {order.books.map(item => (
                         <div key={item.cartItemId}>
-                            <h6>{item.book.title}</h6>
+                            <div><b>{item.book.title}</b></div>
                             <div>by {item.book.author}</div>
                             <div>Quantity: {item.quantity}</div>
                         </div>
                     ))}
+                    <hr/>
                     {order.employeeDiscount &&
                         <div>Employee Discount: 30%</div>}
                     <div>Total: ${order.total}</div>

@@ -56,7 +56,7 @@ function EachOrder({ order, getList, auth, setErrorList }) {
             <tr>
                 <td>{order.transactionId}</td>
                 <td>{order.date}</td>
-                <td>{order.userId}</td>
+                {/* <td>{order.userId}</td> */}
                 <td>
                     <ul>{order.books.map(each => (
                         <li key={each.cartItemId}><div><b>{each.book.title}</b> by <b>{each.book.author}</b></div>
@@ -66,13 +66,13 @@ function EachOrder({ order, getList, auth, setErrorList }) {
                 </td>
                 <td>
                     <form>
-                        <select id="status" name="status" value={status} onChange={(event) => setStatus(event.target.value)} disabled={!update}>
+                        <select className="ui search dropdown" id="status" name="status" value={status} onChange={(event) => setStatus(event.target.value)} disabled={!update}>
                             <option value="ORDERED">Ordered</option>
                             <option value="SHIPPED">Shipped</option>
                             <option value="DELIVERED">Delivered</option>
                         </select>
-                        {!update && <button className="mini ui teal button" type="button" onClick={handleUpdate}>Update Status</button>}
-                        {update && <button className="mini ui green button" type="submit" onClick={updateStatus}>Save</button>}
+                        {!update && <button className="ui teal button" type="button" onClick={handleUpdate}>Update Status</button>}
+                        {update && <button className="ui green button" type="submit" onClick={updateStatus}>Save</button>}
                     </form>
                 </td>
             </tr>
