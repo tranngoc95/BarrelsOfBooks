@@ -18,8 +18,8 @@ function GenreForm({ genre, handleOnChange, errorList, action }) {
 	return (
 		<>
 			<ErrorMessages errorList={errorList} />
-			<form class="ui small form" ref={formElement}>
-				<div class="ui stacked segment">
+			<form className="ui small form" ref={formElement}>
+				<div className="ui stacked segment">
 					<div className="field">
 						<label htmlFor="name">Name:</label>
 						<input id="name" name="name" value={genre.name} onChange={handleOnChange} type="text" required></input>
@@ -30,7 +30,7 @@ function GenreForm({ genre, handleOnChange, errorList, action }) {
 					</div>
 					<div className="ui buttons">
 						<button className="ui positive button active" type="submit" onClick={handleSubmit}>Submit</button>
-						<div class="or"></div>
+						<div className="or"></div>
 						<Link className="ui button" type="button" to='/genres'>Cancel</Link>
 					</div>
 				</div>

@@ -57,14 +57,15 @@ function Genres() {
             .catch(error => console.log("Error", error));
     }
 
+
     return (
         <>
             <div className="home-page">
                 <h2 className="sub-title">Genres</h2>
                 <div>
-            {auth.user && auth.user.hasRole("ADMIN") &&
-                <Link className="ui primary button add-button genre-add-button" to="/genres/add">Add New Genre</Link>}
-            </div>
+                    {auth.user && auth.user.hasRole("ADMIN") &&
+                        <Link className="ui primary button add-button genre-add-button" to="/genres/add">Add New Genre</Link>}
+                </div>
                 <ErrorMessages errorList={errorList} />
 
                 <table className="ui fixed selectable table table-margin orders-container">

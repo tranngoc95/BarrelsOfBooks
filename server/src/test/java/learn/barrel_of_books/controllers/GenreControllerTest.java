@@ -217,6 +217,55 @@ class GenreControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    // Global Exception Handler Tests
+    @Test
+    void addShouldReturn400WhenMissingHeaders() throws Exception {
+
+        var request = post("/api/genre")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addShouldReturn400WhenEmpty() throws Exception {
+
+        var request = post("/api/genre")
+                .header("Authorization", TOKEN)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addShouldReturn415WhenMultipart() throws Exception {
+
+        String genreJson = generateJson(makeNewGenre());
+
+        var request = post("/api/genre")
+                .header("Authorization", TOKEN)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .content(genreJson);
+
+        mvc.perform(request)
+                .andExpect(status().isUnsupportedMediaType());
+    }
+
+    @Test
+    void updateShouldReturn406() throws Exception {
+        String genreJson = generateJson(makeNewGenre());
+
+        var request = put("/api/genre")
+                .header("Authorization", TOKEN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(genreJson);
+
+        mvc.perform(request)
+                .andExpect(status().isNotAcceptable());
+    }
+
 
     // Helper methods
     private String generateJson(Object o) throws JsonProcessingException {

@@ -3,6 +3,7 @@ package learn.barrel_of_books.controllers;
 import learn.barrel_of_books.domain.Result;
 import learn.barrel_of_books.domain.TransactionService;
 import learn.barrel_of_books.models.AppUser;
+import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
 import learn.barrel_of_books.utility.JwtConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,15 +104,16 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{transactionId}")
-    public ResponseEntity<Transaction> deleteById(@RequestHeader("Authorization") AppUser user,
+    public ResponseEntity<Object> deleteById(@RequestHeader("Authorization") AppUser user,
                                                   @PathVariable int transactionId) {
         if(user == null) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        if (service.deleteById(transactionId)){
+        Result<Transaction> serviceResult = service.deleteById(transactionId);
+        if (serviceResult.isSuccess()){
             return new ResponseEntity <>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity <>(HttpStatus.NOT_FOUND);
+        return ErrorResponse.build(serviceResult);
     }
 }

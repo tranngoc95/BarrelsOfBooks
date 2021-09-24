@@ -303,7 +303,7 @@ function EditBook() {
       <h1 className="sub-title">Edit Book</h1>
       <ErrorMessages errorList={errorList} />
       <form className="ui small form" onSubmit={handleSubmit}>
-        <div class="ui stacked segment">
+        <div className="ui stacked segment">
         <div className="field">
           <label htmlFor="title">Title</label>
           <input
@@ -380,8 +380,8 @@ function EditBook() {
         <div>
           <h3 className="form-title">Stores</h3>
           {stores.map((s) => (
-            <div>
-              <div className="ui checkbox check-store" key={s.storeId}>
+            <div key={s.storeId}>
+              <div className="ui checkbox check-store">
                 <input
                   type="checkbox"
                   value={s.storeId}
@@ -416,7 +416,7 @@ function EditBook() {
 
         <div className="ui buttons">
 						<button className="ui positive button active" type="submit">Submit</button>
-						<div class="or"></div>
+						<div className="or"></div>
 						<Link className="ui button" type="button" to='/books'>Cancel</Link>
 					</div>
         </div>

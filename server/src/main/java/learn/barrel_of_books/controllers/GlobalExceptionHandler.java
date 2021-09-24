@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -46,6 +47,12 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(MissingRequestHeaderException.class)
+    public ResponseEntity<GlobalErrorResponse> handleException(MissingRequestHeaderException ex){
+        return new ResponseEntity<>(
+                new GlobalErrorResponse("Required headers are missing."),
+                HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<GlobalErrorResponse> handleException(Exception ex){
         return new ResponseEntity<>(
