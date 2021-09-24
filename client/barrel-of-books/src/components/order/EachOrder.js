@@ -56,7 +56,7 @@ function EachOrder({ order, getList, auth, setErrorList }) {
             <tr>
                 <td>{order.transactionId}</td>
                 <td>{order.date}</td>
-                <td>{order.userId}</td>
+                {/* <td>{order.userId}</td> */}
                 <td>
                     <ul>{order.books.map(each => (
                         <li key={each.cartItemId}><div><b>{each.book.title}</b> by <b>{each.book.author}</b></div>

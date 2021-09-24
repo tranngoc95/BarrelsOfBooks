@@ -104,11 +104,13 @@ function Book() {
             <div className="ui container book-container">
                 <ErrorMessages errorList={errorList} />
                 {book &&
-                    <>
-                        <div>
-                            {/* <img src={ require('../../public/1.jpg') } /> */}
-                        </div>
+                    <div>
+
                         <div className="ui container book-info">
+                            <div>
+                                <img className="ui centered medium image" src={`/${book.bookId}.jpg`} alt="image" />
+                            </div>
+
                             <h2>{book.title}</h2>
                             <div>by {book.author}</div>
                             <hr />
@@ -146,7 +148,7 @@ function Book() {
                                                 <>
                                                     <h5>{each.store.city} bookstore</h5>
                                                     <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
-                                                    {each.quantity > 0 ? <div>In stock</div> : <div>Out of Stock</div>}
+                                                    {each.quantity > 0 ? <div className="green-text">In stock</div> : <div className="red-text">Out of Stock</div>}
                                                 </>
                                             ))
                                         }
@@ -156,7 +158,7 @@ function Book() {
                             </div>
 
                         }
-                    </>
+                    </div>
                 }
             </div>
         </div>

@@ -67,7 +67,7 @@ function Genres() {
             </div>
                 <ErrorMessages errorList={errorList} />
 
-                <table className="ui fixed selectable table table-margin">
+                <table className="ui fixed selectable table table-margin orders-container">
                     <thead>
                         <tr>
                             <th scope="col">Genre</th>
@@ -86,8 +86,8 @@ function Genres() {
                                     auth.user && auth.user.hasRole("ADMIN") &&
                                     <>
                                         <td>
-                                            <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}><i class="edit icon"></i>Update</Link>
-                                            <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}><i class="trash alternate icon"></i>Delete</button>
+                                            <Link className="ui green left attached button" to={`/genres/edit/${genre.genreId}`}>Update</Link>
+                                            <button className="ui red right attached button" type="button" onClick={() => deleteGenre(genre)}>Delete</button>
                                         </td>
                                     </>
                                 }

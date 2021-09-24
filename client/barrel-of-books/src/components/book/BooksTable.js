@@ -61,7 +61,7 @@ function BooksTable({ books, auth, getList, linkPath }) {
                                     <td>
                                         <Link  className="ui green left attached button" to={`/books/edit/${b.bookId}`}>Update</Link>
                                         <button className="ui red right attached button" type="button" onClick={() => handleDelete(b.bookId)}>
-                                            Delete
+                                        Delete
                                         </button>
                                     </td>
                                 </>
