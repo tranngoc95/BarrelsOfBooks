@@ -74,7 +74,7 @@ function CancelOrder() {
   return (
     <div className="home-page">
       <h3 className="sub-title">Cancel Order</h3>
-      <div className="ui container white-bg">
+      <div className="ui container seashell-bg">
         <ErrorMessages errorList={errorList} />
         {order && (
           <>

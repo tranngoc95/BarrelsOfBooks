@@ -33,7 +33,7 @@ function Orders() {
     return (
         <div className="home-page">
              <h2 className="sub-title">My Orders</h2>
-        <div className="ui container white-bg">
+        <div className="ui container seashell-bg">
            
             <div className="ui celled list">
                 {orders.map(order => (
