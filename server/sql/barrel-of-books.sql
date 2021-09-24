@@ -63,7 +63,7 @@ DROP TABLE IF EXISTS `barrel_of_books`.`genre` ;
 CREATE TABLE IF NOT EXISTS `barrel_of_books`.`genre` (
   `genre_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
-  `description` VARCHAR(200) NULL,
+  `description` VARCHAR(1000) NULL,
   PRIMARY KEY (`genre_id`),
   UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE)
 ENGINE = InnoDB;
