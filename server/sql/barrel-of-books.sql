@@ -219,7 +219,7 @@ be the one everyone at Hogwarts most suspects...Harry Potter himself?', 11.94, '
   any favors with cringe-worthy daydreams about the slope and shape of his wife’s head, but passages from Amy\'s diary reveal the alpha-girl
   perfectionist could have put anyone dangerously on edge. Under mounting pressure from the police and the media—as well as Amy’s fiercely
   doting parents—the town golden boy parades an endless series of lies, deceits, and inappropriate behavior. Nick is oddly evasive, and he’s
-  definitely bitter—but is he really a killer?', 23.80, 'Gillian Flynn', 73, 'Crown Publishing Group',
+  definitely bitter—but is he really a killer?', 23.8, 'Gillian Flynn', 73, 'Crown Publishing Group',
   'English', 432, null, '5.20 x 1.10 x 7.90 inches', '978-0307588371'),
   (5, 'Madhouse at the End of the Earth: The Belgica\'s Journey into the Dark Antarctic Night', 'In Madhouse at the End of the Earth, Julian Sancton
   unfolds an epic story of adventure and horror for the ages. As the Belgica’s men teetered on the brink, de Gerlache relied increasingly on
@@ -250,9 +250,9 @@ insert into genre_book(genre_id, book_id) values
   (2,6);
   
   insert into store(store_id, address, city, state, postal_code, phone_number) values 
-  (1, 'address 1', 'Greenfield', 'WI', '12345', '12345678'),
-  (2, 'address 2', 'Bloomington', 'MN', '43121', '12435678'),
-  (3, 'address 3', 'Greendale', 'WI', '53121', '12435978')
+  (1, '3678 Greenery St', 'Greenfield', 'WI', '12345', '12345678'),
+  (2, '1445 Mile Ave', 'Bloomington', 'MN', '43121', '12435678'),
+  (3, '4000 Montery Rd', 'Greendale', 'WI', '53121', '12435978')
   ;
   
   insert into store_book(store_id, book_id, quantity) values 

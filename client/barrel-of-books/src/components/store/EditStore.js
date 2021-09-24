@@ -74,7 +74,7 @@ return (
     <h1 className="sub-title">Edit Store</h1>
     <ErrorMessages errorList={errorList} />
     <form className="ui small form" onSubmit = {handleSubmit}>
-      <div class="ui stacked segment">
+      <div className="ui stacked segment">
       <div className="field">
         <label htmlFor="address">Address</label>
         <input type="text" id="address" name="address" value={store.address} onChange={handleChange}/>
@@ -97,7 +97,7 @@ return (
       </div>
       <div className="ui buttons">
 						<button className="ui positive button active" type="submit">Submit</button>
-						<div class="or"></div>
+						<div className="or"></div>
 						<Link className="ui button" type="button" to='/stores'>Cancel</Link>
 					</div>
       </div>

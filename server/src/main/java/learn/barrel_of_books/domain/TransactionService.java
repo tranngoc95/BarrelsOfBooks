@@ -6,6 +6,7 @@ import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.Book;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
+import learn.barrel_of_books.models.TransactionStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -115,11 +116,19 @@ public class TransactionService {
     }
 
     @Transactional
-    public boolean deleteById(int transactionId){
+    public Result<Transaction> deleteById(int transactionId){
+        Result<Transaction> result = new Result<>();
         Transaction transaction = findByTransactionId(transactionId);
 
         if(transaction==null){
-            return false;
+            String msg = String.format("transactionId: %s, not found", transactionId);
+            result.addMessage(msg, ResultType.NOT_FOUND);
+            return result;
+        }
+
+        if(transaction.getStatus()!= TransactionStatus.ORDERED){
+            result.addMessage("Shipped or delivered ordered cannot be canceled.", ResultType.INVALID);
+            return result;
         }
 
         for(CartItem each : transaction.getBooks()){
@@ -128,7 +137,9 @@ public class TransactionService {
             bookRepository.update(book);
         }
 
-        return repository.deleteById(transactionId);
+        repository.deleteById(transactionId);
+
+        return result;
     }
 
     private Result<Transaction> validate(Transaction transaction){

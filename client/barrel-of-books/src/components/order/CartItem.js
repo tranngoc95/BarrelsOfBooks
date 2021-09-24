@@ -96,7 +96,7 @@ function CartItem({ item, getList, auth }) {
         <div className="item">
             <ErrorMessages errorList={errorList} />
             <div className="ui six column grid">
-            <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} /></div>
+            <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} alt="" /></div>
                 <div className="six wide column">
                     <h4>{item.book.title}</h4>
                     <div>Price: ${item.book.price}</div>

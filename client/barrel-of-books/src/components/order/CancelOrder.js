@@ -83,8 +83,9 @@ function CancelOrder() {
                 {order.status} {order.date}
               </div>
               {order.books.map((item) => (
-                <div>
-                  <h6>{item.book.title}</h6>
+                <div key={item.cartItemId}>
+                  <h3>{item.book.title}</h3>
+                  <div>by {item.book.author}</div>
                   <div>Quantity: {item.quantity}</div>
                 </div>
               ))}
@@ -92,7 +93,7 @@ function CancelOrder() {
             </div>
 
             <hr />
-            <div>Are you sure you want to cancel this item?</div>
+            <div>Are you sure you want to cancel this order?</div>
             <div>
               <button className="ui primary button"type="button" onClick={cancelOrder}>
                 Yes

@@ -5,6 +5,7 @@ import learn.barrel_of_books.data.CartItemRepository;
 import learn.barrel_of_books.data.TransactionRepository;
 import learn.barrel_of_books.models.CartItem;
 import learn.barrel_of_books.models.Transaction;
+import learn.barrel_of_books.models.TransactionStatus;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static learn.barrel_of_books.data.TestData.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class TransactionServiceTest {
@@ -298,13 +300,26 @@ class TransactionServiceTest {
     void shouldDelete() {
         Mockito.when(repository.findByTransactionId(1)).thenReturn(makeExistingTransaction());
         Mockito.when(repository.deleteById(1)).thenReturn(true);
-        assertTrue(service.deleteById(1));
+        Result<Transaction> actual = service.deleteById(1);
+        assertEquals(ResultType.SUCCESS, actual.getType());
     }
 
     @Test
     void shouldNotDeleteMissing() {
-        assertFalse(service.deleteById(10));
+        Result<Transaction> actual = service.deleteById(10);
+        assertEquals(ResultType.NOT_FOUND, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("not found"));
     }
 
+    @Test
+    void shouldNotDeleteShipped() {
+        Transaction transaction = makeExistingTransaction();
+        transaction.setStatus(TransactionStatus.SHIPPED);
+        Mockito.when(repository.findByTransactionId(1)).thenReturn(transaction);
+
+        Result<Transaction> actual = service.deleteById(1);
+        assertEquals(ResultType.INVALID, actual.getType());
+        assertTrue(actual.getMessages().get(0).toLowerCase().contains("shipped"));
+    }
 
 }

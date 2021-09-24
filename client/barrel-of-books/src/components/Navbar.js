@@ -25,8 +25,8 @@ function Navbar() {
                     {auth.user &&
                         <>
                             <span className="ui item"><i>Hello {auth.user.username}!</i></span>
-                            <div className="ui item vertical animated button" tabindex="0">
-                                <Link className="visible content" to="/cart"><i class="shopping cart icon"></i></Link>
+                            <div className="ui item vertical animated button" tabIndex="0">
+                                <Link className="visible content" to="/cart"><i className="shopping cart icon"></i></Link>
                                 <Link className="hidden content" to="/cart">Cart</Link>
                             </div>
 

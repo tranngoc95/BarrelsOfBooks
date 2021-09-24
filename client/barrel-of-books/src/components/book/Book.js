@@ -108,7 +108,7 @@ function Book() {
 
                         <div className="ui container book-info">
                             <div>
-                                <img className="ui centered medium image" src={`/${book.bookId}.jpg`} alt="image" />
+                                <img className="ui centered medium image" src={`/${book.bookId}.jpg`} alt="" />
                             </div>
 
                             <h2>{book.title}</h2>

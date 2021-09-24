@@ -34,7 +34,7 @@ function Orders() {
         <div className="home-page">
             <h2 className="sub-title">My Orders</h2>
             <div className="orders-container white-bg">
-                <div className="">
+                <div>
                     {orders.map(order => (
                         <div className="ui segments" key={order.transactionId}>
                             <div className="ui secondary segment">
@@ -63,7 +63,7 @@ function Orders() {
                                 <div className="ui segment" key={item.cartItemId}>
                                     <div className="ui six column grid">
                                         <div className="column" />
-                                        <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} /></div>
+                                        <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} alt="" /></div>
                                         <div className="six wide column">
                                             <h5>{item.book.title}</h5>
                                             <div>Quantity: {item.quantity}</div>
