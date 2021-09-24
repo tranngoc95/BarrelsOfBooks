@@ -145,11 +145,11 @@ function Book() {
                                     <div className="book-info">
                                         {
                                             stores.map(each => (
-                                                <>
+                                                <div key={each.storeBookId}>
                                                     <h5>{each.store.city} bookstore</h5>
                                                     <div>{each.store.address}, {each.store.city}, {each.store.state}, {each.store.postalCode}</div>
                                                     {each.quantity > 0 ? <div className="green-text">In stock</div> : <div className="red-text">Out of Stock</div>}
-                                                </>
+                                                </div>
                                             ))
                                         }
                                     </div>
