@@ -41,7 +41,7 @@ function AllOrders() {
                     <tr>
                         <th>Order Id</th>
                         <th>Date</th>
-                        <th>User Id</th>
+                        {/* <th>User Id</th> */}
                         <th>List of Books</th>
                         <th>Status</th>
                     </tr>

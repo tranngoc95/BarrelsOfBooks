@@ -60,14 +60,14 @@ function Genres() {
     return (
         <>
             <div className="home-page">
-                <h2 className="sub-title">Genres List</h2>
+                <h2 className="sub-title">Genres</h2>
                 <div>
             {auth.user && auth.user.hasRole("ADMIN") &&
                 <Link className="ui primary button add-button back-form-button" to="/genres/add">Add New Genre</Link>}
             </div>
                 <ErrorMessages errorList={errorList} />
 
-                <table className="ui fixed selectable table table-margin">
+                <table className="ui fixed selectable table table-margin orders-container">
                     <thead>
                         <tr>
                             <th scope="col">Genre</th>

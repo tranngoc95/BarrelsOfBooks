@@ -95,45 +95,47 @@ function CartItem({ item, getList, auth }) {
     return (
         <div className="item">
             <ErrorMessages errorList={errorList} />
-            <div>
-                <h4>{item.book.title}</h4>
-                <div>Price: ${item.book.price}</div>
-                {item.book.quantity === 0 && (
-                    <div >
-                        <div>Out Of Stock.</div>
-                        <div>Please remove item before proceeding to checkout.</div>
-                    </div>
-                )}
-                {item.book.quantity !== 0 && item.book.quantity < item.quantity
-                    && (
-                        <div>
-                            <div>In stock: {item.book.quantity}</div>
-                            <div>Please adjust the item quantity to match our instock before proceeding to checkout.</div>
+            <div className="ui six column grid">
+            <div className="column"><img className="ui tiny image" src={`/${item.book.bookId}.jpg`} /></div>
+                <div className="six wide column">
+                    <h4>{item.book.title}</h4>
+                    <div>Price: ${item.book.price}</div>
+                    {item.book.quantity === 0 && (
+                        <div className="red-text">
+                            <div>Out Of Stock.</div>
+                            <div>Please remove item before proceeding to checkout.</div>
                         </div>
                     )}
+                    {item.book.quantity !== 0 && item.book.quantity < item.quantity
+                        && (
+                            <div className="red-text">
+                                <div>In stock: {item.book.quantity}</div>
+                                <div>Please adjust the item quantity to match our instock before proceeding to checkout.</div>
+                            </div>
+                        )}
+                </div>
+                <div className="right floated six wide column">
+                    <label htmlFor="quantity">Quantity: </label>
+                    {toggle && <select className="ui search dropdown" id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
+                        <option value={1} disabled={item.book.quantity < 1}>1</option>
+                        <option value={2} disabled={item.book.quantity < 2}>2</option>
+                        <option value={3} disabled={item.book.quantity < 3}>3</option>
+                        <option value={4} disabled={item.book.quantity < 4}>4</option>
+                        <option value={5} disabled={item.book.quantity < 5}>5</option>
+                        <option value={6} disabled={item.book.quantity < 6}>6</option>
+                        <option value={7} disabled={item.book.quantity < 7}>7</option>
+                        <option value={8} disabled={item.book.quantity < 8}>8</option>
+                        <option value={9} disabled={item.book.quantity < 9}>9</option>
+                        <option value={10} disabled={item.book.quantity < 10}>10+</option>
+                    </select>
+                    }
+                    {!toggle && <input id="quantityNum" name="quantity" value={quantity} type="number" onChange={handleChange} required disabled={!update} />
+                    }
+                    {!update && <button className="ui blue button" onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
+                    {update && <button className="ui green button" onClick={updateQuantity}>Save</button>}
+                    <div><button className="ui button" onClick={() => removeItem(item)}>Remove</button></div>
+                </div>
             </div>
-            <div>
-                <label htmlFor="quantity">Quantity</label>
-                {toggle && <select id="quantitySel" name="quantity" value={quantity} onChange={handleChange} disabled={!update}>
-                    <option value={1} disabled={item.book.quantity < 1}>1</option>
-                    <option value={2} disabled={item.book.quantity < 2}>2</option>
-                    <option value={3} disabled={item.book.quantity < 3}>3</option>
-                    <option value={4} disabled={item.book.quantity < 4}>4</option>
-                    <option value={5} disabled={item.book.quantity < 5}>5</option>
-                    <option value={6} disabled={item.book.quantity < 6}>6</option>
-                    <option value={7} disabled={item.book.quantity < 7}>7</option>
-                    <option value={8} disabled={item.book.quantity < 8}>8</option>
-                    <option value={9} disabled={item.book.quantity < 9}>9</option>
-                    <option value={10} disabled={item.book.quantity < 10}>10+</option>
-                </select>
-                }
-                {!toggle && <input id="quantityNum" name="quantity" value={quantity} type="number" onChange={handleChange} required disabled={!update} />
-                }
-                {!update && <button className="ui mini blue button" onClick={handleUpdate} disabled={item.book.quantity === 0}>Update Quantity</button>}
-                {update && <button onClick={updateQuantity}>Save</button>}
-                <div><button className="ui mini orange button" onClick={() => removeItem(item)}>Remove</button></div>
-            </div>
-            
         </div>
     )
 

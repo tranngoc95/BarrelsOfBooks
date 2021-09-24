@@ -44,10 +44,10 @@ function Confirmation() {
 
     return (
         <div className="home-page">
-            <div className="ui container seashell-bg">
+            <div className="ui container white-bg">
             <ErrorMessages errorList={errorList} />
             {order && (<div>
-                <h3>Successful Checkout!</h3>
+                <h3>Successfull Checkout!</h3>
                 <div>Thank you for your order!</div>
                 <br />
                 <div>What you ordered: </div>
@@ -55,11 +55,12 @@ function Confirmation() {
                     <div>Order Id: {order.transactionId}</div>
                     {order.books.map(item => (
                         <div key={item.cartItemId}>
-                            <h6>{item.book.title}</h6>
+                            <div><b>{item.book.title}</b></div>
                             <div>by {item.book.author}</div>
                             <div>Quantity: {item.quantity}</div>
                         </div>
                     ))}
+                    <hr/>
                     {order.employeeDiscount &&
                         <div>Employee Discount: 30%</div>}
                     <div>Total: ${order.total}</div>

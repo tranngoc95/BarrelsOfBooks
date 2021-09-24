@@ -89,7 +89,7 @@ function Cart() {
   return (
     <div className="home-page">
       <h2 className="sub-title">My Shopping Cart</h2>
-      <div className="ui container grid seashell-bg">
+      <div className="ui container grid white-bg">
         <div className="twelve wide column">
           <ErrorMessages errorList={errorList} />
           <div className="ui middle aligned celled divided list">

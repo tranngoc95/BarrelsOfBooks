@@ -19,7 +19,7 @@ width: 80% !important;
 }
 
 .form {
-    width: 50% !important;
+    width: 80% !important;
     margin-left: auto !important;
     margin-right: auto !important;
 }
@@ -79,7 +79,6 @@ padding-bottom: 60em !important;
 
 .white-bg {
     background-color: seashell !important;
-    border: 1px solid black;
 }
 
 .mb-1 {
@@ -103,4 +102,20 @@ padding-bottom: 60em !important;
 .book-info {
     font-size: 16px;
     background-color:	#f8f8ff !important;
+    padding: 0.5cm;
+}
+
+.orders-container {
+    width: 60% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 30px;
+}
+
+.red-text {
+    color: red;
+}
+
+.green-text {
+    color: seagreen;
 }
