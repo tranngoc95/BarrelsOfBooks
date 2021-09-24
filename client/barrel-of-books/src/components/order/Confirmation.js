@@ -44,10 +44,10 @@ function Confirmation() {
 
     return (
         <div className="home-page">
-            <div className="ui container white-bg">
+            <div className="ui container seashell-bg">
             <ErrorMessages errorList={errorList} />
             {order && (<div>
-                <h3>Successfull Checkout!</h3>
+                <h3>Successful Checkout!</h3>
                 <div>Thank you for your order!</div>
                 <br />
                 <div>What you ordered: </div>

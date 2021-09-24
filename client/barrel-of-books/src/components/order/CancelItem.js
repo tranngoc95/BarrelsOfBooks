@@ -76,7 +76,7 @@ function CancelItem() {
     return (
         <div className="home-page">
             <h3 className="sub-title">Cancel Item</h3>
-            <div className="ui container white-bg">
+            <div className="ui container seashell-bg">
             <ErrorMessages errorList={errorList} />
             {item && (
                 <>
