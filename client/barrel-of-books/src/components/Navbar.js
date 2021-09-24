@@ -7,7 +7,7 @@ function Navbar() {
     const auth = useContext(AuthContext);
 
     return (
-        <div className="nav">
+        <div className="seashell-bg">
             <div className="ui secondary menu">
                 <Link className="item" to="/"><b><i>Barrel of Books</i></b></Link>
                 <Link className="item" to="/books">Books</Link>
