@@ -63,7 +63,7 @@ function Genres() {
                 <h2 className="sub-title">Genres</h2>
                 <div>
             {auth.user && auth.user.hasRole("ADMIN") &&
-                <Link className="ui primary button add-button back-form-button" to="/genres/add">Add New Genre</Link>}
+                <Link className="ui primary button add-button genre-add-button" to="/genres/add">Add New Genre</Link>}
             </div>
                 <ErrorMessages errorList={errorList} />
 
